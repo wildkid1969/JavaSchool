@@ -19,5 +19,6 @@ dependency-reduced-pom.xml
 *.iws  
 *.idea  
 *.class
+~$*.docx
   
 README.html  
