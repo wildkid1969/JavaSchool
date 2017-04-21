@@ -1,0 +1,55 @@
+4.nginx在reload时候报错invalid PID number
+可以尝试将进程的PID号追加到nginx.pid
+
+ ps -ef|grep nginx
+root     12667     1  0 Aug04 ?        00:00:00 nginx: master process nginx/sbin/nginx
+
+ echo 12667 > /usr/local/nginx/logs/nginx.pid
+
+3.全站的图片防盗链方法
+ 在/usr/local/nginx/conf/nginx.conf文件要添加防盗链的server段里添加下面的代码：
+location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$ {
+  valid_referers none blocked www.5icool.org 5icool.org;
+  if ($invalid_referer) {
+  rewrite ^/ http://www.5icool.org/403.html;
+  #return 403;
+  }
+  }
+第一行：gif|jpg|png|swf|flv
+表示对gif、jpg、png、swf、flv后缀的文件实行防盗链
+第二行：表示对www.5icool.org这2个来路进行判断
+if{}里面内容的意思是，如果来路不是指定来路就跳转到http://www.5icool.org/403.html页面，当然直接返回403也是可以的。
+请确保server段中只有一个location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$，否则可能导致代码无效，如有这个代码段请合并或删除。
+切记：如果要跳转到图片，记得替换的图片地址要使用没有防盗链的网站图片，否则由于替换的图片其实也处于防盗链情况下，会造成仍旧无法显示设置的图片。
+
+
+2.nginx配置静态资源：（静态文件用nginx直接serve）
+
+#css|js|ico|gif|jpg|jpeg|png|txt|html|htm|xml|swf|wav这些都是静态文件，但应分辨，js、css可能经常会变，过期时间应小一些，图片、html基本不变，过期时间可以设长一些  
+location ~* ^.+\.(ico|gif|jpg|jpeg|png|html|htm)$ {  
+    root         /var/www/poseidon/root/static;  
+    access_log   off;  
+    expires      30d;  
+}  
+
+location ~* ^.+\.(css|js|txt|xml|swf|wav)$ {  
+    root         /var/www/poseidon/root/static;  
+    access_log   off;  
+    expires      24h;  
+}  
+#注：location不包括?后面带的参数，所以以上正则可以匹配http://192.168.1.16/image/sxxx.jpg?a=xxx
+
+
+1.nginx中配置跨域支持功能
+
+在nginx.conf中配置
+http {
+  ......
+  add_header Access-Control-Allow-Origin *;
+  add_header Access-Control-Allow-Headers X-Requested-With;
+  add_header Access-Control-Allow-Methods GET,POST,OPTIONS;
+  ......
+}
+
+这样就可以实现GET,POST,OPTIONS的跨域请求的支持
+也可以 add_header Access-Control-Allow-Origin http://test.51testing.com; --指定允许的url;

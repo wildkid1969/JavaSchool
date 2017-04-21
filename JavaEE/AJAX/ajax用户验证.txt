@@ -1,0 +1,273 @@
+教程由JAVA中文网整理校对发布(javaweb.cc)
+
+程序的思路主要是：页面加载时调用init判断客户端是否存有网站所需的cookies，如果有的话取相应cookies到服务端验证，通过验证显示成功提示，反之显示登录框，同样如果没有所需cookies也显示登录框直到用户输入正确的用户名和密码。整个过程两次用到了ajax，一次是用户输入用户名和密码点击登录按钮后，另一次是页面加载时的用户名和密码验证，其实两个过程调用的是同一个函数parseLogin，这个函数主要负责与远程（也就是“?action=login”）通讯，而“?action=login”接受post过来的用户名和密码进行处理并返回处理结果，客户端收到服务端的处理结果后进行进一步的处理（调用函数makeResult）。可以看出与传统的“处理登录”相比是有很大差别的，首先整个过程中没有任何的页面加载（也就是无刷新），form中我并没有指定action和method，由js完成与PHP的通信，同时也是异步的（你可以同时进行多个请求，而按传统方式在进行一个请求时不能再进行其他请求（使用多个iframe也可以模拟出异步的效果，这里不包括这种情况）），充分利用这两点就可以制作出以前需要通过非常复杂的方法才可能达到的效果，如自动完成等。
+客户端使用的prototype.js，实际上从我第一眼发现这个强悍无比的家伙时就离不了它了，还狠心“抛弃”了已经很习惯的SAJAX。另外服务端返回的是XML，在这里使用XML只是想说明一种通用的js处理XML的方式。
+当然由于是无刷新的，所以在提交登录时已经看不到状态栏上的进度条，如果登录时间过长，用户可能不知道发生了什么事情，会不停的点击提交，这时我们一般会在提交时生成一个加载条，告诉用户目前正在发生什么，如gmail右上角的loading...，chinaren的“我正在帮您登录，请稍等...”，当服务端返回结果时就要隐藏这个加载条，控制display属性就可以简单的实现这种轮换效果
+<?php
+/**************************************************************
+* login.php
+* @author JAVA中文网
+* @email hi@javaweb.cc
+* @note ajax登录验证，用户名和密码保存在客户端cookies中
+**************************************************************/
+
+//得到安全字符串
+function safe_str($str)
+{
+return (string)htmlspecialchars(trim($str));
+}
+
+if(safe_str($_GET['action'])=='login')
+{
+//登录验证
+header("Content-type: text/xml");
+$user=safe_str($_POST['user']);
+$pwd=safe_str($_POST['pwd']);
+
+$response_xml='<info>';
+
+//只有当用户名为root，密码为888时才通过验证
+$response_xml.=($user!='root'||$pwd!='888')?'<error>incorrect username or password!</error>':"<login><info><user>{$user}</user><pwd>{$pwd}</pwd></info></login>";
+
+$response_xml.='</info>';
+print $response_xml;
+exit;
+}
+else
+{
+?>
+<html>
+<head>
+<title>Ajax登录验证</title>
+<script type="text/javascript" src="prototype.js"></script>
+<script language="JavaScript" type="text/javascript">
+<!--
+//得到cookies的值
+function getCookie(name)
+{
+var dc=document.cookie;
+var prefix=name+"=";
+var begin=dc.indexOf("; "+prefix);
+
+if(begin==-1)
+{
+begin=dc.indexOf(prefix);
+if(begin!=0)
+return "";
+}
+else
+begin+=2;
+var end=document.cookie.indexOf(";",begin);
+if(end==-1)
+end=dc.length;
+return unescape(dc.substring(begin+prefix.length,end));
+}
+
+//删除cookies
+function delCookie(name)
+{
+if(getCookie(name))
+document.cookie=name+"=; path=/; expires=Thu, 01-Jan-70 00:00:01 GMT";
+}
+
+//设置cookies
+function setCookie(name,value)
+{
+var expires=new Date();
+expires.setTime(expires.getTime()+30*24*60*60*1000); //设置cookies失效时间为一个月
+document.cookie=name+"="+escape(value)+"; expires="+expires.toGMTString()+"; path=/";
+}
+
+//得到节点的值
+function getElementTextNS(local,parentElem,index)
+{
+var result = parentElem.getElementsByTagName(local)[index];
+return result?result.childNodes.length>1?result.childNodes[1].nodeValue:(result.firstChild?result.firstChild.nodeValue:""):"n/a";
+}
+
+//初始化
+function init()
+{
+var loginUser=getCookie("ajaxUser");
+var loginPwd=getCookie("ajaxPwd");
+loginUser!=""?parseLogin(loginUser,loginPwd):genLoginForm();
+}
+
+//退出登录
+function logOut()
+{
+delCookie("ajaxUser");
+delCookie("ajaxPwd");
+genLoginForm();
+}
+
+//用指定的用户名和密码登录
+function parseLogin(username,password)
+{
+var postBody="user="+escape(username)+"&pwd="+escape(password);
+new Ajax.Request("?action=login", {method:"post", postBody:postBody,
+onFailure:function() {alert("程序异常")},
+onSuccess:makeResult});
+return false;
+}
+
+//处理登录返回结果
+function makeResult(response)
+{
+var info=response.responseXML.getElementsByTagName("info");
+var error=getElementTextNS("error",info[0],0);
+if(error!="n/a")
+{
+genLoginForm();
+alert("请输入正确的用户名和密码");
+}
+else
+{
+var user=getElementTextNS("user",info[0],0);
+var pwd=getElementTextNS("pwd",info[0],0);
+
+setCookie("ajaxUser",user);
+setCookie("ajaxPwd",pwd);
+if(getCookie("ajaxUser")=="")
+{
+genLoginForm();
+alert("您的浏览器必须支持cookies");
+}
+else
+$("content").innerHTML="<h2>Hello,<font color=\"red\">"+user+"</font>!<a href=\"javascript:logOut();\">logout</a></h2>";
+}
+}
+
+//显示登录框
+function genLoginForm()
+{
+$("content").innerHTML="<form onsubmit=\"return parseLogin($('user').value,$('pwd').value);\">用户名：<input type=\"text\" id=\"user\" size=\"12\"> 密码：<input type=\"password\" id=\"pwd\" size=\"12\"> <input type=\"submit\" value=\"登录\"></form>";
+}
+//-->
+</script>
+</head>
+
+<body onload="init();">
+<div id="content"></div>
+</body>
+</html>
+<?php
+}
+?>
+
+
+
+
+
+
+ajax 验证用户名(AJAX无刷新验证用户名是否存在)
+ajax 验证用户名
+注册页面：register.htm
+<script language="JavaScript">
+function GetResult(str)
+{
+     var exitdos = new ActiveXObject("Microsoft.XMLHTTP");
+     exitdos.open("POST","check.asp?userid="+escape(str),false);
+     exitdos.send();
+     document.all.username.value=unescape(exitdos.responseText)
+}
+</script>
+userid:<input type="text" name="userid" onblur="GetResult(document.all.userid.value)"><br>
+username:<input type="text" name="username">
+
+验证页面：check.asp
+<%@Language="JavaScript"
+function OpenDB(sdbname)
+{
+     var connstr = "Provider=Microsoft.Jet.OLEDB.4.0; Data Source="+Server.MapPath(sdbname);
+     var conn = Server.CreateObject("ADODB.Connection");
+     conn.Open(connstr);
+     return conn;
+}
+var sResult = "";
+var oConn = OpenDB("data.mdb");
+var userid = unescape(Request("userid"));
+var sql = "select username from users where userid='"+userid+"'";
+var rs = oConn.Execute(sql);
+if(!rs.EOF)
+{
+     sResult = "该用户名已经存在！"
+}
+else
+{
+     sResult = "该用户名可以注册！"
+}
+Response.Write escape(sResult)%>
+
+mdb数据库名：data.mdb
+表：users
+表结构：id(自动编号)、userid(文本)、username(文本)
+
+到此，源代码和数据库就完成了，因为用的是onblur事件，当光标的焦点离开时，input值会马上传到数据库验证。
+
+common.js
+var objRequest;
+function getajax()
+{
+try
+{
+    objRequest = new ActiveXObject("Msxml2.XMLHTTP");
+}
+catch(e)
+{
+   try
+      {
+      objRequest = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+   catch(oc)
+    {
+      objRequest=null;
+    }
+}
+}
+function Isname()
+{ getajax();
+   var name = document.getElementById("name").value;
+if(!objRequest&&typeof XMLHttpRequest!="undefined")
+    {objRequest=new XMLHttpRequest();}
+var url="check.asp?action=Isreg&name="+escape(name);
+    if(objRequest!=null)
+      {
+        objRequest.onreadystatechange = nameProcess;
+        objRequest.open("GET",url,true);
+        objRequest.send(null);
+      }
+}
+function nameProcess()
+{
+var objname = document.getElementById("nametest");
+
+   if(objRequest.readyState<4){
+objname.innerHTML="正在检测……";
+   }
+   else if(objRequest.readyState == 4){
+    var response = objRequest.responseText;
+objname.innerHTML=unescape(response);
+   }
+    else{
+objname.innerHTML = "Error:"+objRequest.statusText;
+   }
+}
+
+check.asp
+<!--#include file="conn.asp"-->
+<%if Request.QueryString("action")="Isreg" then
+name=Request.QueryString("name")
+set Isins=conn.Execute("select [name] from [user] where [name]='"&name&"'")
+if (Isins.bof and Isins.eof) then
+response.write "该用户名可以注册！"
+else
+response.write "该用户名已被注册！"
+end if
+set Isins=nothing
+end if%>
+
+register.htm
+<script type="text/javascript" src="common.js"/></script>
+用户名：<input name="name" type="text" id="name" size="16" maxlength="16" onChange="Isname();"><span id="nametest"></span>
+ajax 验证用户名

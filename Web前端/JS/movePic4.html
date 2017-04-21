@@ -1,0 +1,50 @@
+<html> 
+ <head>
+    <title></title>
+    <script type="text/javascript">
+       var timer = null;
+ 
+function startMove(iTarget){
+    var oDiv1 = document.getElementById("div1");
+	var oDiv2 = document.getElementById("div2");
+	var oDiv3 = document.getElementById("div3");
+	
+	var speed;
+     
+    clearInterval(timer);   
+    timer = setInterval(function(){
+        if(oDiv1.offsetLeft>20){
+            speed-= iTarget;
+        } else {
+            speed = -7;
+        }
+         
+        if(Math.abs( iTarget - oDiv1.offsetLeft)<= 7 ){           
+            clearInterval(timer);
+            oDiv1.style.left = iTarget + "px";   
+			 oDiv2.style.left = iTarget + "px"; 
+			  oDiv3.style.left = iTarget + "px"; 
+        } else {
+            oDiv1.style.left = oDiv1.offsetLeft + speed + "px";
+			oDiv2.style.left = oDiv2.offsetLeft + speed + "px";
+			oDiv3.style.left = oDiv3.offsetLeft + speed + "px";
+        }
+    },1000);
+ 
+}
+    </script>
+    <style type="text/css">
+        
+    #div1 { position:absolute; left:600px;top:100px; width:100px; height:150px; background:red;}
+	#div2 { position:absolute; left:600px;top:210px; height:100px; width:100px; background:black;}
+	#div3 { position:absolute; left:600px;top:320px; height:100px; width:100px; background:blue;}
+    </style>
+</head>
+<body>
+<input type="button" value="100รื" id="btn1" onclick="startMove(100);" />
+<input type="button" value="300รื" id="btn2" onclick="startMove(300);" />
+<div id="div1"></div>
+<div id="div2"></div>
+<div id="div3"></div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+01 一个简单的办法就是循环list，将上一元素放入另一个list，使用contains判断当前元素是否在另一个list中，不在就继续放入。
+02 用HashSet
+03 删除ArrayList中重复元素
+
+具体实现:
+
+方法一：循环元素删除 （使用的方式FOR循环操作。不建议使用大数据量的转换。。n*n的循环量）
+
+    // 删除ArrayList中重复元素 public static void removeDuplicate(List list) { 
+for ( int i = 0 ; i < list.size() - 1 ; i ++ ) { 
+ for ( int j = list.size() - 1 ; j > i; j -- ) { 
+   if (list.get(j).equals(list.get(i))) { 
+	list.remove(j); 
+	} 
+    } 
+  } 
+  System.out.println(list); 
+}
+
+方法二：通过HashSet剔除 （本人喜欢使用的方式：使用的是hash数组不能产生重复数据的特性，来转换LIST）
+
+   	 // 删除ArrayList中重复元素 
+	HashSet hSet = new HashSet(list); 
+	list.clear(); 
+	list.addAll(hSet); 
+	System.out.println(list);
+
+
+方法三： 删除ArrayList中重复元素，保持顺序 
+
+    // 删除ArrayList中重复元素，保持顺序
+
+		Integer[] i = { 1, 2, 2, 2, 3, 4, 5 };
+		List<Integer> list1 = new ArrayList<Integer>();
+		List<Integer> list2 = new ArrayList<Integer>();
+		for (int j = 0; j < i.length; j++) {
+			list1.add(i[j]);
+		}
+		Iterator<Integer> it = list1.iterator();
+		for(int j =0;j<i.length;j++)
+		if (!list2.contains(list1.get(j)) && it.hasNext()) {
+			list2.add(list1.get(j));
+
+		}
+
+

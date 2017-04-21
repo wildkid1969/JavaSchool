@@ -1,0 +1,347 @@
+*下载数据库：
+[root@localhost /]# cd /usr/local/mysql/bin/
+[root@localhost bin]# ./mysqldump -uroot -psai edufound_gd>edufound_gd_20140207.sql;
+
+
+*修改重复的用户昵称：
+
+[SQL] UPDATE p_account_info i SET nickname=CONCAT(nickname,RIGHT(phonenum,4)) WHERE EXISTS(SELECT a.nickname FROM
+(SELECT accountid,phonenum,nickname,count(1) cnt,LENGTH(nickname) FROM p_account_info 
+WHERE LENGTH(nickname)>0
+GROUP BY nickname
+HAVING cnt>1
+)a WHERE i.nickname=a.nickname
+)
+
+受影响的行: 5293
+
+
+*MySQL操作表
+
+查看列：desc 表名;
+修改表名：alter table t_book rename to bbb;
+添加列：alter table 表名 add column 列名 varchar(30);
+删除列：alter table 表名 drop column 列名;
+修改列名： alter table bbb change nnnnn hh int;
+修改列属性：alter table t_book modify name varchar(22);
+
+设置主键：
+ALTER TABLE `table_name` MODIFY COLUMN `id` MEDIUMINT( 8 ) NOT NULL AUTO_INCREMENT,ADD PRIMARY KEY(id);
+
+
+*把数据里的换行转换成<br/>
+UPDATE sp_offline_chapter SET description = REPLACE(description,'\n','<br/>');
+
+*查询版本信息的SQL语句
+
+select version();
+
+*去重：
+DELETE FROM p_corp_join WHERE id not IN (SELECT a.id FROM(SELECT id,max(createtime) FROM p_corp_join
+WHERE createtime>"2016-06-24 08:54:32" OR updatetime>"2016-06-24 08:54:32"
+GROUP BY corp_name)a);
+
+DELETE FROM sp_user_sign_in WHERE id not IN (SELECT a.id FROM(SELECT id,userid,DATE_FORMAT(signtime,'%Y%m%d') days FROM sp_user_sign_in
+GROUP BY userid,days)a);
+
+SELECT count(1) cnt,userid,DATE_FORMAT(signtime,'%Y%m%d') days FROM sp_user_sign_in 
+GROUP BY userid,days
+HAVING cnt>1
+ORDER BY days
+
+*查询上一条记录的SQL语句：
+
+select * from table_a where id = (select id from table_a where id < {$id} [and other_conditions] order by id desc limit 1) [and other_conditions];
+
+
+查询下一条记录的SQL语句：
+
+select * from table_a where id = (select id from table_a where id > {$id} [and other_conditions] order by id asc limit 1) [and other_conditions];
+
+
+
+
+*插入随机日期：CONCAT（，，，，）
+UPDATE sp_label SET createtime=CONCAT("2016-07-",Floor(RAND()*11)+1," ",Floor(RAND()*23)+1,":",Floor(RAND()*59)+1,":",Floor(RAND()*59)+1)
+
+*很多时候希望table中数据的id不要从1开始，像qq， id从10000开始,代码如下：
+
+alter table users AUTO_INCREMENT=10000;
+
+*按天、周、月分组  DATE_FORMAT(date,format) 
+select DATE_FORMAT(create_time,'%Y%u') weeks,count(caseid) count from tc_case group by weeks;  
+select DATE_FORMAT(create_time,'%Y%m%d') days,count(caseid) count from tc_case group by days;  
+select DATE_FORMAT(create_time,'%Y%m') months,count(caseid) count from tc_case group by months; 
+
+
+*MySQL取得某一范围随机数 (2014-05-28 23:29:28)转载▼
+
+若要在i ≤ R ≤ j 这个范围得到一个随机整数R ，需要用到表达式 FLOOR(i + RAND() * (j – i + 1))。
+例如， 若要在7 到 12 的范围（包括7和12）内得到一个随机整数, 可使用以下语句：
+SELECT FLOOR(7 + (RAND() * 6));
+
+ grant 权限1,权限2,…权限n on 数据库名称.表名称 to 用户名@用户地址 identified by ‘连接口令’;
+
+*随机查询：
+<select id="findBookInfoByPointsId" resultMap="WordTest">
+	select distinct	(word.wordid),word.wordname,word.wordaccent,wordaudiourl,word.topic_id,bookinfo.bookinfoid,bookinfo.options 
+	from t_book_info bookinfo
+	left JOIN t_word_test word on word.topic_id=bookinfo.topic_id
+	left JOIN t_word_n_type wordtype on wordtype.wordid=word.wordid
+	left JOIN t_checkpoint_difficult cd on cd.passagetype_id=wordtype.passagetypeid
+	JOIN (SELECT ROUND(RAND() * ((SELECT MAX(bookinfoid) FROM t_book_info)-(SELECT MIN(bookinfoid) FROM t_book_info))+(SELECT MIN(bookinfoid) FROM t_book_info)) AS bookinfoid) AS b2 
+	where bookinfo.bookinfoid >= b2.bookinfoid and cd.checkpiont_id=#{checkPointId} and wordtype.typetype=0
+	group by word.wordid
+	order by bookinfo.bookinfoid
+	limit #{limit}
+</select>
+
+*sql: select * from table where id IN (3,6,9,1,2,5,8,7) order by field(id,3,6,9,1,2,5,8,7); 
+
+出来的顺序就是指定的顺序了
+
+*天津导数据：
+select o.order_source,'tjgd','tjgd',ou.user_code,b.name,o.order_type,o.price,o.order_time,o.failure_time,o.state into OUTFILE '/home/order.10.txt' from tbl_orderforbetter o,tbl_better_product b,tbl_operator_user ou 
+where o.user_id=ou.id and o.better_product_id=b.id and o.order_time >"2014-10-01 00:00:00";
+
+*delete和truncate table的最大区别是delete可以通过WHERE语句选择要删除的记录。
+
+但执行得速度不快。而且还可以返回被删除的记录数。
+
+而truncate table无法删除指定的记录，而且不能返回被删除的记录。但它执行得非常快。
+
+如果一个表中有自增字段，使用truncate table和没有where子句的delete删除所有记录后，这个自增字段将起始值恢复成1.
+
+和标准的SQL语句不同，MySQL delete语句支持order by和limit子句，通过这两个子句，我们可以更好地控制要删除的记录。如当我们只想删除where子句过滤出来的记录的一部分，可以使用limit，如果要删除后几条记录，可以通过order by和limit配合使用。如：DELETE FROM users WHERE name = 'Mike' ORDER BY id DESC LIMIT 6;
+
+*删除零基础重复订单：
+create table tmp as select user_code from tbl_order  where vendorCode="ahdx" and packages_name like "零基础%" and state=1 and order_type=1 group by user_code having count(user_code)>1;
+delete from tbl_order where packages_name ="零基础学小吉他" and user_code in (select user_code from tmp); 
+drop table tmp;
+
+*数据中心按月份导订单数据：
+ select v.name,o.order_source,o.user_code,o.price,o.order_time,o.failure_time,o.state 
+ into outfile '/home/website/orderByMonth1.txt' from tbl_order o,tbl_vendor v
+where o.order_time <"2014-10-01 00:00:00" and o.state =1 and o.packages_name = "达达狮成长计划" and v.code=o.vendorCode;
+
+ select v.name,o.order_source,o.user_code,o.price,o.order_time,o.failure_time,o.state 
+ into outfile '/home/website/stopOrderByMonth.txt' from tbl_order o,tbl_vendor v
+where o.order_time like "2014-09%" and o.state =0 and o.packages_name = "达达狮成长计划" and v.code=o.vendorCode;
+
+ select v.name,o.order_source,o.user_code,o.order_time,o.failure_time,o.state from tbl_order o,tbl_vendor v
+where o.order_time like "2014-09%" and o.state =0 and o.packages_name = "达达狮成长计划" and v.code=o.vendorCode;
+
+*数据中心根据产品包统计，查询重复：
+select o.id,p.name,count(o.id) from tbl_order o left join tbl_packages p on o.packages_name = p.name group by o.id,p.name having count(o.id)=2;
+
+*数据中心查询重复订单：
+select user_code,packages_name,count(packages_name),failure_time,state,vendorCode,vendorTerCode from tbl_order_bak group by user_code,packages_name,failure_time,state,vendorCode,vendorTerCode having count(packages_name)>1;
+
+*mysql开权限（注意关掉防火墙）grant all privileges on *.* to 'root'@'%' identified by 'root' with grant option;
+
+
+*com.mysql.jdbc.PacketTooBigException: 解决方案  
+
+ 在向mysql数据库存储图像文件大于1048576时抛出异常
+
+ 以下是解决方案：
+
+  我用的mysql版本是5.0
+
+  在mysql安装目录下找到my.ini文件，在[mysqld]下：
+ 
+max_allowed_packet = 10M（该值根据需要设定）
+
+
+
+
+*后台订单查询去掉：group by  o.user_id,o.better_product_id,o.state
+
+*set GLOBAL max_connections=1000;
+show variables like 'long%';
+show variables like 'slow%';
+
+
+*explain:显示了mysql如何使用索引来处理select语句以及连接表。可以帮助选择更好的索引和写出更优化的查询语句。
+
+*多字段唯一约束：
+ALTER TABLE 表名 
+  ADD CONSTRAINT 约束名 UNIQUE (字段1, 字段2，字段3); 
+  GO
+比如user_id,be_id,state同时约束。
+
+删除约束：
+alter table tbl_order drop index unique_pack;
+
+alter table tbl_order add constraint unique_pack unique (user_code,packages_name,failure_time,state,vendorCode);
+alter table tbl_order add constraint unique_pack_terrate (user_code,packages_name,failure_time,state,vendorCode,vendorTerCode)
+
+*修改字段的长度：
+alter table 表名 modify column 字段 类型;
+例：alter table tbl_user_visit modify column ip varchar(1000);
+
+*查询长度：length(字段名)
+
+*退订的订单：
+SELECT * FROM (select o.id,o.user_id,u.user_code,b.name,o.order_time,o.failure_time,o.state from tbl_orderforbetter o,tbl_operator_user u,tbl_better_product b where o.state=0 and o.user_id=u.id and o.better_product_id=b.id) TT 
+INTO OUTFILE 'd:/orderforbetter12.txt';
+
+*查询重复的订单：
+SELECT user_id,count(better_product_id),better_product_id from tbl_orderforbetter
+WHERE state=1
+GROUP BY user_id,better_product_id
+HAVING count(better_product_id)>1;
+
+
+SELECT user_id,count(packages_id),packages_id,state from tbl_order
+GROUP BY user_id,packages_id,failure_time,state
+HAVING count(packages_id)>1;
+
+*将查询结果导出到文件:
+
+续包月用户：
+SELECT * FROM (select o.id,o.order_source,o.user_id,b.name,o.order_time,
+o.failure_time,o.state from tbl_orderforbetter o,tbl_better_product b where b.id=o.better_product_id and o.order_time like "2014-03%" and o.state=1 and o.user_id not in (select user_id from tbl_orderforbetter where failure_time like "2014-04%" and state=0)) TT 
+INTO OUTFILE 'd:/continueforbetter.txt';
+
+SELECT * FROM (select user_id from tbl_orderforbetter where order_time not like "2014-04%" and state=1 and user_id not in (select user_id from tbl_orderforbetter where failure_time like "2014-04%" and state=0)) TT 
+INTO OUTFILE 'd:/continueforbetter2.txt';
+
+组合包订购量：
+SELECT * FROM (
+select o.id,o.order_source,o.user_id,b.name,o.order_time,
+o.failure_time,o.state from tbl_orderforbetter o,tbl_better_product b where b.id=o.better_product_id
+) TT 
+INTO OUTFILE 'd:/orderforbetter.txt';
+
+SELECT * FROM (
+select o.order_source,ou.user_code,b.name,o.order_type,o.price,o.order_time,
+o.failure_time,o.state from tbl_orderforbetter o,tbl_better_product b,tbl_operator_user ou where b.id=o.better_product_id and o.user_id=ou.id and o.order_time >"2014-08-20 00:00:00" and o.order_time < "2014-09-30 00:00:00" and o.state=1
+) TT 
+INTO OUTFILE '/home/orderforbetter10.txt';
+
+SELECT * FROM (
+select o.order_source,ou.user_code,b.name,o.order_type,o.price,o.order_time,
+o.failure_time,o.state from tbl_orderforbetter o,tbl_better_product b,tbl_operator_user ou where b.id=o.better_product_id and o.user_id=ou.id and o.failure_time >"2014-08-20 00:00:00" and o.failure_time < "2014-09-30 00:00:00" 
+) TT 
+INTO OUTFILE '/home/stoporderforbetter10.txt';
+
+
+产品包点击：
+SELECT * FROM (
+select p.name,ps.PVamount as PV,ps.UVamount as UV,ps.created_date as 创建日期 from tbl_packages p,tbl_packages_click_stat ps where ps.packages_id=p.id
+) TT 
+INTO OUTFILE 'd:/packages_click_stat.txt';
+
+页面：
+SELECT * FROM (
+select es.id,p.page_name as PageName,es.PVamount as PV,es.UVamount as UV,es.created_date as 创建日期 from tbl_page_stat es,tbl_page p where es.page_id=p.id
+) TT 
+INTO OUTFILE 'd:/enter_stat.txt';
+
+观看记录：
+select wr.id,wr.user_id,pg.name,pd.name,cs.name,wr.watch_time into outfile 'd:/watch_record.txt' from tbl_watch_record wr,tbl_packages pg,tbl_product pd,tbl_course cs where wr.package_id=pg.id and wr.product_id=pd.id and wr.course_id=cs.id and  wr.id>39408;
+
+*去掉空格：
+update tbl_course set totalTime=replace(totalTime," ","");
+update tbl_better_product set service_code_discount_yearly=replace(service_code_discount_yearly," ","");
+
+update tbl_better_product set service_code=replace(service_code," ","");
+
+
+update tbl_order set packages_name=replace(packages_name," ","");
+update tbl_packages set name=replace=(name," ","");
+update tbl_packages set name="小学奥数一年级" where id=884;
+update tbl_packages set name="小学奥数二年级" where id=885;
+
+*修改字段中的某个字：
+update tbl_course set name=replace(name,"旁","") where id>11636;
+
+*非标准编码清空
+update tbl_course set content_hd_id =null where content_hd_id not like "YFJY%";( not like "252139%";)
+
+*模糊查询(以YFJY开头的，匹配结尾是"%yf"，匹配所有"%雷锋%")
+select count(*) from tbl_course where content_hd_id like "YFJY%";
+
+*两表(多表)关联update
+update tbl_course a1 inner join tbl_course111 a2
+set a1.content_hd_id=a2.content_hd_id
+where a2.code=a1.code;
+
+例：update tbl_product p inner join 	   tbl_packages_product pp
+           set p.name="婴幼儿画报",
+               pp.seq=2
+           where p.id=pp.product_id and p.id=1267;
+
+
+做天津广电时遇到的：（2014.01.13）
+
+*去重查询（都是唯一值）：
+select distinct(background_order_url) from tbl_packages;
+
+*两表(多表)关联update （被修改值由另一个表运算而来）
+update tbl_course c
+set c.totalTime=(select b.totalTime from tbl_course_bak b 
+where b.code=c.code )  
+where exists(select 1 from tbl_course_bak b where b.code=c.code);
+
+*某字段字符串拼接：|concat()|
+update tbl_better_product set price_year_accode=concat(service_code,'OFFLINE');
+
+*同一个表中，将一个字段的值中加入另一个字段中的字符串
+mysql>update table set 字段1=字段2;
+
+mysql> update tbl_course_bak set icon_url=replace(icon_url,'HAHAHA',code);(将icon_url里的HAHAHA换成code字段里的值)
+
+Query OK, 464 rows affected
+Rows matched: 464  Changed: 464  Warnings: 0
+
+mysql> update tbl_course_bak set icon_url=replace(icon_url,'-hd','-');
+
+Query OK, 464 rows affected
+Rows matched: 464  Changed: 464  Warnings: 0
+
+
+*在B表中，将A，B两表中相同的数据删除
+delete from kcb_b where (kch) in (select kch from kcb);
+*将B表中A表没有的，插入A表（用下面语句，两表结构要相同）
+insert into kcb_b(kch,kcm) select kch,kcm from kcb;
+
+
+
+网上搜的：
+
+下面给大家说下比较好的方法
+      web开发中，我们经常需要将一个表的数据插入到另外一个表，有时还需要指定导入字段，设置只需要导入目标表中不存在的记录，虽然这些都可以在程序中拆分成简单sql来实现，但是用一个sql的话，会节省大量代码。下面我以mysql数据库为例分情况一一说明：
+1.如果2张表的字段一致，并且希望插入全部数据，可以用这种方法：
+     INSERT INTO 目标表 SELECT * FROM 来源表;
+    insert into insertTest select * from insertTest2;
+ 
+2.如果只希望导入指定字段，可以用这种方法：
+INSERT INTO 目标表 (字段1, 字段2, ...) SELECT 字段1, 字段2, ... FROM 来源表;(这里的话字段必须保持一致)
+   insert into insertTest2(id) select id from insertTest2;
+ 
+3.如果您需要只导入目标表中不存在的记录，可以使用这种方法：
+　　
+INSERT INTO 目标表  
+ (字段1, 字段2, ...)  
+ SELECT 字段1, 字段2, ...  
+ FROM 来源表  
+ WHERE not exists (select * from 目标表  
+ where 目标表.比较字段 = 来源表.比较字段); 
+ 
+ 1>.插入多条记录：
+insert into insertTest2
+(id,name)
+select id,name
+from insertTest
+where not exists (select * from insertTest2
+where insertTest2.id=insertTest.id);
+ 
+ 2>.插入一条记录：
+insert into insertTest    
+(id, name)    
+SELECT 100, 'liudehua'    
+FROM dual    
+WHERE not exists (select * from insertTest    
+where insertTest.id = 100);

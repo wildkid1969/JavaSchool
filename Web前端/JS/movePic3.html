@@ -1,0 +1,93 @@
+<html> 
+ <head>
+    <title></title>
+    <script type="text/javascript">
+        function forrestRun() {
+            var obj1 = document.getElementById('mydiv1');
+			var obj2 = document.getElementById('mydiv2');
+			var obj3 = document.getElementById('mydiv3');
+			var obj4 = document.getElementById('mydiv4');
+            var x1 = obj1.offsetLeft;
+			var x2 = obj2.offsetLeft;
+			var x3 = obj3.offsetLeft;
+			var x4 = obj4.offsetLeft;
+			if(x1>100){
+			  x1 -= 25;
+			  x2 -= 27;
+			  x3 -= 21;
+			  x4 -= 24;
+			  obj1.style.left = x1;
+			  obj2.style.left = x2;
+			  obj3.style.left = x3;
+			  obj4.style.left = x4;
+			}else{
+			  window.location.href="www.baidu.com";
+			}
+            
+        }
+		 var timer = null;
+     function show()
+     {
+		 clearInterval(timer);   
+    timer = setInterval(function(){ var obj1 = document.getElementById('mydiv1');
+			var obj2 = document.getElementById('mydiv2');
+			var obj3 = document.getElementById('mydiv3');
+			var obj4 = document.getElementById('mydiv4');
+            var x1 = obj1.offsetLeft;
+			var x2 = obj2.offsetLeft;
+			var x3 = obj3.offsetLeft;
+			var x4 = obj4.offsetLeft;
+			if(x1>100){
+			  x1 -= 5;
+			  x2 -= 4;
+			  x3 -= 6;
+			  x4 -= 5;
+			  obj1.style.left = x1;
+			  obj2.style.left = x2;
+			  obj3.style.left = x3;
+			  obj4.style.left = x4;
+			}else{
+			  window.location.href="www.baidu.com";
+			}},100);
+     }
+    </script>
+    <style type="text/css">
+        
+    .class1
+    {
+        width:100px;
+        height:100px;
+        background-color:Blue;
+        position:absolute; left:600px; top:100px;
+    }
+	.class2
+    {
+        width:100px;
+        height:100px;
+        background-color:Red;
+        position:absolute; left:600px; top:210px;
+    }
+	.class3
+    {
+        width:100px;
+        height:100px;
+        background-color:Green;
+        position:absolute; left:600px; top:320px;
+    }
+	.class4
+    {
+        width:100px;
+        height:100px;
+        background-color:Purple;
+        position:absolute; left:600px; top:430px;
+    }
+    </style>
+</head>
+<body>
+<div id="mydiv1" class="class1" ></div>
+<div id="mydiv2" class="class2" ></div>
+<div id="mydiv3" class="class3" ></div>
+<div id="mydiv4" class="class4" ></div>
+<input type="button" value="µãÎÒ" onclick="show();" />
+</body>
+</html>

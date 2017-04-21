@@ -1,0 +1,57 @@
+详解Java中解析XML的四种方法
+
+2012年12月14日10:32 来源：51CTO 作者：cnlw1985 编辑：王晓东 我要评论(0)
+标签： Java
+
+        【IT168 技术】XML现在已经成为一种通用的数据交换格式,它的平台无关性,语言无关性,系统无关性,给数据集成与交互带来了极大的方便。对于XML本身的语法知识与技术细节,需要阅读相关的技术文献,这里面包括的内容有DOM(Document Object Model),DTD(Document Type Definition),SAX(Simple API for XML),XSD(Xml Schema Definition),XSLT(Extensible Stylesheet Language Transformations。
+
+
+package com.alisoft.facepay.framework.bean;
+/**
+*
+* @author hongliang.dinghl
+* 定义XML文档建立与解析的接口
+*/
+public interface XmlDocument {
+/**
+* 建立XML文档
+* @param fileName 文件全路径名称
+*/
+public void createXml(String fileName);
+/**
+* 解析XML文档
+* @param fileName 文件全路径名称
+*/
+public void parserXml(String fileName);
+}
+
+
+
+　　XML在不同的语言里解析方式都是一样的,只不过实现的语法不同而已。基本的解析方式有两种,一种叫SAX，另一种叫DOM。SAX是基于事件流的解析,DOM是基于XML文档树结构的解析。假设我们XML的内容和结构如下:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<employees>
+<employee>
+<name>ddviplinux</name>
+<sex>m</sex>
+<age>30</age>
+</employee>
+</employees>
+
+　　1.DOM生成和解析XML文档
+
+　　为XML文档的已解析版本定义了一组接口。解析器读入整个文档，然后构建一个驻留内存的树结构，然后代码就可以使用 DOM 接口来操作这个树结构。优点：整个文档树在内存中，便于操作;支持删除、修改、重新排列等多种功能;缺点：将整个文档调入内存(包括无用的节点)，浪费时间和空间;使用场合：一旦解析了文档还需多次访问这些数据;硬件资源充足(内存、CPU)。
+
+　　2.SAX生成和解析XML文档
+
+　　为解决DOM的问题，出现了SAX。SAX ，事件驱动。当解析器发现元素开始、元素结束、文本、文档的开始或结束等时，发送事件，程序员编写响应这些事件的代码，保存数据。优点：不用事先调入整个文档，占用资源少;SAX解析器代码比DOM解析器代码小，适于Applet，下载。缺点：不是持久的;事件过后，若没保存数据，那么数据就丢了;无状态性;从事件中只能得到文本，但不知该文本属于哪个元素;使用场合：Applet;只需XML文档的少量内容，很少回头访问;占内存少。
+
+　　3.DOM4J生成和解析XML文档
+
+　　DOM4J 是一个非常非常优秀的Java XML API，具有性能优异、功能强大和极端易用使用的特点，同时它也是一个开放源代码的软件。如今你可以看到越来越多的 Java 软件都在使用 DOM4J 来读写 XML，特别值得一提的是连 Sun 的 JAXM 也在用 DOM4J。
+
+　　4.JDOM生成和解析XML
+
+　　为减少DOM、SAX的编码量，出现了JDOM;优点：20-80原则，极大减少了代码量。使用场合：要实现的功能简单，如解析、创建等，但在底层，JDOM还是使用SAX(最常用)、DOM、Xanan文档。
+
+

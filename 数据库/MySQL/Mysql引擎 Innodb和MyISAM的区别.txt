@@ -1,0 +1,6 @@
+MySQL数据库分为Innodb和Myisam两类。两者最主要的区别是：Innodb支持事务处理、外键和行级锁.而MyISAM不支持，所以如果CUD比较频繁或要求事务一致性的，使用Innodb比较好，反之使用Myisam比较好。具体区别如下：
+1、索引：MyISAM的索引和数据是分开的，并且索引是有压缩的，而Innodb是索引和数据放在一起，且没有使用压缩，因而Innodb比MyISAM体积更大。MyISAM每张表都包括三种文件：表定义文件（.frm）、数据文件（.myd)和索引文件（.myi)，而Innodb通常许多表保存在同一个文件中。此外，如果表数据非常大，通常也使用MyISAM。
+2、InnoDB不支持FULLTEXT类型的索引。
+3、对于AUTO_INCREMENT类型的字段，InnoDB中必须单独建索引，而在MyISAM中可以和其他字段一起建立联合索引。
+4、没有where的SELECT COUNT(*)：MyISAM始终保留一张表的行数，因此这条语句几乎瞬间就可以执行完，而Innodb会一行行的累加。
+5、锁：MyISAM表锁，Innodb行锁

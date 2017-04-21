@@ -1,0 +1,26 @@
+1.直接把项目复制到Tomcat安装目录的webapps目录中，这是最简单的一种Tomcat项目部署的方法，也是初学者最常用的方法。
+
+2.在tomcat安装目录中有一个conf文件夹，打开此文件夹，其中包含配置文件server.xml，打开配置文件，并在<host>和</host>之间插入如下语句。
+
+<Context    path="/hello"   docBase="F:\eclipse3.2\workspace\hello\WebRoot"     debug="0"    privileged="true">      </Context>
+
+其中，docBase为设置项目的路径。
+
+3.在conf目录中，在Catalina\localhost（此处需要注意目录的大小写）目录下新建一个XML文件，任意命名，只要和当前文件中的文件名不重复即可，代码如下。
+
+<Context    path="/hello"   docBase="D:\eclipse3.2\workspace\hello\WebRoot"     debug="0"    privileged="true">      </Context>
+
+第三种方法相对来说比较灵活，并且可以设置别名。
+
+
+
+第一种方法：在tomcat中的conf目录中，在server.xml中的，<host/>节点中添加：
+<Context path="/hello" docBase="D:\eclipse3.2.2forwebtools\workspace\hello\WebRoot" debug="0" privileged="true">
+</Context> 
+至于Context 节点属性，可详细见相关文档。
+
+第二种方法：将web项目文件件拷贝到webapps 目录中。
+
+第三种方法：很灵活，在conf目录中，新建 Catalina（注意大小写）＼localhost目录，在该目录中新建一个xml文件，名字可以随意取，只要和当前文件中的文件名不重复就行了，该xml文件的内容为：
+<Context path="/hello" docBase="D:\eclipse3.2.2forwebtools\workspace\hello\WebRoot" debug="0" privileged="true">
+</Context> 

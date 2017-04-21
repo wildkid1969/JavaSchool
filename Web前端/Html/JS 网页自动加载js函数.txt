@@ -1,0 +1,42 @@
+JS 网页自动加载js函数(转)  
+
+1:body 的onload的方法
+
+<body onLoad="clockon(bgclock)">
+
+2:window.onload方法
+
+<script defer>
+
+window.onload=function(){
+//alert('window'); 进入界面就加载该函数
+randomPic(80,30);
+}
+</script>
+
+3.内置js
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>无标题文档</title>
+<script type="text/javascript">    
+function countDown(secs,surl){    
+ //alert(surl);    
+ var jumpTo = document.getElementById('jumpTo');
+ jumpTo.innerHTML=secs; 
+ if(--secs>0){    
+     setTimeout("countDown("+secs+",'"+surl+"')",1000);    
+     }    
+ else{      
+     location.href=surl;    
+     }    
+ }    
+</script>
+</head>
+
+<body><span id="jumpTo">5</span>秒后自动跳转到http://www.baidu.com/
+<script type="text/javascript">countDown(5,'http://www.baidu.com/');</script> 
+</body>
+</html>
+
+4.页面定时刷新元标识(Meta Refresh Tag)。只能放在HTML代码的<HEAD>区里。
+<meta http-equiv="refresh" content="5" url=http://www.siviy.com/webnews/">

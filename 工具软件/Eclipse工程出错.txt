@@ -1,0 +1,5 @@
+1.@overide：must override a superclass method
+
+用eclipse定位系统打开Eclipse->选择菜单项，然后在对话框中选择java和编译器。
+现在，它可能显示的编译器的版本仍然是1.6，你已经发现了这个问题。所以现在选择"Configure Project Specific Settings..."链接，然后你将看到你的工程变成了1.5，现在把它改变到1.6,。你需要给所有的受影响的工程这样做。
+这种像迷宫一样的菜单/对话界面是Eclipse典型的糟糕的UI设计。

@@ -1,0 +1,41 @@
+新建一个表空间，并把它分配给一个用户就可以了。
+确定楼主是以管理员身份登录的：
+1.首先，创建（新）用户：
+    create user username identified by password;
+    username：新用户名的用户名
+    password: 新用户的密码
+也可以不创建新用户，而仍然用以前的用户，如：继续利用scott用户
+
+2.创建表空间：
+    create tablespace tablespacename datafile 'd:\data.dbf' size xxxm;
+    tablespacename：表空间的名字
+    d:\data.dbf'：表空间的存储位置
+    xxx表空间的大小，m单位为兆(M)
+3.将空间分配给用户：
+   alert user username default tablespace tablespacename;
+   将名字为tablespacename的表空间分配给username 
+
+4.给用户授权：
+   grant create session,create table,unlimited tablespace to username;
+
+5.然后再以楼主自己创建的用户登录，登录之后创建表即可。
+conn username/password;
+
+
+oracle中的表空间(tablespace)、方案(schema)、段(segment)、区(extent)、块(block)
+
+  oracle中存储的层次结构总结如下：
+一、数据库由一个或多个表空间组成
+二、表空间由一个或多个数据文件组成，一个表空间包含多个段
+三、段由一个或多个区组成
+四、区是数据文件中一个连续的分配空间，由一个或多个块组成
+五、块是数据库中最小、最基本的单位，是数据库使用的最小的I/O单元
+六、每个用户都有一个对应的方案
+
+ 
+
+1. service name 服务名（其实就是：数据库名），装 ORACLE 时肯定要指定的一个名字
+2. tablespace 表空间，数据库对象的磁盘存储位置
+3. schema 方案，数据库对象的逻辑分类
+4. user 用户，等同于 schema
+5. service name > tablespace > schema(user)

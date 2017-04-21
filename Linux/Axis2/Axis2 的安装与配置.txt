@@ -1,0 +1,31 @@
+Axis2 的安装
+Axis2 的下载地址
+http://axis.apache.org/axis2/java/core/download.cgi
+axis2-1.6.2-bin.zip 服务器
+axis2-1.6.2-war.zip 服务器部署包
+
+环境变量配置：
+
+变量名：AXIS2_HOME
+变量值：D:\Program Files\axis2-1.6.2
+
+在系统变量名PATH加入
+变量值 %AXIS2_HOME%\bin
+
+修改AXIS2服务器端口
+在D:\Program Files\axis2_1.6.2\conf目录下axis2.xml
+修改port=“8080” (8080是端口号)
+
+单独启动服务器
+运行cmd输入
+axis2server
+显示 
+在浏览器输入：http://localhost:8060/axis2/services/ （我用的端口8060，避免和tomcat 8080端口冲突）
+如果安装出现JAVA_HOME路径不正确，按照下面设置：
+JAVA_HOME路径设置
+变量名：JAVA_HOME
+变量值：C:\Program Files\Java\jdk1.6.0_30
+在系统变量加入
+变量值：%JAVA_HOME%/bin
+在Tomcat中部署axis2-1.6.2-war.zip
+解压缩文件 axis2-1.6.2-war.zip 把 axis2.war 复制到 Tomcat 的 webapps目录

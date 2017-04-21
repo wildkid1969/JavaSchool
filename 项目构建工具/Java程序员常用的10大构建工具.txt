@@ -1,0 +1,18 @@
+最近我又做了一个Java调查，询问了很多开发人员关于他们在过去12个月间使用了哪些工具/框架。
+受访者可以从预定义的选择列表中选择多个选项，也可以选择Other，然后提供他们自己的选项。在这篇文章中，我们将讨论120名开发人员关于构建工具这个话题的回应。
+
+构建工具——调查结果
+Apache Maven  ——主要用于构建Java项目的自动化工具。
+Hudson ——用Java编写的持续集成（CI）工具。
+Jenkins ——用Java编写的一个开源持续集成工具。项目是在和Oracle发生争执后的来自于Hudson 的分支。
+Gradle ——一个开源的自动化构建系统，建立在Apache Ant和Maven Apache概念的基础上，并引入了基于Groovy的特定领域语言（DSL），而不是使用Apache Maven宣布的项目配置XML形式。
+Apache Ant ——用于自动化软件构建过程的软件工具，源于2000年初的的Apache Tomcat项目。
+SBT ——用于Scala和Java项目的开源构建工具，类似于Java的Maven和Ant。
+Atlassian Bamboo ——持续集成和交付工具，它将自动化构建、测试和发布捆绑到单个流程中。
+TeamCity ——来自于JetBrains的一个基于Java构建的管理和持续集成服务器。
+Grape ——嵌入到Groovy的JAR依赖项管理器。
+Ivy ——Apache Ant项目的一个子项目，一个可传递的依赖项管理器。
+Leiningen ——一个自动化构建和依赖性管理工具，用于使用Clojure编程语言写的软件项目。
+     
+译文链接：http://www.codeceo.com/article/10-build-tools-java-programmer.html
+英文原文：What Build Tools are Java Programmers Using?

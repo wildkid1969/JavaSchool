@@ -1,0 +1,30 @@
+truts2中的相对路径与绝对路径  
+
+2010-08-17 14:31:18|  分类： 默认分类 
+|字号
+ 订阅
+
+
+JSP页面中的action 
+
+通常相对路径的写法有两种，一种就是以“/”开头，一种就是不以“/”开头，这两种写法有什么区别： 
+URL基本是以http://localhost/Struts开头，现在做如下测试： 
+1．在Struts目录下面有一个文件叫sayHello.jsp，它里面的form的action的值是HelloWorld.action，那么提交之后匹配的路径是http://localhost/Struts/HelloWorld.action。 
+2．如果action的值是test/HelloWorld.action，那么提交之后匹配的路径是http://localhost/Struts/test/HelloWorld.action。 
+3．假设在Struts目录下面有一个子目录add，它里面有一个文件叫sayHello.jsp，它里面的form的action的值是 HelloWorld.action，那么提交之后匹配的路径是http://localhost/Struts/add /HelloWorld.action。 
+4．在测试3下将action的值改为test/HelloWorld.action，那么提交之后匹配的路径是http://localhost/Struts/add/test/HelloWorld.action。 
+5．在测试3下将action的值改为/HelloWorld.action，那么提交之后匹配的路径是http://localhost/Struts/HelloWorld.action。 
+6．在测试3下将action的值改为/test/HelloWorld.action，那么提交之后匹配的路径是http://localhost/Struts/test/HelloWorld.action。 
+总结：在页面文件中，所请求的相对路径为path，那么它的路径匹配是从文件当前所在的目录开始的，假设页面文件当前所在目录为 currentPath，那么匹配后的完整路径就是http://localhost/Sturts/currentPath/path；如果相对路径为 /path，那么匹配后的路径就是http://localhost/Sturts/path。也就是说，如果以“/”开头，就从当前应用的根目录开始匹 配，如果不以“/”开头就从当前文件所在的目录开始匹配。这样的话，如果文件本来就在根目录下面，那么加“/”和不加“/”就没啥区别。 
+
+struts.xml中的action 
+
+在Struts2还一个要匹配路径的地方就是在处理完请求之后对页面进行分发的时候，也就是result元素里面的内容。测试记录如下： 
+1.<result>/HelloWorld.jsp</result>匹配的路径是http://localhost/Struts/HelloWorld.jsp。 
+2.<result>HelloWorld.jsp</result>这个时候就和调用这个action的路径相关了, 可以这样进行匹配,首先得到请求这个action的url,然后去掉最后一个“/”后面的内容，再把HelloWorld.jsp接上去，我们是通过 http://localhost/Struts/aa/bb/cc/HelloWorld.action调用的action，那么匹配出来的url就是 http://localhost/Struts/aa/bb/cc/HelloWorld.jsp。 
+我的总结：如果加上“/“的话，就在项目的路径下，比如： 
+开始：http://localhost/Struts2/struts2/HelloWorld.jsp为当前路径， 
+若action为“/hello“，返回http://localhost/Struts2/hello.action； 
+若action为“hello“，返回http://localhost/Struts2/struts2/hello.action。 
+也就是加上斜线，就会到最开始项目名下的路径，不加斜线的话，会根据当前的路径决定。 
+result的配置与上面一样的。

@@ -1,0 +1,148 @@
+ 阅读次数: 53次 发布时间: 2011-11-21 12:03:50发布人: pengzl
+
+
+来源: 网络转载
+
+简单创建动态代理的步骤：
+ 
+1.创建一个实现类（动态代理类）实现接口InvocationHandler，并且他必须实现invoke方法。
+2.创建被代理的类以及接口。
+3.通过Proxy的静态方法
+Proxy.newProxyInstance(ClassLoader loader, Class[]interfaces, InvocationHandler handler)创建一个代理。
+此方法返回一个对象，需要将返回对象转换为被代理类的接口。
+4.通过代理调用方法。
+ 
+下面是创建一个完整动态代理类过程：
+ 
+1.创建Subject接口里面方法为无参的request方法  创建真正的RealSubject类并实现request方法，再次省略以上描述代码。
+2.创建一个动态代理类并实现InvocationHandler比实现起方法。
+
+1. import java.lang.reflect.InvocationHandler; 
+2. import java.lang.reflect.Method; 
+3.  
+4. /**
+5.  * 实现动态代理必须要实现IvocationHandler接口 
+6.  * 
+7.  * 调用subject对象的方法并传递的是args参数,由于实际代理的类RealSubject的request方法里面没有参数,故而args为空
+8.  * 如果有参数，系统将会生成一个Object类型的数组，来代表request方法里的参数   
+9.  * method.invoke(subject, args)实际就是调用被代理类的将要执行的方法。
+10.  * @author Jeelon
+11.  *
+12.  */ 
+13. public class DynamicProxySubject implements InvocationHandler { 
+14.     private Object subject; 
+15.      
+16.     public DynamicProxySubject(Object object){ 
+17.         this.subject = object; 
+18.     } 
+19.     @Override 
+20.     public Object invoke(Object proxy, Method method, Object[] args) 
+21.             throws Throwable { 
+22.          
+23.         System.out.println("before calling :" + method); 
+24.          
+25.          
+26.         method.invoke(subject, args); 
+27.          
+28.         System.out.println("after calling :" + method); 
+29.          
+30.         return null; 
+31.     } 
+32.  
+33. }  
+ 
+3.客户端生成动态代理并获得动态生成的类 且调用其方法
+ 
+1. import java.lang.reflect.InvocationHandler; 
+2. import java.lang.reflect.Proxy; 
+3.  
+4. public class Client { 
+5.     public static void main(String[] args) { 
+6.          
+7.         RealSubject realSubject = new RealSubject(); 
+8.         InvocationHandler dynamicProxySubject = new DynamicProxySubject(realSubject); 
+9.          
+10.         //下面的代码一次性生成代理  
+11.         Class<?> classType = dynamicProxySubject.getClass(); 
+12.         Subject subject = (Subject)Proxy.newProxyInstance(classType.getClassLoader(), realSubject.getClass                      ().getInterfaces(), dynamicProxySubject); 
+13.          
+14.         //调用Subject的方法  
+15.         subject.request(); 
+16.     } 
+17. }  
+ 
+第二个例子：在一个类中完成（代理Vector）
+ 
+1. public class VectorProxy implements InvocationHandler { 
+2.     private Object proxyObject; 
+3.  
+4.     public VectorProxy(Object object) { 
+5.         this.proxyObject = object; 
+6.     } 
+7.  
+8.     public static Object factory(Object obj) { 
+9.  
+10.         return Proxy.newProxyInstance(obj.getClass().getClassLoader(), 
+11.                 obj.getClass().getInterfaces(), new VectorProxy(obj)); 
+12.     } 
+13.  
+14.     @Override 
+15.     public Object invoke(Object proxy, Method method, Object[] args) 
+16.             throws Throwable { 
+17.  
+18.         System.out.println("before calling:" + method); 
+19.  
+20.         Object object = method.invoke(proxyObject, args); 
+21.  
+22.         if (null != args) { 
+23.             for (Object obj : args) { 
+24.                 System.out.println(obj); 
+25.             } 
+26.         } 
+27.         System.out.println("after calling:" + method); 
+28.  
+29.         return object; 
+30.     } 
+31.  
+32.     public static void main(String[] args) { 
+33.         @SuppressWarnings("unchecked") 
+34.         List<String> vector = (List<String>) factory(new Vector<String>()); 
+35.         vector.add("Jeelon"); 
+36.         vector.add("Merry"); 
+37.         vector.add("Jerry"); 
+38.          
+39.         System.out.println(vector); 
+40.          
+41.         vector.remove(0); 
+42.     } 
+43. }  
+ 
+解析：
+ 
+1.    Proxy即动态代理类；
+2.    Static Object newProxyInstance(ClassLoader loader, Class[] interfaces, InvocationHandler h)：返回代理类的一个实例，返回后的代理类可以当作被代理类使用；
+
+它有三个参数：
+ClassLoader loader   ----指定被代理对象的类加载器
+Class[] Interfaces   ----指定被代理对象所以事项的接口
+InvocationHandler h ----指定需要调用的InvocationHandler对象
+3.    实现InVocationHandler接口的LogHandler_old对象
+这个对象的invoke()方法就是Proxy这个动态代理类所代理的接口类的抽象方法的真实实现；
+它有三个参数：
+Object proxy         -----代理类对象
+Method method        -----被代理对象的方法（这里不是接口的抽象方法了，是具体的实现类中的方法）
+Object[] args        -----该方法的参数数组
+ 
+JDK中具体的动态代理类是怎么产生的呢？
+ 
+1.产生代理类$Proxy0类
+执行了Proxy.newProxyInstance(ClassLoader loader, Class[] interfaces, InvocationHandler h)
+将产生$Proxy0类，它继承Proxy对象，并根据第二个参数，实现了被代理类的所有接口，自然就可以生成接口要实现的所有方法了（这时候会重写hashcode，toString和equals三个方法），但是还没有具体的实现体；
+2.   将代理类$Proxy0类加载到JVM中
+这时候是根据Proxy.newProxyInstance(ClassLoader loader, Class[] interfaces, InvocationHandler h)它的第一个参数----就是被代理类的类加载器，把当前的代理类加载到JVM中
+3.   创建代理类$Proxy0类的对象
+调用的$Proxy0类的$Proxy0（InvocationHandler）构造函数，生成$Proxy0类的对象
+参数就是Proxy.newProxyInstance(ClassLoader loader, Class[] interfaces, InvocationHandler h)它的第三个参数
+这个参数就是我们自己实现的InvocationHandler对象，我们知道InvocationHandler对象中组合加入了代理类代理的接口类的实现类；所以，$Proxy0对象调用所有要实现的接口的方法，都会调用InvocationHandler对象的invoke（）方法实现；
+4.   生成代理类的class byte
+动态代理生成的都是二进制class字节码

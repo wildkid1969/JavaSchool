@@ -1,0 +1,17 @@
+1.禁用页面缩放：
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+
+2.XSS过滤
+	function stripscript(s) {       
+		s = s.replace(new RegExp("<","gm"), "&lt;").replace(new RegExp(">","gm"), "&gt;");
+		s = s.replace(new RegExp("\\(","gm"), "&#40;").replace(new RegExp("\\)","gm"), "&#40;");
+		s = s.replace(new RegExp("'","gm"), "&#39;");
+		s = s.replace(new RegExp("\\u003","gm"), "&lt;");
+		s = s.replace(new RegExp("eval\\((.*)\\)","gm"), "");
+		s = s.replace(new RegExp("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']","gm"), "\"\"");
+		s = s.replace(new RegExp("script","gm"), "");
+		return s;
+			
+	}
+
+	key = stripscript(key);

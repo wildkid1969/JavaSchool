@@ -1,0 +1,219 @@
+一、用自己的话简要阐述struts2的执行流程。
+
+Struts 2框架本身大致可以分为3个部分：核心控制器FilterDispatcher、业务控制器Action和用户实现的企业业务逻辑组件。核心控制器FilterDispatcher是Struts 2框架的基础，包含了框架内部的控制流程和处理机制。业务控制器Action和业务逻辑组件是需要用户来自己实现的。用户在开发Action和业务逻辑组件的同时，还需要编写相关的配置文件，供核心控制器FilterDispatcher来使用。 Struts 2的工作流程相对于Struts 1要简单，与WebWork框架基本相同，所以说Struts 2是WebWork的升级版本。基本简要流程如下：1、客户端浏览器发出HTTP请求。2、根据web.xml配置，该请求被FilterDispatcher接收。3、根据struts.xml配置，找到需要调用的Action类和方法， 并通过IoC方式，将值注入给Aciton。4、Action调用业务逻辑组件处理业务逻辑，这一步包含表单验证。5、Action执行完毕，根据struts.xml中的配置找到对应的返回结果result，并跳转到相应页面。6、返回HTTP响应到客户端浏览器。
+
+二、struts的工作原理：
+
+1、初始化，读取struts-config.xml、web.xml等配置文件（所有配置文件的初始化）
+2、发送HTTP请求,客户端发送以.do结尾的请求
+3、填充FormBean（实例化、复位、填充数据、校验、保存）
+4、将请求转发到Action（调用Action的execute（）方法）
+5、处理业务（可以调用后台类，返回ActionForward对象）
+6、返回目标响应对象（从Action返回到ActionServlet）
+7、转换Http请求到目标响应对象（查找响应，根据返回的Forward keyword）
+8、Http响应，返回到Jsp页面
+
+三、说下Struts的设计模式：
+
+MVC模式: web应用程序启动时就会加载并初始化ActionServler。用户提交表单时，一个配置好的ActionForm对象被创建，并被填入表单相应的数 据，ActionServler根据Struts-config.xml文件配置好的设置决定是否需要表单验证，如果需要就调用ActionForm的 Validate（）验证后选择将请求发送到哪个Action，如果Action不存在，ActionServlet会先创建这个对象，然后调用 Action的execute（）方法。Execute（）从ActionForm对象中获取数据，完成业务逻辑，返回一个ActionForward对 象，ActionServlet再把客户请求转发给ActionForward对象指定的jsp组件，ActionForward对象指定的jsp生成动 态的网页，返回给客户。
+
+一.工作原理
+
+一个请求在Struts2框架中的处理大概分为以下几个步骤
+1 客户端初始化一个指向Servlet容器（例如Tomcat）的请求
+2 这个请求经过一系列的过滤器（Filter）（这些过滤器中有一个叫做ActionContextCleanUp的可选过滤器，这个过滤器对于Struts2和其他框架的集成很有帮助，例如：SiteMesh Plugin）
+3 接着FilterDispatcher被调用，FilterDispatcher询问ActionMapper来决定这个请是否需要调用某个Action
+4 如果ActionMapper决定需要调用某个Action，FilterDispatcher把请求的处理交给ActionProxy
+5 ActionProxy通过Configuration Manager询问框架的配置文件，找到需要调用的Action类
+6 ActionProxy创建一个ActionInvocation的实例。
+7 ActionInvocation实例使用命名模式来调用，在调用Action的过程前后，涉及到相关拦截器（Intercepter）的调用。
+8 一旦Action执行完毕，ActionInvocation负责根据struts.xml中的配置找到对应的返回结果。返回结果通常是（但不总是，也可 能是另外的一个Action链）一个需要被表示的JSP或者FreeMarker的模版。在表示的过程中可以使用Struts2 框架中继承的标签。在这个过程中需要涉及到ActionMapper
+
+基本简要流程如下：1、客户端浏览器发出HTTP请求。2、根据web.xml配置，该请求被FilterDispatcher接收。3、根据struts.xml配置，找到需要调用的Action类和方法， 并通过IoC方式，将值注入给Aciton。4、Action调用业务逻辑组件处理业务逻辑，这一步包含表单验证。5、Action执行完毕，根据struts.xml中的配置找到对应的返回结果result，并跳转到相应页面。6、返回HTTP响应到客户端浏览器。
+
+二、struts2标签分类：
+1.表单UI标签
+2.非表单UI标签
+3.控制标签
+4.数据标签
+三、为什么使用struts2？
+1.开源
+2.mvc框架
+3.纯pojo的Action
+4.更好的标签特性
+5.易测试
+6.易扩展
+
+
+Struts框架的整体运行流程
+在WEB启动时就会加载并初始化ActionServlet。ActionServlet从struts-config.xml文件中读取配置信息，把它们存放到各种配置对象中.当ActionServlet接收到一个客户请求时：
+
+　　一、检索和用户请求匹配的ActionMapping实例，如果不存在，就返回用户请求路径无效。
+
+　　二、如果ActionForm实例不存在，就创建一个ActionForm对象，把客户提交表单数据保存到ActionForm对象中。
+
+　　三、根据配置决定是否需要表单验证，如果需要验证，就调用ActionForm的validate()方法。
+
+　　四、如果ActionForm的validate()方法返回null或返回一个不包含ActionMessage的ActionError对象，就表示表单验证成功。
+
+　　五、ActionServlet根据ActionMapping实例包含的映射决定将请求转发给哪个Action。如果相应的Action实例不存在，就先创建这个实例，然后调用Action的execute()方法。
+
+　　六、Action的execute()方法返回一个ActionForward对象，ActionServlet再把客户请求转发给ActionForward对象指向的JSP组件。
+
+　　七、ActionForward对象指向的JSP组件生成动态网页，返回给客户。
+
+ 
+
+ActionServlet在Struts框架中的总体作用功能是什么
+ActionServlet是struts框架的总控制器，处理客户端请求并决定由那个action处理请求。
+
+Struts框架的后缀名一般为.do，后缀名能不能更改，如果能更改的话，如何进行更改后缀名
+后缀名可以更改。
+
+通过修改web.xml中的
+
+<servlet-mapping>
+
+<url-pattern>*.do</url-pattern>
+
+</servlet-mapping>
+
+ 
+
+ 
+
+如何在Struts-config.xml中配置数据源以及获取数据源
+在struts中配置oracle数据源需要四个包:commons.pools,commons.dbcp,Class12.jar,struts_legacy.jar,把它加到WEB-INF下的lib目录下就可以了,然后这段写在struts-config.xml文件的标签<struts-config>下:
+
+<data-sources>
+
+<data-source key=”scott” type=”org.apache.commons.dbcp.BasicDataSource”>
+
+<set-property property=”driverClassName” value=”oracle.jdbc.driver.OracleDriver” />
+
+<set-property property=”url” value=”jdbc:oracle:thin:@localhost:1521:databaseName” />
+
+<set-property property=”username” value=”scott” />
+
+<set-property property=”password” value=”tiger” />
+
+</data-source>
+
+</data-sources>
+
+Struts-config.xml文件action配置中的attribute属性和name属性有什么区别
+attribute:制定与当前Action相关联的ActionForm Bean在作用域里的名称
+
+name:指定和当前Acion关联的ActionForm Bean的名字。该名称必须在form-bean元素中定义过。
+
+Struts中的Action是不是线程安全的?如果不是有什么方式可以保证Action的线程安全?如果是，说明原因
+不是.    为了确保action的线程安全, 最好的办法就是不要在action里定义实例变量
+
+Action的Execute方法有几个参数，这几个参数的具体作用是什么
+ActionMapping mapping：Action里的配置属性信息
+
+    ActionForm form：与该Action相关联的ActionForm对象
+
+HttpServletRequest request：该Action接收到的请求信息
+
+HttpServletResponse response：该Action返回的响应信息
+
+Action的Execute方法的返回值是什么类型，有几种方式可以返回此类型
+返回值类型：ActionForward
+
+1).mapping.findForward(“Forward的名称”);
+
+2).new ActionForward(“jsp组件的路径”);
+
+ActionFrom中对于错误消息的存取是如何存取的，页面上面是如何显示ActionFrom中存放的出错消息
+ 
+
+普通的Action对于消息的存取是如何实现的，页面上面是如何显示Action中存放的消息
+普通的ActionForm和动态的ActionForm有什么区别，在动态的ActionForm中如何设定一个日期类型的属性
+动态ActionFrom是以什么方式存取表单控件的值的。要使用动态ActionForm取得一个控件的值是如何取得
+普通的Action与DispatchAction的区别是什么
+Struts框架中常用的有HTML/Bean/Logic标签，这些标签的主要功能是什么
+HTML标签中的name属性代表什么功能，为什么可以省略不写
+Struts标签中name和property两个属性的作用和区别
+请简述J2EE平台体系中标签的体系结构
+请简述自定义标签的步骤
+如何在自定义标签中获取ServletContext,HttpSession,HttpServletRequest这些JSP页面常见的对象
+Servlet2.4版本中新增加了一个标签为简单标签，要实现简单标签的话，必须实现标签中的哪一个方法，该方法有没有返回值
+Struts框架如何实现国际化的步骤
+如何实现页面中HTML标签的初始值设置
+Struts框架的综合运用开发过程中，一般会使用ActionForm和JavaBean，这两个Bean能不能通用?如果不能的话请简述原因
+如何操作Oracle表中CLOB和BLOB字段
+
+
+
+6. MVC设计模式
+答：1) MODEL: 封装了所有的商业逻辑以及规则。通常被JavaBean或EJB实现。
+    2) VIEW: 使用商业逻辑处理后的结果并构建呈现给客户端的响应。通常被JSP实现。
+    3) CONTROLLER：管理和控制所有用户和应用程序间的交互。
+通常是一个servlet接收用户的请求并把所有的输入转交给实际工作的MODEL。最后调用JSP返回输出。
+
+struts: 核心思想是MVC模式
+    1) 它将逻辑层从表现层以及控制层中清晰地分隔出来,实现组件重用;
+    2) 它允许使用三层结构，逻辑层和表现层分置于不同的服务器上，可应用不同的安全模式;
+    3) 它使一个开发团队更加的明确分工，页面设计与商业逻辑开发无缝地结合;
+    4) 控制器提高了应用程序的灵活性和可配置性.
+
+struts工作流程
+
+在web应用启动时就会加载并初始化ActionServlet,ActionServlet从struts-config.xml
+文件中读取配置信息,把它们存放到各种配置对象中.
+
+action继承org.apache.struts.action.Action类，
+实现execute方法.
+
+接收到请求：
+1.检索和用户请求匹配的ActionMapping实例,如果请求不存在,返回用户请求路径无效的信息.
+2.如果ActionForm不存在,就创建一个ActionForm对象,把客户提交的表单数据保存到ActionForm.
+3.根据配置信息决定是否需要表单验证.如果需要验证,调用ActionForm的validate()方法.
+4.如果validate()方法返回null或返回一个不包含AcionMessage的ActionErrors对象,就是验证成功.
+(不成功ActionServlet直接将请求转发给包含用户提交表单的JSP,不再创建Action对象并调用execute()).
+5.ActionServlet根据ActionMapping实例包含的映射信息决定将请求转发给哪个Action.
+如果相应的Action实例不存在,就先创建实例,然后调用Action的execute()方法.
+6.execute()方法返回一个ActionForward对象,ActionServlet再把客户请求转发给ActionForward对象
+指向的JSP.
+7.ActionForward对象指向的JSP生成动态网页,返回给用户.
+
+多个业务逻辑在同一个Action当中的实现
+
+LookupDispatchAction
+1.jsp页面
+<html:form method="post" action="adddelAction.do">
+<html:submit property="ac"><bean:message key="submit.add"/></html:submit>
+ <html:submit property="ac"><bean:message key="submit.delete"/></html:submit>
+
+ApplicationResources_zh.properties
+submit.add=Add
+submit.delete=Delete
+
+2.struts-config.xml
+<action input="/Adddel.jsp" name="adddelForm" parameter="ac" path="/adddelAction" scope="session" type="strutsdemoapp.AdddelAction" validate="true">
+      <forward name="method" path="/method.jsp" />
+    </action>
+
+3.java后台
+public class AdddelAction extends LookupDispatchAction
+public Map getKeyMethodMap() {
+    Map map = new HashMap();
+    map.put("submit.add", "add");
+    map.put("submit.delete", "delete");
+    return map;
+  }
+public ActionForward add(ActionMapping actionMapping, ActionForm actionForm,
+                           HttpServletRequest httpServletRequest,
+                           HttpServletResponse httpServletResponse) {)
+public ActionForward delete(ActionMapping actionMapping, ActionForm actionForm,
+                           HttpServletRequest httpServletRequest,
+                           HttpServletResponse httpServletResponse) {)
+
+DispatchAction
+<action input="/Adddel.jsp" name="adddelForm" parameter="method" path="/adddelAction" scope="session" type="strutsdemoapp.AdddelAction" validate="true">
+      <forward name="method" path="/method.jsp" />
+    </action>
+    </action>
+<html:link href="/adddelAction.do?method=add">add</html:link><br>
+<html:link href="/adddelAction.do?method=delete">delete</html:link> 

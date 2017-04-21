@@ -1,0 +1,41 @@
+1.环境配置：
+ java 、mvn、axis2
+
+2.本地文件设置：
+ Maven\conf\settings.xml；
+ maven仓库：D:/maven_jar；
+ 删掉pom.xml配置中的
+
+3.Eclipse配置：
+ Maven(Installations和User settings)、
+ svn、
+ Server配置（Tomcat）、
+ jdk路径
+ jre路径
+
+4.Ecliupse 切换svn用户：
+1.删除svn用户信息，位置如下：
+C:\Users\ylongedu7\AppData\Roaming\Subversion\auth\svn.simple
+2.刷新svn，登录
+
+
+windows 下 (tomcat端口占用)
+netstat -ano|findstr 8080 
+tskill 进程号 
+
+
+1.问题：eclipse 导入类 提示The import XXX cannot be resolved
+
+原因：原来使用JDK和现在使用的JDK不同造成的buildpath不对
+
+解决方法：
+
+1、右键项目-------buildpath--------最下面那个configura；
+
+2、选择libraries找到JRE；
+
+3、选中remove掉，重新为该项目选择一个JRE；
+
+4、project----clean，全部的包都找到了。
+
+ 

@@ -1,0 +1,334 @@
+1
+
+class Anthropoid    //类人猿
+{
+	private int n=100;
+	void crySpeak(String s)
+	{
+		System.out.println(s);
+	}
+}
+class People extends Anthropoid
+{
+	void computer(int a,int b)
+	{
+		int c=a*b;
+		System.out.println(c);
+	}
+	void crySpeak(String s)
+	{
+		System.out.println("**"+s+"**");
+	}
+}
+public class Monkey
+{
+	public static void main(String args[])
+	{
+		Anthropoid monkey=new People();  
+		//monkey是People对象的上转型对象
+		//monkey.computer(10,10);      //非法
+		monkey.crySpeak("我喜欢这个运动");
+		People people=(People)monkey;     
+		//把上转型对象强制转化为子类的对象
+		people.computer(10,10);
+	}
+}
+
+
+
+
+2
+class ManyArea{
+ public double area(double radius){
+   return Math.PI*radius*radius;
+   }
+  public double area(double len,double width){
+   return len*width;
+   }
+  public double area(int len,int width){
+   return len*width;
+   }
+   public double area(double len,double width,double height){
+   return len*width*height;
+   }
+  }
+ public class OverLoad{
+  public static void main(String args[]){
+    ManyArea ob=new ManyArea();
+    System.out.println("半径为3.0的圆的面积："+ob.area(3.0));
+    System.out.println("长2.0、宽3.0的面积："+ob.area(2.0,3.0));
+    System.out.println("长2、宽3的面积："+ob.area(2,3));
+    System.out.println("立方体的面积："+ob.area(2.0,3.0,4.0));
+    }
+	}
+	
+	
+	
+3
+class Animal 
+{
+	public void shout() 
+	{
+
+	}
+}
+class Dog extends Animal 
+{
+	public void newDog()
+	{
+		System.out.println("Dog的新特性");
+	}
+	public void shout() 
+	{
+        System.out.println("汪");
+	}
+}
+class Cat extends Animal 
+{
+	public void shout() 
+	{
+        System.out.println("喵");
+	}
+}
+class Test
+{
+	public void animalshout(Animal a) 
+	{
+		a.shout();
+    }
+}
+public class PolyEx
+{
+	public static void main(String[] args)
+	{
+		Animal d=new Dog();//(1)
+		Dog d1= (Dog)d;//(3)父类对象强制转换成子类对象
+		d1.newDog();
+		//d.newDog();
+	    d.shout();
+		Test t=new Test();
+		t.animalshout(d);//(2)
+		t.animalshout(d1);
+	}
+}
+
+
+4
+class ArrayEx{
+
+    public  int[] subarray(int a[],int start,int end){
+
+     int subarr[] = new int[end-start];
+
+     for(int i=0,j=start;j<end;i++,j++){
+		 subarr[i] = a[j];
+
+		 }
+     return subarr;
+     }
+
+
+}
+
+
+public class Test{
+
+ public static void main(String args[]){
+	 ArrayEx arrex = new ArrayEx();
+
+	 int arr[] = new int[10];
+	 for(int i = 0;i<arr.length;i++){
+
+		 arr[i] = i+10;
+
+		 }
+
+     int sub[] = arrex.subarray(arr,2,6);
+     for(int temp:sub){
+		 System.out.println(temp);
+		 }
+	 }
+
+}
+
+5
+class Box{
+  int length;
+  int width;
+  int height;
+  
+  void set(int len,int wid,int hei){
+    length = len;
+    width = wid;
+    height = hei;
+  }
+
+
+}
+
+class ShowBox{
+
+   void show(Box b){
+   
+      System.out.println(b.length+" "+b.width+"  "+b.height);
+   
+   
+   }
+
+}
+
+class TestTwo{
+  public static void main(String args[]){
+  
+    Box a = new Box();
+    a.set(3,4,5);
+    
+    ShowBox sbox = new ShowBox();
+    sbox.show(a);
+  }
+
+
+}
+
+
+6.
+class One{
+  int a = 5;
+
+  void showB(){
+
+    int a = 3;
+    int b = this.a;
+    System.out.println("b = "+b);
+
+  }
+
+
+}
+
+public class ThisOne{
+
+  public static void main(String args[]){
+
+    One test = new One();
+    test.showB();
+
+  }
+
+
+
+}
+
+7.
+class Mystatic{
+  private  int x=3;
+
+
+  public static void showx(){
+    System.out.println("x="+x);
+    }
+
+  public static int add(int m){
+    return m+x;
+    }
+   }
+
+
+
+ class UseMystatic{
+   public static void main(String args[]){
+     Mystatic.showx();
+    
+     System.out.println("add="+Mystatic.add(2));
+    
+    
+     }
+     }
+
+8.
+class Point 
+{
+    int x;
+    int y;
+
+    Point(){
+      x=0;
+      y=0;
+      //this(1,1);
+    }
+
+    Point(int a,int b){
+      x=a;
+      y=b;
+    }
+
+    void show(){
+      System.out.println("x="+x+"  y="+y);
+    }
+}
+
+public class UsePoint
+{
+    public static void main(String args[]){
+      Point p = new Point();
+      p.show();
+    
+    }
+}
+
+9.
+ class Point{
+    private int x,y;
+	
+	Point(){
+	  x=1;
+	  y=3;
+	 }
+     
+    void showPoint(Point t){
+	  System.out.println("x="+t.x+"   y="+t.y);
+	  }
+
+	void seeit(){
+	  showPoint(this);
+	  }
+  }
+
+
+public class UsePointThis
+{
+	public static void main(String args[]){
+		Point p=new Point();
+		p.seeit();
+	}
+}
+
+10
+class Point{
+    static int x=2;
+    int y=0;
+		}
+
+
+  public class UseStatic{
+     public static void main(String args[]){
+
+       System.out.println("利用类调用静态变量");
+       System.out.println("x="+Point.x);
+
+       //System.out.println("y="+Point.y);
+       Point p1=new Point();
+       System.out.println("利用对象调用");
+       System.out.println("x="+p1.x);
+       System.out.println("y="+p1.y);
+
+       Point p2=new Point();
+       p2.y=3;
+       System.out.println("对象p1中y的值"+"y="+p1.y);
+       System.out.println("对象p2中y的值"+"y="+p2.y);
+       p1.x=6;
+       System.out.println("对象p1中x的值"+"x="+p1.x);
+       System.out.println("对象p2中x的值"+"x="+p2.x);
+
+  }
+}

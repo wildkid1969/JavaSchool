@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>系统管理——添加项目管理</title>
+
+<script type="text/javascript"> 
+//全选
+var vendorCount=6;
+function ckeckAll() { 
+	var vendors=document.getElementsByName("vendorsList");//项目列表
+	var inputTag=document.getElementsByTagName("input");//所有input标签
+	var allCheck=document.getElementById("allcheckbox");//全选按钮
+	allCheck.onclick=function(){
+			for(var i=0;i<6;i++){
+				inputTag[i].checked=this.checked;
+			}
+		}
+	
+	alert("input");//这个不弹啊
+	for(var i=0;i<6;i++){//单独点满,全选按钮自动打勾
+		inputTag[i].onclick=function(){
+			alert("inputClick!");
+			for(var j=0;j<6;j++){
+				if(inputTag[j].checked==false){
+					allCheck.checked=inputTag[j].checked;
+					break;
+				}else{
+					allCheck.checked=true;
+				}
+			}
+
+		}
+	}
+	
+} 
+</script>
+
+</head>
+<body>
+    
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td>
+   
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb">
+      <tr>
+        <td width="9" background="../images/tab_12.gif">&nbsp;</td>
+        <td bgcolor="#f3ffe3">
+        
+        <form id="userVendorForm" name="userVendorForm" method="post" action="${ctx}/admin/userVendor/addVendors.htm">
+        
+        
+        <!-- 表单表格开始-->
+         <table width="85%" border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#c0de98">
+        <br />
+        <thead class="tb-thead">
+        	<tr>
+    			<td colspan="4" align="center">&nbsp;给CP分配可见项目</td>
+  			</tr>
+        </thead>
+        
+            <tbody class="tb-body">
+            <tr>
+            <td bgcolor="" width="200" align="right">CP：</td>
+             <td bgcolor="" >&nbsp;${cpName}</td>
+             	</tr>
+        	<tr>
+			<td bgcolor="" width="10%" align="right">项目列表：</td>
+			      <td bgcolor="" ><br />
+				    <input name="vendorsList" type='checkbox'>第一</br>
+					<input name="vendorsList" type='checkbox'>第二</br>
+					<input name="vendorsList" type='checkbox'>第三</br>
+					<input name="vendorsList" type='checkbox'>第四</br>
+					<input name="vendorsList" type='checkbox'>第五</br>
+					<input name="vendorsList" type='checkbox'>第六</br>
+				    <input id="allcheckbox" name="allcheckbox" type="checkbox" style="vertical-align:middle;" onclick="ckeckAll()">全选</input>
+				      <span>[一共<span style="color: blue;">${vendorsListCount}</span>项目]</span>
+			      </td>
+           	</tr>
+          </tbody>
+        </table>
+        
+         <table width="85%" border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#c0de98">
+        <br />
+        <thead class="tb-thead">
+        	<tr>
+    			<td bgcolor="#E7F9FE"></td>
+			    <td colspan="3" bgcolor="">
+			      	<input type="submit" value="提交" />
+			      	<input type="button" value="返回" onclick="history.back();"/>
+			      	<input name="userId" type="hidden" value="${param.userId}" />
+			    </td>    
+  			</tr>
+        </thead>
+            <tbody class="tb-body">
+        
+            </tbody>
+        </table>
+        
+        </form>
+      </td>
+        <td width="9" background="../images/tab_16.gif">&nbsp;</td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+   
+  <!--底-->
+  <tr>
+    <td height="29">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="15" height="29"><img src="../images/tab_20.gif" width="15" height="29" /></td>
+        <td background="../images/tab_21.gif">&nbsp;</td>
+        <td width="14"><img src="../images/tab_22.gif" width="14" height="29" /></td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+ 
+</body>
+</html>

@@ -1,0 +1,13 @@
+*执行脚本：
+chmod 777 **.sh 给最高权限
+
+*文件未正确结尾（syntax error: unexpected end of file）
+vim monitor_tomcat.sh 
+:set fileformat=unix
+:wq
+
+原因是Linux下的文件结束符和Windows下的文件结束符不一样。在Windows上编辑的脚本，放在Linux额上运行就会有这种问题。
+
+
+*脚本输出时间
+nowtime=`date --date='0 days ago' "+%Y-%m-%d %H:%M:%S"`

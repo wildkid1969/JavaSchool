@@ -1,0 +1,32 @@
+String str = "abc";
+Class<? extends String> c1 =  str.getClass();
+Class<?> c2 = Class.forName("java.lang.String");
+Class<String> c3 = String.class;
+System.out.println(c1);//class java.lang.String
+System.out.println(c2);//class java.lang.String
+System.out.println(c3);//class java.lang.String
+
+
+java中Object是所有类的父类，所有类的对象都是Class的实例
+
+（
+E - Element (used extensively by the Java Collections Framework) 
+K - Key 
+N - Number 
+T - Type 
+V - Value 
+）
+java.lang 
+类 Class<T>
+java.lang.Object
+  java.lang.Class<T>
+类型参数：
+T - 由此 Class 对象建模的类的类型。例如，String.class 的类型是 Class<String>。如果将被建模的类未知，则使用 Class<?>。
+所有已实现的接口： 
+Serializable, AnnotatedElement, GenericDeclaration, Type 
+
+--------------------------------------------------------------------------------
+
+public final class Class<T>extends Objectimplements Serializable, GenericDeclaration, Type, AnnotatedElementClass 类的实例表示正在运行的 Java 应用程序中的类和接口。枚举是一种类，注释是一种接口。每个数组属于被映射为 Class 对象的一个类，所有具有相同元素类型和维数的数组都共享该 Class 对象。基本的 Java 类型（boolean、byte、char、short、int、long、float 和 double）和关键字 void 也表示为 Class 对象。 
+
+Class 没有公共构造方法。Class 对象是在加载类时由 Java 虚拟机以及通过调用类加载器中的 defineClass 方法自动构造的。

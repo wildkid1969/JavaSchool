@@ -1,0 +1,195 @@
+jsp+ajax实现无刷新，鼠标离开文本框即验证用户名
+
+
+jsp+ajax实现无刷新，鼠标离开文本框即验证用户名（本功能多用于注册） input.jsp(表单提交页面)： %@ page contentType=text/html; charset=GBK % html style type=text/css !-- @import url(../aqgc/style_c.css); --
+jsp+ajax实现无刷新，鼠标离开文本框即验证用户名（本功能多用于注册）
+
+ 
+
+input.jsp(表单提交页面)：
+ 
+
+<%@ page contentType="text/html; charset=GBK" %> 
+<html> 
+<style type="text/css"> 
+<!-- 
+@import url("../aqgc/style_c.css"); 
+--> 
+</style> 
+<head> 
+<title>Ajax实例</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312"> 
+<style type="text/css"> 
+<!-- 
+.style1 { 
+color: #FF3333; 
+font-weight: bold; 
+} 
+.style14 {font-size: 13px}
+
+.text12black { 
+font-size: 12px; 
+} 
+--> 
+</style> 
+</head> 
+<body bottomMargin="0" leftMargin="0" topMargin="0" rightMargin="0" marginheight="0" marginwidth="0"> 
+<center> 
+<table width="748" border="0" align="center" cellpadding="0" cellspacing="0"> 
+   <tr> 
+     <td height="5"></td> 
+   </tr> 
+</table> 
+<script language="javascript"> 
+   <!-- 
+   //创建XMLHttpRequest对象 
+ function GetO() 
+ { 
+   var ajax=false; 
+    try 
+    { 
+     ajax = new ActiveXObject("Msxml2.XMLHTTP"); 
+    } 
+    catch (e) 
+    { 
+      try 
+      { 
+       ajax = new ActiveXObject("Microsoft.XMLHTTP"); 
+      } 
+      catch (E) 
+      { 
+       ajax = false; 
+      } 
+    } 
+    if (!ajax && typeof XMLHttpRequest!='undefined') 
+    { 
+     ajax = new XMLHttpRequest(); 
+    } 
+    return ajax; 
+ } 
+ 
+ function getMyHTML(serverPage, objID) { 
+   var ajax = GetO(); 
+    //得到了一个html元素，在下面给这个元素的属性赋值 
+ var obj = document.all[objID]; 
+    //设置请求方法及目标，并且设置为异步提交 
+ ajax.open("post", serverPage, true); 
+ ajax.onreadystatechange = function() 
+ { 
+    if (ajax.readyState == 4 && ajax.status == 200) 
+    { 
+    //innerHTML是HTML元素的属性，如果您不理解属性那就理解为HTML元素的变量 
+    //ajax.responseText是服务器的返回值，把值赋给id=passport1的元素的属性 
+    //innerHTML这个属性或说这个变量表示一组开始标记和结束标记之间的内容 
+     obj.innerHTML = ajax.responseText; 
+    } 
+   } 
+    //发送请求 
+ ajax.send(null); 
+   } 
+   function CheckName() 
+   { 
+      getMyHTML("check.jsp?groupName="+name_form.group_name.value, "passport1"); 
+   } 
+   //这个函数的作用是当用户的焦点从其他地方回到group_name这个输入框时再给属性赋回原内容 
+ function sl(tx) 
+   { 
+    if(tx=='passport1') 
+   { 
+      document.all[tx].innerHTML = "<div class='reds' align='left'>4-20 个字符 (包括大小写字母,中文,数字,特殊字符等) 1个汉字等于2个字符，建议使用中文。注册后不可修改。</div>"; 
+     } 
+   }
+
+</script> 
+<form name="name_form"  method=post> 
+<td height="200" valign="top" > 
+<table width="100%" height="270" border="1" bordercolor="#96D6E8" class="text12black"> 
+   <tr> 
+      <td width="22%" height="20" align="right">用户名：</td> 
+      <td width="61%" align="left"> 
+          <INPUT name="group_name"  type="text" value="" size=30 maxlength="50" onBlur="javaScript:CheckName();" onFocus="return sl('passport1');" /><br/>
+          <div id = "passport1" style="color: red"></div> 
+      </td> 
+      <td  id="passport2"  valign="top"><div class="explain_blue" align='left' ><span class="gray">4-20 个字符 (包括大小写字母,中文,数字,特殊字符等) 1个汉字等于2个字符，建议使用中文昵称。注册后不可修改。</span></div> 
+      </td> 
+    </tr> 
+</table> 
+    </td> 
+  </form> 
+</BODY> 
+</html>
+
+ 
+
+ 
+
+check,jsp  (验证页面)：
+
+<%-- 
+/************************************************************************* 
+*    Title: check.jsp                                                 * 
+*    @CreateDate 2010/09/01: 检查用户注册信息合法性                                    * 
+*    @Author : 竹林居者      2010/09/01    created                       * 
+*                                                                        * 
+**************************************************************************/ 
+--%> 
+<%@ page contentType="text/html; charset=GB2312" %> 
+<%@ page import="java.io.*" %> 
+<%@ page import="java.sql.*" %> 
+<%@ page import="javax.sql.DataSource"%> 
+<%@ page import="javax.naming.InitialContext"%> 
+<%@ page import="java.util.Properties"%> 
+<%@ page import="java.util.Hashtable"%>
+
+<jsp:useBean id="db" scope="page" class="s2jsp.bysj.dao.BaseDao"></jsp:useBean>
+<% 
+  String action=""; 
+  String groupname=""; 
+//检查用户名
+
+  //用作数据库联接，可以根据你的情况修改，如果为测试可以不用*作记号的语句 
+Connection conn        = null; 
+PreparedStatement pstmt = null;
+ResultSet rs           = null;
+
+try 
+{ 
+  
+   action=request.getParameter("action"); 
+   groupname=request.getParameter("groupName").trim(); 
+  if("".equals(groupname)) 
+  { 
+   System.out.println("null"); 
+   out.println("<div class='reds' align='left'>用户名不能为空！</div>"); 
+  } 
+else if(groupname.length()<4 || groupname.length()>20 ) 
+  { 
+   out.println("<div class='reds' align='left'>用户名"+groupname+"不合法！(长度为4到20位，且不能使用?#=等特殊字符)</div>"); 
+  } 
+else 
+  { 
+ 
+
+  conn = db.getConn(); 
+  String strsql="select userName from USERS where userName='"+groupname+"'"; 
+  pstmt = conn.prepareStatement(strsql);
+  
+   rs = pstmt.executeQuery(); 
+    if(rs.next()) 
+    { 
+     out.println("<div class='reds' align='left'>"+"用户名"+groupname+"已被占用，请重新输入！</div>"); 
+    } 
+    else 
+    { 
+   out.println("您的用户名可用"); 
+    } 
+}
+
+} 
+catch (Exception e){ 
+System.out.println(request.getServletPath()+" error : " + e.getMessage()); 
+} 
+finally { 
+  db.closeAll(conn,pstmt,rs);
+} 
+%>

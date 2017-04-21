@@ -1,0 +1,342 @@
+Ant+build.xml使用方法2011-11-17 11:58
+ant 是apache的java子项目"jakarta"的子项目.你可以选择当前的版本，,window版解压后ant_home用来方便访问。并确保你也设置了java_home 。
+set ant_home=D:\java\kit\ant\jakarta-ant-1.5.1 这是我的目录 hello ant
+我们要开发一个java类：其内容只有一句，输出"hello ant"字符串。并使用ant完成编译和运行工作，这个例子只是为了跑通ant，不附加多余的东西。
+
+下面是：“hello.ant.HelloAnt.java”文件。 
+
+package hello.ant;
+
+public class HelloAnt{
+public static void main(String[] args){
+System.out.println("hello ant,ant 的第一次接触，好棒！");
+} 
+} 
+
+
+在项目根目录(hello-ant\)写1个文件：ant执行配置文件build.xml
+
+“build.xml”文件
+
+<?xml version="1.0" encoding="GB2312" ?>
+
+<!-- 一个项目,可包含很多任务组(target) -->
+<project default="main" basedir=".">
+
+<!-- 项目中的一个任务组,可包含很多任务(task:javac,java...) -->
+<target name="main">
+
+<!--编译-->
+<javac srcdir="src\main\hello\ant" destdir="build\classes"/>
+
+<!--运行-->
+<java classname="hello.ant.HelloAnt">
+<classpath>
+<pathelement path="build\classes"/>
+</classpath>
+</java>
+
+</target>
+</project> 
+
+
+ok,一切大功告成，哦，不，还没有运行它。
+
+dos下进入hello-ant的目录，即build.xml所在的目录，我们要用ant工具执行它 ， 
+
+执行: %ant_home%/bin/ant -file build.xml 用ant工具执行当前目录下的配置文件build.xml 
+
+或 ：ant -file build.xml 你如果设置%ant_home%/bin到path中
+
+这次ok了，这是答案：
+
+命令提示符窗口
+D:\temp\hello-ant>ant -file build.xml
+Build build.xml
+
+main:
+[javac] Compiling 1 source file to D:\temp\hello-ant\build\classes
+[java] hello ant,ant 的第一次接触，好棒！
+
+BUILD SUCCESSFUL
+Total time: 2 seconds
+D:\temp\hello-ant>
+检查一下build/classes目录，哦，看到编译过的文件就在这里:
+build/classes/hello/ant/HelloAnt.class.
+
+hello ant 进级
+
+我们要改进build.xml，让它做更多的事情：
+
+定义全局变量 
+初始化,主要是建立目录 
+编译 (已有) 
+打包为jar 
+建立API documentation 
+生成distribution产品 
+凡事都讲究平衡，你要ant给你做更多事，当然要累一点点，不过只用累一次，以后的代码修改后的构建都是"一键式"完成,我们制作一个hello的简单例子，你可以自己做j2ee的练习。
+
+我们要扩充目录结构，使它更像回事：
+
+：\src,\docs,\lib是自己组织的文件结构，\build,\dist是ant动态生成的成品。
+
+\src 源文件：java源，源，jsp源，xml配置.....
+\src\main java源
+\src\ window,unix,liunx的执行，我们的简单只有一个：
+run.bat: java hello.ant.HelloAnt
+
+\docs 手写说明文档
+\lib 程序所需类库的jar,比如j2ee.jar,mail,jar...
+
+\build 用ant动态生成的构建目录
+\build\classes 编译的类文件
+\build\docs copy "\docs"的手写说明文档，和ant生成的api文档
+\build\lib 放置我们自己的HelloAnt.class打包成品hello-ant.jar
+
+\dist\bin copy "\src\" 得执行文件
+\dist\docs copy "\build\docs" 的文档
+\dist\lib 除了copy "\build\lib"下的hello-ant.jar外，
+还应copy "\lib"的程序所需jar，这里我们没有。
+
+以上是我学老外的文件组织，大家可以按照自己的爱好组织
+
+我们编写必要的文件： 
+
+hello.ant. HelloAnt.java 
+
+src\.bat 
+
+@echo off
+echo ========================================================
+echo 请先设置 Environment
+echo .
+echo JAVA_HOME: %JAVA_HOME%
+echo ======================================================
+
+%java_home%\bin\java -classpath ..\lib\hello-ant.jar hello.ant.HelloAnt
+
+pause 
+
+\docs\index.html 随便写一个手写的文档 
+hello ant 软件项目手册docs
+--------------------------------------------------------------------------------访问api文档
+\build.xml 配置文件 
+
+<?xml version="1.0" encoding="GB2312" ?>
+<!--
+=======================================================================
+hello-ant 项目 ,学习ant工具的第2个build file.
+参照ant的jakarta-ant-1.6alpha的build.xml
+
+Copyright (c) 2002 The Neusoft Software Foundation. All rights
+reserved.
+
+=======================================================================
+-->
+
+<!--
+文档结构为:
+<project>
+<property/> 全局变量的定义
+<property/>...
+
+<target name="1"> 任务组(tasks)
+<javac></javac> 一项javac任务
+...
+<oneTask></ontTask> 一项其它任务
+</target>
+
+<target name="2">
+<javac></javac>
+...
+<oneTask></ontTask>
+</target>
+</project>
+
+project代表一个项目，
+default:运行到名称为"dist"的target(任务组)
+basedir:基准路径。
+-->
+<project default="dist" basedir=".">
+
+<!--
+===================================================================
+定义属性（property tasks）
+最好把用到的路径呀，名称呀都在这里定义成全局变量
+例：定义
+<property name="a" ="hello"/>
+以后就可以这样用它：
+<property name="b" ="${a}/b"/>
+现在:b=="hello/b"
+===================================================================
+-->
+
+<!--主要的系统环境属性-->
+<property environment="env"/><!--取window,unix...的环境变量-->
+<property name="java.home" ="${env.JAVA_HOME}"/>
+<property name="ant.home" ="${env.ANT_HOME}"/>
+
+<!--主要的app环境属性-->
+<property name="app.name" ="hello-ant"/>
+<property name="app.jar" ="${app.name}.jar"/>
+<property name="app.copyright" =" Copyright (c) 2002 The Neusoft Software Foundation. All rights reserved."/>
+
+
+<!--app中src的属性-->
+<property name="src.dir" ="src" />
+<property name="src.main" ="${src.dir}/main"/>
+<property name="src." ="${src.dir}/"/>
+
+<!--app用到的lib-->
+<property name="lib.dir" ="lib"/>
+
+<!--app的build目录中-->
+<property name="build.dir" ="build" />
+<property name="build.classes" ="${build.dir}/classes"/>
+<property name="build.docs" ="${build.dir}/docs"/>
+<property name="build.docs.api" ="${build.docs}/api"/>
+<property name="build.lib" ="${build.dir}/lib"/>
+
+<!--app的dist (distribution) 目录中-->
+<property name="dist.dir" ="dist"/>
+<property name="dist.bin" ="${dist.dir}/bin"/>
+<property name="dist.docs" ="${dist.dir}/docs"/>
+<property name="dist.lib" ="${dist.dir}/lib"/>
+
+<!--app的docs目录中-->
+<property name="docs.dir" ="docs"/>
+
+<!--
+定义一组路径以后可以通过id重用这组路径 ，例：
+<javac srcdir="src/main" destdir="build/classes">
+<classpath refid="classpath"/>
+</javac>
+-->
+<path id="classpath">
+<!--本项目只有一个java，用不上classpath，这里只是做个例子-->
+<pathelement location="${build.classes}"/>
+<pathelement path="${java.home}/lib/tools.jar"/>
+</path>
+
+<!--
+===================================================================
+init 准备目录(File Tasks)
+主要的目录结构通常是不会变的，一起生成他们
+===================================================================
+-->
+<target name="init">
+<!--清除以前目录-->
+<delete dir="${build.dir}" fail="false" />
+<delete dir="${dist.dir}" fail="false"/>
+
+<!--准备目录-->
+<mkdir dir="${build.dir}"/>
+<mkdir dir="${build.classes}"/>
+<mkdir dir="${build.docs}"/>
+<mkdir dir="${build.docs.api}"/>
+<mkdir dir="${build.lib}"/>
+
+<mkdir dir="${dist.dir}"/>
+<mkdir dir="${dist.bin}"/>
+<mkdir dir="${dist.lib}"/>
+
+</target>
+
+<!--
+===================================================================
+Build the code (Compile Tasks,File Tasks)
+===================================================================
+-->
+<target name="build" depends="init">
+<!--编译-->
+<javac srcdir="${src.main}" destdir="${build.classes}">
+<classpath refid="classpath"/>
+</javac>
+</target>
+
+<!--
+===================================================================
+打包文档(Archive Tasks)
+Create the project jars: xxx1.jar and xxx2.jar
+===================================================================
+-->
+<target name="jars" depends="build">
+<jar basedir="${build.classes}" jarfile="${build.lib}/${app.jar}"/>
+</target>
+
+<!--
+===================================================================
+Creates the API documentation
+===================================================================
+-->
+<target name="javadocs"
+depends="jars"
+deion="--> creates the API documentation">
+<!--copy docs 手册... -->
+<copy todir="${build.docs}">
+<fileset dir="${docs.dir}"/>
+</copy>
+
+<javadoc packagenames="hello.ant.*"
+sourcepath="${src.main}"
+defaultexcludes="yes"
+destdir="${build.docs.api}"
+author="true"
+version="true"
+use="true"
+windowtitle="Docs API">
+<doctitle><![CDATA[<h1>hello ant Docs API</h1>]]></doctitle>
+<bottom><![CDATA[<i>${app.copyright}</i>]]></bottom>
+<tag name="todo" scope="all" deion="To do:" />
+</javadoc>
+</target>
+
+<!--
+===================================================================
+Create the distribution that can run (Archive Tasks)
+主要是从各目录中把该copy的copy上
+===================================================================
+-->
+<target name="dist" depends="javadocs">
+<!--copy bin 执行文件 -->
+<copy todir="${dist.bin}">
+<fileset dir="${src.}/"/>
+</copy>
+<copy todir="${dist.docs}">
+<fileset dir="${build.docs}/"/>
+</copy>
+<!-- copy lib 文件 -->
+<copy todir="${dist.lib}">
+<fileset dir="${build.lib}/"/>
+</copy>
+
+</target>
+<!--
+===================================================================
+Cleans everything(File Tasks)
+例如可以删除build中的文件，留给你发挥吧
+===================================================================
+-->
+
+</project> 
+
+build.xml多了些，但其实很简单：(注释比较详细可以参照，这里再简单说一下)
+
+一个build.xml包含一个工程的自动化处理的完整xml说明，并且基本由3种东东组成：
+
+<project >
+
+1.全局变量的定义
+<property/>
+
+2.任务组
+<target>
+3.许多单项任务... 像copy,delete,javac,jar...
+<task1/>
+<task2/>
+<task3/>
+</target>
+
+</project>
+ 
+

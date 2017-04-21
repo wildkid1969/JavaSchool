@@ -1,0 +1,82 @@
+题目如下：
+[java] view plain copy
+public class Test｛  
+    private static Test tester = new Test(); //step 1  
+    private static int count1;               //step 2  
+    private static int count2 = 2;           //step 3  
+    public Test(){                           //step 4  
+        count1++;  
+        count2++;  
+        System.out.println("" + count1 + count2);  
+    }  
+    public static Test getTester(){          //step 5  
+        return tester;  
+    }  
+      
+    public static void main(String[] args){  
+       Test.getTester();  
+    }  
+｝  
+
+问：以上代码执行的顺序~，输出的结果~
+
+正解：
+
+根据static 对象的性质，程序的执行流程为：
+
+Test tester = null;
+int count1 = 0;
+int count2 = 0;
+
+tester = new Test();
+
+  count1 ++;
+  count2 ++;
+  输出 1 1
+
+count2 = 2;
+最终结果为1 2，输出为1 1
+
+
+---------------------------------------------------------- 分割线 --------------------------------------------------------
+
+1，JVM虚拟机启动是通过引导类加载器（Bootstrap Class Loader)加载一个初始化类来完成，这个类由虚拟机的具体实现指定，也就是一般意义上的启动类（主类）；然后虚拟机链接这个类，初始化并调用它的public void main(String[])方法。
+
+2，面试题中根据上下文可认为初始化类就是Test类，所以：
+  a, 首先装载这个类，然后在链接的准备阶段（链接包括验证、准备、引用三个阶段)，为所有类（静态）变量分配内存，设为为默认值（Test tester = null; int count1 = 0; int count2 = 0;）
+
+  b, 链接完成后，进行（类）初始化，按代码中声明顺序进行类（静态）变量的初始化，也就是先调用
+Java code
+        private static Test tester = new Test(); //step 1
+
+
+  注：这里省略了基类初始化和<clinit>的相关细节。
+
+  c, 上述步骤中的new 触发Test类的实例化（对象创建），先在堆上分配内存，然后设置对象变量（本例中没有）为初始值，然后调用<init>，细节略过，简单来讲这里会导致构造方法的调用，也就是：
+Java code
+      public Test(){                           //step 4
+        count1++;
+        count2++;
+        System.out.println("" + count1 + count2);
+    }
+
+
+  很显然，这时候的count1和count2并没有被初始化，只是简单的被设置为默认值0（在链接的准备阶段）。所以打印出来的值总是11。
+
+  d, 接下来继续按声明顺序执行初始化，也就是：
+Java code
+    private static int count1;               //step 2
+    private static int count2 = 2;           //step 3
+
+
+
+  e, 初始化完成之后，完成了初始类的加载，跳转到main方法开始执行。
+
+所以顺序为14253，并且无论count2 和 count1为多少，打印出来的总是11.；如果交换一下顺序，比如
+Java code
+  count 2 = 2;
+  new test();
+
+
+
+  那么打印的结果将是13.

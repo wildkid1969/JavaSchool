@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script>
+	window.onload=function(){
+		var oCheck_list=document.getElementById('checkbox_list');
+		var aInput_check=oCheck_list.getElementsByTagName('input');
+		var oCheck_all=document.getElementById('check_all');
+		oCheck_all.onclick=function(){
+			for(var i=0;i<aInput_check.length;i++){
+				aInput_check[i].checked=this.checked;
+			}
+		}
+		for(var i=0;i<aInput_check.length;i++){
+			aInput_check[i].onclick=function(){
+				
+				for(var j=0;j<aInput_check.length;j++){
+					
+					if(aInput_check[j].checked==false){
+						oCheck_all.checked=aInput_check[j].checked;
+						break;
+					}else{
+						oCheck_all.checked=true;
+					}
+				}
+
+			}
+		}
+	}
+	</script>
+</head>
+<body>
+	<div id='checkbox_list'>
+	<input type='checkbox'>第一</br>
+	<input type='checkbox'>第二</br>
+	<input type='checkbox'>第三</br>
+	<input type='checkbox'>第四</br>
+	<input type='checkbox'>第五</br>
+	<input type='checkbox'>第六</br>
+
+	</div>
+</br>
+</br>
+</br>
+</br>
+	<input type='checkbox' id='check_all'/>全选
+</body>
+</html>

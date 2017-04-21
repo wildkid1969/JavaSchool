@@ -1,0 +1,7 @@
+Tomcat与JBoss
+
+1.Tomcat和JBOSS的核心都是一样的 不过JBOSS的功能更强大一点 支持EJB等
+2.理论上 JBoss 优于 tomcat，JBoss 是 J2EE容器， tomcat 是servlet 容器
+
+3.与 Tomcat 类似的 Servlet 容器有：Jetty（开源）, Resin（开源）……。
+与 JBoss 类似的 J2EE 应用服务器有：Glassfish（开源）, Geronimo（开源）, WebLogic（商业）, WebSphere（商业）

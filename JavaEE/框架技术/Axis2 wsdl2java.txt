@@ -1,0 +1,5 @@
+运行cmd，进入axis的bin目录，执行如下命令：
+axis2-1.5\bin >wsdl2java.bat -uri D:\wsdl.xml -o D:\output -p com.bd.zd
+-uri：wsdl文件
+-o：Java文件输出路径
+-p：生成的Java文件包名

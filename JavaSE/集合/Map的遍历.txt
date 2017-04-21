@@ -1,0 +1,61 @@
+//迭代器：最常规的一种遍历方法，最常规就是最常用的，虽然不复杂，但很重要，这是我们最熟悉的，就不多说了！！
+
+    public static void work(Map<String, Student> map) {
+
+        Collection<Student> c = map.values();
+
+        Iterator it = c.iterator();
+
+        for (; it.hasNext();) {
+
+            System.out.println(it.next());
+        }
+    }
+
+//Set<k> keySet(): 利用keySet进行遍历，它的优点在于可以根据你所想要的key值得到你想要的 values，更具灵活性！！(通过get()获取键对应的值)
+
+    public static void workByKeySet(Map<String, Student> map) {
+
+        Set<String> key = map.keySet();
+
+        for (Iterator it = key.iterator(); it.hasNext();) {
+
+            String s = (String) it.next();
+
+            System.out.println(map.get(s));
+        }
+    }
+
+
+
+Map<Integer, Integer> map = new HashMap<Integer, Integer>();  
+  
+for (Map.Entry<Integer, Integer> entry : map.entrySet()) {  
+  
+    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());  
+  
+} 
+
+//Set<Map.Entry<k,v>> entrySet(): 比较复杂的一种遍历是用Entry，呵呵~~他很暴力哦，它的灵活性太强了，想得到什么就能得到什么~~（通过Map.Entry对象的getKey()和getValues()获取其键和值）
+
+    public static void workByEntry(Map<String, Student> map) {
+
+        Set<Map.Entry<String, Student>> set = map.entrySet();
+
+        for (Iterator<Map.Entry<String, Student>> it = set.iterator(); it.hasNext();) {
+
+            Map.Entry<String, Student> entry = (Map.Entry<String, Student>) it.next();
+
+            System.out.println(entry.getKey() + "--->" + entry.getValue());
+        }
+    }
+}
+
+
+在Map集合中的values（）方法是获取集合中的所有的值----没有键，没有对应关系，
+KeySet:
+将Map中所有的键存入到set集合中。因为set具备迭代器。所有可以迭代方式取出所有的键，再根据get方法。获取每一个键对应的值。 keySet():迭代后只能通过get()取key
+
+entrySet：
+Set<Map.Entry<K,V>> entrySet() //返回此映射中包含的映射关系的 Set 视图。 Map.Entry表示映射关系。entrySet()：迭代后可以e.getKey()，e.getValue()取key和value。返回的是Entry接口
+最后说明下keySet()的速度比entrySet()慢了很多

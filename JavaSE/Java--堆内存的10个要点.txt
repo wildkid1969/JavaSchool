@@ -1,0 +1,41 @@
+Java--堆内存的10个要点
+
+阅读次数: 277次 发布时间: 2012-10-15 11:01:35发布人: 匿名
+
+
+来源: 本站原创
+
+Java堆中的OutOfMemoryError错误
+
+当JVM启动时，使用了-Xms 参数设置的对内存。当程序继续进行，创建更多对象，JVM开始扩大堆内存以容纳更多对象。JVM也会使用垃圾回收器来回收内存。当快达到-Xmx设置的最大堆内存时，如果没有更多的内存可被分配给新对象的话，JVM就会抛出java.lang.outofmemoryerror，你的程序就会当掉。在抛出 OutOfMemoryError之前，JVM会尝试着用垃圾回收器来释放足够的空间，但是发现仍旧没有足够的空间时，就会抛出这个错误。为了解决这个问题，你需要清楚你的程序对象的信息，例如，你创建了哪些对象，哪些对象占用了多少空间等等。你可以使用profiler或者堆分析器来处理 OutOfMemoryError错误。”java.lang.OutOfMemoryError: Java heap space”表示堆没有足够的空间了，不能继续扩大了。”java.lang.OutOfMemoryError: PermGen space”表示permanent generation已经装满了，你的程序不能再装在类或者再分配一个字符串了。
+
+Java Heap dump
+
+Heap dump是在某一时间对Java堆内存的快照。它对于分析堆内存或处理内存泄露和Java.lang.outofmemoryerror错误是非常有用的。在JDK中有一些工具可以帮你获取heap dump，也有一些堆分析工具来帮你分析heap dump。你可以用“jmap”来获取heap dump，它帮你创建heap dump文件，然后，你可以用“jhat”（堆分析工具）来分析这些heap dump。
+
+Java中的堆空间是什么？
+
+当Java程序开始运行时，JVM会从操作系统获取一些内存。JVM使用这些内存，这些内存的一部分就是堆内存。堆内存通常在存储地址的底层，向上排列。当一个对象通过new关键字或通过其他方式创建后，对象从堆中获得内存。当对象不再使用了，被当做垃圾回收掉后，这些内存又重新回到堆内存中。要学习垃圾回收，请阅读”Java中垃圾回收的工作原理”。
+
+Java堆内存(heap memory)的十个要点：
+1. Java堆内存是操作系统分配给JVM的内存的一部分。
+
+2. 当我们创建对象时，它们存储在Java堆内存中。
+
+3. 为了便于垃圾回收，Java堆空间分成三个区域，分别叫作New Generation, Old Generation或叫作Tenured Generation，还有Perm Space。
+
+4. 你可以通过用JVM的命令行选项 -Xms, -Xmx, -Xmn来调整Java堆空间的大小。不要忘了在大小后面加上”M”或者”G”来表示单位。举个例子，你可以用 -Xmx256m来设置堆内存最大的大小为256MB。
+
+5. 你可以用JConsole或者 Runtime.maxMemory(), Runtime.totalMemory(), Runtime.freeMemory()来查看Java中堆内存的大小。
+
+6. 你可以使用命令“jmap”来获得heap dump，用“jhat”来分析heap dump。
+
+7. Java堆空间不同于栈空间，栈空间是用来储存调用栈和局部变量的。
+
+8. Java垃圾回收器是用来将死掉的对象(不再使用的对象)所占用的内存回收回来，再释放到Java堆空间中。
+
+9. 当你遇到java.lang.outOfMemoryError时，不要紧张，有时候仅仅增加堆空间就可以了，但如果经常出现的话，就要看看Java程序中是不是存在内存泄露了。
+
+10. 请使用Profiler和Heap dump分析工具来查看Java堆空间，可以查看给每个对象分配了多少内存。
+
+TAG: Java JAVA java 堆内存

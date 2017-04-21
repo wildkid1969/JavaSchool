@@ -1,0 +1,6 @@
+一、Eclipse3.5eclipse中启动Tomcat出现did not find a matching property错误
+解决方案：
+1、在Servers控制台内，在服务器节点上右键选择Properties
+2、General选项卡中点击Switch Location，此时Location的值更新为:/servers/tomcat6.0 server at localhost.server
+3、在Servers控制台内，在服务器节点上双击找到tomcat项目--Tomcat v6.0 Server at localhost.server  这个文件 ，双击打开
+4、在最下面的Server option中勾选Publis module context to separate XML files，Ctrl^S保存。

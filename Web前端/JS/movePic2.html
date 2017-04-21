@@ -1,0 +1,24 @@
+<HTML>
+ <HEAD>
+  <script language="javascript">
+     function moveImage(){
+       if(window.event.button!=1){
+         return;
+       }
+       with(window.event.srcElement.style){
+         //重新设置图像在浏览器中的位置
+         pixelLeft=window.event.x-236/2-document.all.ImageDiv.offsetLeft;
+         pixelTop=window.event.y-118/2-document.all.ImageDiv.offsetTop;
+       }
+       window.event.returnValue=false;//取消系统拖动事件
+     }
+  </script>
+ </HEAD>
+
+ <BODY>
+  <div style="position:relative" id="ImageDiv">
+     <img id="image2" style="container:positioned;position:absolute;top:60px;left:250px;width:236px;height:108px;" src="11.gif" onmouseMove=moveImage()>
+     <img id="image2" style="container:positioned;position:absolute;top:60px;left:60px;width:236px;height:108px;" src="22.gif" onmouseMove=moveImage()>
+  </div>
+ </BODY>
+</HTML>

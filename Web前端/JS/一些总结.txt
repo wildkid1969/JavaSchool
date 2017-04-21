@@ -1,0 +1,59 @@
+4.图片轮播，并添加不同链接：
+var imageList = new Array;
+    var imageUrl = new Array;
+    <c:forEach var="adv" items="${mvAdv}" varStatus="i">
+	    imageList["${i.index}"] = new Image;
+	    imageList["${i.index}"].src = '${ctx}/${adv.advUrl}';
+	    imageUrl["${i.index}"]='${ctx}/${adv.linkUrl}'+"&uid=${uid}";
+    </c:forEach>
+	function slideShow(number){
+		document.getElementById('banner_bottom_a').href=imageUrl[0];
+		document.getElementById('Ad_A_i').src=imageList[0].src;
+		setInterval(function(){
+			number++;
+			if(number==imageList.length){
+				number=0;
+			}
+			document.getElementById('banner_bottom_a').href=imageUrl[number];
+			document.getElementById('Ad_A_i').src=imageList[number].src;
+		},3000);
+	}
+	slideShow(0);
+
+3. 图片轮播
+var imageList = new Array;
+    <c:forEach var="adv" items="${advA}" varStatus="i">
+	    imageList["${i.index}"] = new Image;
+	    imageList["${i.index}"].src = '${ctx}/${adv.advUrl}';
+    </c:forEach>	
+   function slideShow(imageNumber)
+           { 
+               document.getElementById("Ad_A_i").src = imageList[imageNumber].src;
+               imageNumber ++;
+               if (imageNumber >= imageList.length) 
+               {
+                   imageNumber=0;
+               }
+               window.setTimeout("slideShow(" + imageNumber + ")",3000);
+   	}
+   slideShow(0);
+
+2.图片平滑移动
+var timer = null;
+function to_Prize()
+{
+  clearInterval(timer);//关闭定时器   
+  timer = setInterval(function(){
+  var obj1 = document.getElementById('runner1');
+  var x1 = obj1.offsetLeft;
+
+	if(x1>390){//终点线
+	   x1 -= 5;
+	   obj1.style.left = x1;
+	}else{
+	  window.location.href="${ctx}/clickSurf.htm?uid=${uid}";
+        clearInterval(timer);//关闭定时器 
+}},20);
+}
+
+1.区别：setTimeout() 只执行 code 一次。如果要多次调用，请使用 setInterval() 或者让 code 自身再次调用 setTimeout()。

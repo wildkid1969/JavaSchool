@@ -1,0 +1,135 @@
+用java实现的经典递归算法
+
+阅读次数: 481次 发布时间: 2012-10-18 12:12:23发布人: pengzl
+
+
+来源: 本站原创
+
+一、写作此文的原因：
+
+学过程序设计的朋友都知道，存在自调用的算法称作递归算法。
+
+        递归往往能给我们带来非常简洁非常直观的代码形势，从而使我们的编码大大简化，然而递归的思维确实很我们的常规思维相逆的，我们通常都是从上而下的思维问题， 而递归趋势从下往上的进行思维，正由于此，很多人对于递归有着深深的恐惧，我曾经也是如此，如今为把我的经验通过几个经典的例子与初学者共享，故作此文，希望能对需要者有所助益，如若如此，便是幸甚。。。
+
+二、递归算法设计的基本思想是：
+
+        对于一个复杂的问题，把员问题分解为若干个相对简单前类同的子问题，继续下去直到子问题简单到能够直接求解，也就是说到了递推的出口，这样原问题就有递推得解。
+关键要抓住的是：
+（1）递归出口
+（2）地推逐步向出口逼近
+
+三、具体实例
+
+1。汉诺塔
+这是递归的超经典的例子，几乎每本程序设计书上谈到递归都会介绍。具体情景不再赘述。以我上述的方法观之：（1）递归的出口在于disk数为一的时候
+（2）向出口逼近：如果不是一，是n ，则我们先挪动上面n-1块disk，等上面挪完，即递归返回的时候，我们挪动最底下的disk。
+
+仅仅如此，一个貌似十分复杂的问题就解决了，因为挪动那n-1块disk的时候，会继续向上减少，直到disk的数量为一为止。下面给出ｊａｖａ程序编码（已测试过，运行正常）：
+
+import javax.swing.JOptionPane;
+public class Hanoi {
+private static final String DISK_B = "diskB";
+private static final String DISK_C = "diskC";
+private static final String DISK_A = "diskA";
+static String from=DISK_A;
+static String to=DISK_C;
+static String mid=DISK_B;
+public static void main(String[] args) {
+String input=JOptionPane.showInputDialog("please input the number of the disks you want me move.");
+int num=Integer.parseInt(input);
+move(num,from,mid,to);
+}
+private static void move(int num, String from2, String mid2, String to2) {
+if(num==1){
+System.out.println("move disk 1 from "+from2+" to "+to2);
+}
+else {
+move(num-1,from2,to2,mid2);
+System.out.println("move disk "+num+" from "+from2+" to "+to2);
+move(num-1,mid2,from2,to2);
+}
+
+}
+}
+
+2。这是一个排列的例子，它所做的工作是将输入的一个字符串中的所有元素进行排序并输出，例如：你给出的参数是"abc" 则程序会输出：
+abc
+acb
+bac
+bca
+cab
+cba
+
+　　（１）算法的出口在于：ｌｏｗ＝ｈｉｇｈ也就是现在给出的排列元素只有一个时。
+　　（２）算法的逼近过程：先确定排列的第一位元素，也就是循环中ｉ所代表的元素，
+然后ｌｏｗ＋１开始减少排列元素，如此下去，直到ｌｏｗ＝ｈｉｇｈ
+public static void permute(String str) {
+char[] strArray = str.toCharArray();
+permute(strArray, 0, strArray.length - 1);
+}
+
+public static void permute(char[] list, int low, int high) {
+int i;
+if (low == high) {
+String cout = "";
+for (i = 0; i <= high; i++)
+cout += list[i];
+System.out.println(cout);
+} else {
+
+for (i = low; i <= high; i++) {
+char temp = list[low];
+list[low] = list[i];
+list[i] = temp;
+permute(list, low + 1, high);
+temp = list[low];
+list[low] = list[i];
+list[i] = temp;
+}
+}
+}
+
+３．这是一个组合的例子，与上述的例子相似，只是它所做的工作是，输出所给字符串中制定数目的元素的组合种类
+　　　　　（１）程序出口在于ｎ＝１，此时只要输出目标数组的所有元素即可
+　　　　　（２）逼近过程，当ｎ＞１　的时候，我们先取第一个元素放入目标数组中，然后ｎ－１，如此下去，最后出来。
+　　　　　import javax.swing.JOptionPane;
+
+public class Combination {
+
+/**
+* @param args
+*/
+public static void main(String[] args) {
+
+String input = JOptionPane
+.showInputDialog("please input your String: ");
+String numString = JOptionPane
+.showInputDialog("please input the number of your Combination: ");
+int num = Integer.parseInt(numString);
+Combine(input, num);
+}
+
+private static void Combine(String input, int num) {
+char[] a = input.toCharArray();
+String b = "";
+Combine(a, num, b, 0, a.length);
+
+}
+
+private static void Combine(char[] a, int num, String b, int low, int high) {
+if (num == 0) {
+System.out.println(b);
+} else {
+for (int i = low; i < a.length; i++) {
+b += a[i];
+Combine(a, num - 1, b, i+1, a.length);
+b=b.substring(0, b.length()-1);
+}
+}
+
+}
+}
+
+由于递归的表述确实不易加上本人的水平有限，颇有以己之昏昏欲人之昭昭的意味，还望大家多多谅解。
+
+TAG: Java JAVA java 递归算法

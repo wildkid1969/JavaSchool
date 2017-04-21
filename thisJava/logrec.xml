@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<log-rec>
+	<log-data type="7">
+		<user-name>huangrong</user-name>
+		<pid>16321</pid>
+		<host>192.168.1.38</host>
+		<time>11111</time>
+	</log-data>
+	<log-data type="8">
+		<user-name>huangrong</user-name>
+		<pid>16321</pid>
+		<host>192.168.1.38</host>
+		<time>111122</time>
+	</log-data>
+	<duration>3600</duration>
+</log-rec>
+

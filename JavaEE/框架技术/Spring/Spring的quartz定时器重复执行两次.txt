@@ -1,0 +1,26 @@
+最近用Spring的quartz定时器的时候，发现到时间后，任务总是重复执行两次，在tomcat或jboss下都如此。
+打印出他们的hashcode，发现是不一样的，也就是说，在web容器启动的时候，重复启了两个quartz线程。 
+研究下来发现quartz确实会加载两次： 
+第一次：web容器启动的时候，读取applicationContext.xml文件时，会加载一次。 
+第二次：Spring本身会加载applicationContext.xml一次。 
+而我的quartz配置就是写在applicationContext.xml文件里的。 
+
+解决办法很简单 
+先把quartz配置信息提取出来，单独存成一个文件，比如applicationContext-quartz.xml 
+然后修改web.xml，让web容器启动时，可以加载该文件 
+
+这样quartz只会在web容器启动时加载一次，Spring不会再加载了。
+ 
+web.xml配置如下：
+ 
+    contextConfigLocation
+    /WEB-INF/classes/applicationContext.xml,/WEB-INF/classes/applicationContext-timertask.xml
+ 
+  
+ 
+      
+           org.springframework.web.context.ContextLoaderListener
+      
+  
+ 
+把定时器的配置单独写成一个配置文件，在web容器启动的时候只加载一次

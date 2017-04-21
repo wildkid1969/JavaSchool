@@ -1,0 +1,132 @@
+jQuery EasyUI插件简介  
+
+2011-03-23 12:44:23|  分类： UI插件 |  标签：jquery  easyui  插件  ui  开发者   |字号 订阅
+       EasyUI是一组基于jQuery的UI插件集合，而jQuery EasyUI的目标就是帮助web开发者更轻松的打造出功能丰富并且美观的UI界面。开发者不需要编写复杂的javascript，也不需要对css样式有深入的了解，开发者需要了解的只有一些简单的html标签。EasyUI作为一个轻量级的UI插件，提供了常用的UI控件accordion，combobox，menu，dialog，tabs，tree，validatebox，window等等。
+官方网址为：http://jquery-easyui.wikidot.com/
+官方的API文档为：http://jquery-easyui.wikidot.com/document
+easyUI API(DOM不分）
+easyUI.fpbind()
+自执行方法,为Function.prototype添加bind方法，用于提供保持对象作用域的事件方法的邦定
+参数：无
+返回值：无
+easyUI.IAHTML()
+自执行方法,为HTMLElement.prototype添加insertAdjacentHTML方法，用于为不支持insertAdjacentHTML方法的浏览器提供兼容
+参数：无
+返回值：无
+easyUI.ajax.post(sUrl,sArgs,bAsync,fCallBack,fFailure)
+使用xmlhttp发送post请求
+参数：sUrl 请求地址,sArgs 请求参数串,bAsync 是否异步,fCallBack 回调函数,fFailure 服务器错误处理函数
+返回值：
+easyUI.ajax.get(sUrl,bAsync,fCallBack,fFailure)
+使用xmlhttp发送get请求
+参数：sUrl 请求地址(包括请求参数),bAsync 是否异步,fCallBack 回调函数,fFailure 服务器错误处理函数
+返回值：
+easyUI.ajax.xRequest(sUrl,sid)
+发送跨域请求
+参数：sUrl 请求地址(包括请求参数),sid Script标签id(填写不重复的ID，如果不填写则自动生成一个随机ID)
+返回值：Javascript脚本
+easyUI.contains(node,childNode)
+用于判断两个DOM节点之间是否存在包含与被包含的关系
+参数：DOM元素A,DOM元素B
+返回值：true|false
+easyUI.clearTxtNode(domobj)
+清除DOM元素内的#text节点
+参数：domobj
+返回值：
+easyUI.clearOutLine(sTag,dModule)
+清除指定的DOM元素(dModule)内所有tagName为sTag的虚线框
+参数：sTag 要清除虚线框的tagName，dModule 指定的DOM范围
+返回值：无
+easyUI.checkForm(form,fooWarningMsg,foosuccess)
+验证form表单
+为需要验证的输入项添加两个自定义属性作为判断的依据以及需要执行的验证
+validate="这里输入验证方法，多种验证以分号隔开"
+msg="这里输入验证不合格时提示的信息，与validate一一对应，如果信息数少于验证方法数量，则后面的验证不合格时将显示最后一条提示信息"
+验证方法:
+isFilled(S) 必填，如果指定S，则如果内容等于S，都将无法通过
+filter(S) 用于过滤特殊字符，如filter(^|$|'|%)，多个字符用|进行分隔
+isNaN 如果填写，必须为非数字
+isNumber 如果填写，必须为数字
+isInt 如果填写，必须为整数
+isEmail 如果填写，必须为Email格式
+isEmailList 如果填写，必须为以分号;隔开的1个或多个Email格式
+fileType(ext|ext|ext|...|ext) 如果填写，必须为指定扩展名ext列表内的文件类型
+moreThan(N) 如果填写，必须为大于N的数
+lessThan(N) 如果填写，必须为小于N的数
+equalTo(N) 如果填写，必须为等于N的数
+maxLength(N) 如果填写，最大长度不超过N
+minLength(N) 如果填写，最小长度不小于N
+sameValue(IDS) 指定N个表单元素的id，判断它们的值是否相同，如果不同，则不能通过，可用于密码与确认密码的验证
+参数：form 表单,fooWarningMsg 提示警告信息函数(形参为验证目标，警告信息)，如果没有指定该函数，将直接alert出警告信息,foosuccess 验证通过后要执行的函数(形参为验证目标)
+返回值：true|false
+easyUI.cssSelector(sSelector,dScope)
+在指定的DOM节点dScope下按CSS2,CSS3选择器的定义去找出相关的DOM节点
+支持的选择器：
+E[att^="val"],E[att$="val"],E[att*="val"],E[att~="val"],E[att|="val"],E[att!="val"],E[att="val"]
+E:enabled,E:disabled,E:checked,E:not(s)
++ E.class
+> E.class
+E.class
+E#id
+E
+参数：sSelector CSS2 Selector可以通过逗号分隔多个选择器,dScope 指定要查找的DOM节点范围
+返回值：[DOM Collection]
+easyUI.doWhileExist(sModule,oFunction)
+指定的DOM节点存在才执行指定的函数
+参数：sModule 指定的DOM节点、DOM节点的ID、[object HTMLCollection]集合,oFunction 要运行的函数,参数为前面指定的DOM对象
+返回值：
+easyUI.domEvent()
+为DOM节点或[object HTMLCollection]对象添加安全的事件绑定和解除的方法
+参数：无
+返回值：无
+用法：easyUI.domEvent.call(DOM节点或[object HTMLCollection]对象)
+方法：DOM节点或[object HTMLCollection]对象.bindEvent(事件类型如'click'，前面不要写'on', 绑定的函数, capture)
+方法：DOM节点或[object HTMLCollection]对象.removeEvent(事件类型如'click'，前面不要写'on', 绑定的函数, capture)
+属性：DOM节点或[object HTMLCollection]对象.eventList Object，包含绑定的事件对应的函数列表，如：对象.eventList['click']可获取该对象click事件绑定的函数列表
+easyUI.getArgs()
+获取URL参数
+参数：
+返回值：{argName:value,...,argName:value}
+easyUI.getElementsBy(attribute,value,tagName,scopeDom,bcollection,binverse)
+在指定的DOM节点scopeDom下查找属性名称为attribute，属性值为value的，tagName为tagName的DOM元素
+当attribute和value为空时，找出所有标签名为指定值tagName的那些元素
+当attribute最后一个字符为如下字符时，则按CSS2，3选择符意义进行匹配：^,$,*,~,|,!
+当bcollection为true或1时，则查找范围只针对scopeDOM那些元素,而不包括它们的子元素
+参数：attribute属性名称,value属性值,tagName标签名,scopeDom指定要查找的DOM节点范围,bcollection只在查找scopeDOM集合中查找,binverse返回与匹配值相反的结果
+返回值：[DOM Collection]，当binverse为真时，返回与匹配项相反的元素
+easyUI.getmpb(domobj,stylename)
+获取DOM元素margin,padding,border值
+参数：domobj,stylename[margin|padding|border]
+返回值：[iTop,iRight,iBottom,iLeft]
+easyUI.getPosition(domobj)
+取元素坐标，如元素或其上层元素设置position relative，应该getPosition(子元素).y-getPosition(父元素).y
+参数：DOM元素
+返回值：{x:value,y:value}
+easyUI.getStyle(domobj,stylename)
+获取元素当前样式
+参数：domobj,stylename
+返回值：cssStyle value
+easyUI.getTarget(event)
+获取事件触发对象
+参数：event
+返回值：DOM元素
+easyUI.getWindowSize()
+获取窗体尺寸
+参数：无
+返回值：{width,height,scrollWidth,scrollHeight}
+easyUI.queue(list,delay)
+函数执行队列
+参数：list 函数队列数组,delay 每个函数运行后延迟时间
+返回值：
+easyUI.setPosition(domobj,x,y)
+为dom元素设置x坐标和y坐标
+参数：DOM元素,x,y
+返回值：
+easyUI.stopEvent(event)
+阻止事件冒泡和Event返回值
+参数：event
+返回值：
+easyUI.toJSON(obj)
+将JavaScript对象转换为JSON字符串
+参数：obj javascript对象
+返回值：JSON格式字符串

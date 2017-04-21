@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd  
+        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.0.xsd  
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+        http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd  
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd  
+        http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-4.0.xsd  
+        http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.0.xsd  
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd  
+        http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-4.0.xsd  
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd  
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd  
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+    
+    <description>
+	</description>
+	
+	<mvc:annotation-driven />  
+    
+    <!-- 自动扫描且只扫描@Controller -->
+	<context:component-scan base-package="com.springDemo.web"
+		use-default-filters="false">
+		<context:include-filter type="regex" expression=".*.web" />	
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	
+	<!-- 自动扫描这些包 ,将带有注解的类 纳入spring容器管理 --> 
+	<context:component-scan base-package="com.springDemo"  use-default-filters="false">
+		<context:include-filter type="regex" expression=".*.service.*" />
+		<context:include-filter type="regex" expression=".*.dao.*" />
+	</context:component-scan>
+	
+	<context:component-scan base-package="com.springDemo.common.db" /> 
+	<context:component-scan base-package="com.springDemo.common.util" />
+	<context:component-scan base-package="com.springDemo.common.redis" />
+
+    <context:annotation-config>
+	 
+	</context:annotation-config>
+  
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
+        <property name="prefix" value="/WEB-INF/views/" />  
+        <property name="suffix" value=".jsp" />  
+    </bean>  
+
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+	<bean
+		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"></bean>
+		
+	
+	<!-- 定义受环境影响易变的变量 -->
+	<bean id="propertyPlaceholderConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<!-- 标准配置 -->
+				<value>
+					classpath:application.properties
+				</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- ibatis config -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<!--initialSize: 初始化连接 -->
+		<property name="initialSize" value="1" />
+		<!--maxIdle: 最大空闲连接 -->
+		<property name="maxIdle" value="10" />
+		<!--minIdle: 最小空闲连接 -->
+		<property name="minIdle" value="5" />
+		<!--maxActive: 最大连接数量 -->
+		<property name="maxActive" value="15" />
+		<!--removeAbandoned: 是否自动回收超时连接 -->
+		<property name="removeAbandoned" value="true" />
+		<!--removeAbandonedTimeout: 超时时间(以秒数为单位) -->
+		<property name="removeAbandonedTimeout" value="180" />
+		<!--maxWait: 超时等待时间以毫秒为单位30000毫秒/1000等于30秒 -->
+		<property name="maxWait" value="30000" />
+		<property name="validationQuery">
+			<value>SELECT 1</value>
+		</property>
+		<property name="testOnBorrow">
+			<value>true</value>
+		</property>
+	</bean>
+
+
+   <!-- Spring iBatis SqlMapClient -->
+   <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> 
+       <property name="dataSource" ref="dataSource"/> 
+       <property name="configLocation" value="classpath:SqlMapConfig.xml" />
+       <!-- <property name="configLocation" value=""/> --> 
+       <!-- 该属性用来指定MyBatis的XML配置文件路径,跟Spring整合时，编写MyBatis映射文件的目的无非是配置一下typeAlias、setting之类的 
+       元素。不用在其中指定数据源，或者事务处理方式。就算配置了也会被忽略。因为这些都是使用Spring中的配置 。当然如果你不打算添加typeAlias 
+       之类的设置的话，你连MyBatis的配置文件都不用写，更不用配置这个属性了--> 
+       
+       <!-- 该配置文件用来指定Mapper映射文件的位置 ，如果映射文件与相应的接口同名，且在同一路径下，那么可以不配置该选项--> 
+       <property name="mapperLocations" value="classpath*:/mapper/*Mapper.xml"/> 
+    </bean> 
+    
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype"> 
+        <constructor-arg index="0" ref="sqlSessionFactory" /> 
+    </bean>
+    
+    <!-- 配置静态资源  -->    
+    <mvc:resources mapping="/js/**" location="/js/" />  
+    <mvc:resources mapping="/images/**" location="/images/" /> 
+    <mvc:resources mapping="/css/**" location="/css/" />     
+    
+    
+    <!-- 配置redis -->
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxActive" value="5000" />
+		<property name="maxIdle" value="5000" />
+		<property name="maxWait" value="10000" />
+		<property name="testOnBorrow" value="true" />
+	</bean>
+	<!-- jedis信息配置 -->
+	<bean id="jedis" class="redis.clients.jedis.Jedis">
+		<constructor-arg index="0" value="${redis.server}" />
+		<constructor-arg index="1" value="${redis.port}" />
+	</bean>
+	<!-- jedis pool配置 -->
+	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+		<constructor-arg index="0" ref="jedisPoolConfig" />
+		<constructor-arg index="1" value="${redis.server}" />
+		<constructor-arg index="2" value="${redis.port}" />
+	</bean>
+	
+	<bean
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames">
+			<list>
+				<value>*Service</value> 
+			</list>			
+		</property>
+		<property name="interceptorNames">
+			<list>				
+				<idref bean="StorageDbResult" />
+			</list>
+		</property>
+	</bean>
+	<bean id="StorageDbResult"
+		class="com.springDemo.common.redis.StorageDbResult">
+	</bean>
+
+</beans>

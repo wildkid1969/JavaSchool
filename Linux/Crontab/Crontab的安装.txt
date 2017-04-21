@@ -1,0 +1,116 @@
+Crontab的安装 (2012-05-18 16:20:18)转载▼
+标签： linux unix cromtab it	分类： Linux
+    今天在服务器上安装邮箱服务时提示crontab：command not found
+    才知道服务器centOS上没有这个crontab即操作每个用户的守护程序和该执行的时间表。
+    crontab命令常见于Unix和类Unix的操作系统之中，用于设置周期性被执行的指令。该命令从标准输入设备读取指令，并将其存放于“crontab”文件中，以供之后读取和执行。该词来源于希腊语chronos(χρ?νο?)，原意是时间。
+　　通常，crontab储存的指令被守护进程激活， crond常常在后台运行，每一分钟检查是否有预定的作业需要执行。这类作业一般称为cron jobs。
+  没有那就安装吧：
+使用yum安装crontab:
+[root@CentOS ~]# yum install vixie-cron
+[root@CentOS ~]# yum install crontabs
+说明：
+vixie-cron软件包是cron的主程序；
+crontabs软件包是用来安装、卸装、或列举用来驱动 cron 守护进程的表格的程序。
+//+++++++++++++++++++++++++++++++++++
+cron 是linux的内置服务，但它不自动起来，可以用以下的方法启动、关闭这个服务：
+/sbin/service crond start //启动服务
+/sbin/service crond stop //关闭服务
+/sbin/service crond restart //重启服务
+/sbin/service crond reload //重新载入配置
+查看crontab服务状态：service crond status
+手动启动crontab服务：service crond start
+查看crontab服务是否已设置为开机启动，执行命令：ntsysv
+没有就加入开机自动启动:免得每次手动启动麻烦：chkconfig --level 35 crond on
+语法介绍：
+使用权限：root用户和crontab文件的所有者
+语　　法：crontab [-e [UserName]|-l [UserName]|-r [UserName]|-v [UserName]|File ]
+说   明:
+　　crontab 是用来让使用者在固定时间或固定间隔执行程序之用，换句话说，也就是类似使用者的时程表。-u user 是指设定指定 user 的时程表，这个前提是你必须要有其权限(比如说是 root)才能够指定他人的时程表。如果不使用 -u user 的话，就是表示设定自己的时程表。 
+参   数:
+　　-e [UserName]: 执行文字编辑器来设定时程表，内定的文字编辑器是 VI，如果你想用别的文字编辑器，则请先设定 VISUAL 环境变数来指定使用那个文字编辑器(比如说 setenv VISUAL joe)
+　　-r [UserName]: 删除目前的时程表
+　　-l [UserName]: 列出目前的时程表
+　　-v [UserName]:列出用户cron作业的状态
+时程表的格式:
+   f1  f2  f3  f4  f5  program 
+   分　时　日　月　周　 命令
+  f1表示分钟,1～59 每分钟用*或者 */1表示
+  f2表示小时,1～23（0表示0点）
+  f3表示日期即一个月份中的第几日,1～31
+  f4表示月份,1～12
+  f5标识星期,0～6（0表示星期天）
+  f6要执行的程序
+使用者也可以将所有的设定先存放在档案file中，用crontab file的方式来设定时程表。
+由于Unix版本不一样，所以部分语法也有差别，请具体情况实际解决。
+使用方法：
+    用VI编辑一个文件 cronfile，然后在这个文件中输入格式良好的时程表。编辑完成后，保存并退出。
+　　在命令行输入
+　　$: crontab cronfile
+　　这样就将cronfile文件提交给c r o n进程，同时，新创建cronfile的一个副本已经被放在/ v a r / s p o o l / c r o n目录中，文件名就是用户名。
+crontab文件的一些例子：
+    每月每天每小时的第 0 分钟执行一次 /bin/ls :
+　　0 * * * * /bin/ls 
+    在 12 月内, 每天的早上 6 点到 12 点中，每隔 20 分钟执行一次 /usr/bin/backup :
+　　*/20 6-12 * 12 * /usr/bin/backup 
+   周一到周五每天下午 5:00 寄一封信给 alex_mail_name :
+　　0 17 * * 1-5 mail -s "hi" alex_mail_name < /tmp/maildata 
+   每月每天的午夜 0 点 20 分, 2 点 20 分, 4 点 20 分....执行 echo "haha"
+　　20 0-23/2 * * * echo "haha" 
+   晚上11点到早上8点之间每两个小时，早上8点
+　　0 23-7/2，8 * * * date 
+  在hp unix,中，每20分钟执行一次，表示为：0,20,40 * * * * 而不能采用*/n方式，否则出现语法错误
+   30 18 * * * /usr/local/etc/rc.d/lighttpd restart
+   每天的18:30重启apache。
+  30 8 1,15,30 * * /usr/local/etc/rc.d/lighttpd restart
+  每月1、15、30日的08 : 30重启apache。
+  10 1 * * 6,0 /usr/local/etc/rc.d/lighttpd restart
+  每周六、周日的1 : 10重启apache。
+  0,30 18-23 * * * /usr/local/etc/rc.d/lighttpd restart
+  在每天18 : 00至23 : 00之间每隔30分钟重启apache。
+  0 22 * * 6 /usr/local/etc/rc.d/lighttpd restart
+  每星期六的10 : 00 pm重启apache。
+  * */1 * * * /usr/local/etc/rc.d/lighttpd restart
+  每一小时重启apache
+  * 22-8/2 * * * /usr/local/etc/rc.d/lighttpd restart
+  晚上10点到早上8点之间，每隔2小时重启apache
+  0 8 15 * mon-wed /usr/local/etc/rc.d/lighttpd restart
+  每月的15号与每周一到周三的8点重启apache
+  0 8 1 jan * /usr/local/etc/rc.d/lighttpd restart
+  一月一号的8点重启apache
+  */60 * * * * /usr/sbin/ntpdate 210.72.145.44
+  每小时同步一下时间
+注意:
+　　1. 当程式在你所指定的时间执行后，系统会寄一封信给你，显示该程式执行的内容，若是你不希望收到这样的信，请在每一行空一格之后加上 > /dev/null 2>&1 即可。
+　　2. %在crontab中被认为是newline，要用\来escape才行。比如crontab执行行中，如果有"date +%Y%m%d"，必须替换为："date +\%Y\%m\%d"
+创建crontab?
+　　在考虑向cron进程提交一个crontab文件之前，首先要做的一件事情就是设置环境变量EDITOR。cron进程根据它来确定使用哪个编辑器编辑crontab文件。99 %的UNIX和LINUX用户都使用vi，如果你也是这样，那么你就编辑$HOME目录下的.profile文件，在其中加入这样一行：
+　　EDITOR=vi; export EDITOR
+　　然后保存并退出。
+　　不妨创建一个名为<user>cron的文件，其中<user>是用户名，为了提交你刚刚创建的crontab文件，可以把这个新创建的文件作为cron命令的参数：
+　　$ crontab davecron
+　　现在该文件已经提交给cron进程，同时，新创建文件的一个副本已经被放在/var/spool/cron目录中，文件名就是用户名（即，dave）。
+列出crontab文件
+　　为了列出crontab文件，可以用：
+　　$crontab -l
+编辑crontab文件
+　　如果希望添加、删除或编辑crontab文件中的条目，而EDITOR环境变量又设置为vi，那么就可以用vi来编辑crontab文件，相应的命令为：
+　　$ crontab -e
+　　可以像使用vi编辑其他任何文件那样修改crontab文件并退出。
+删除crontab文件
+　　为了删除crontab文件，可以用：
+　　$ crontab -r
+恢复丢失的crontab文件
+　　如果不小心误删了crontab文件，假设你在自己的$HOME目录下还有一个备份，那么可以将其拷贝到/var/spool/cron/<username>，其中<username >是用户名。如果由于权限问题无法完成拷贝，可以用：
+　　$ crontab <filename>
+　　其中，<filename>是你在$HOME目录中副本的文件名。
+crontab中的输出配置
+　　crontab中经常配置运行脚本输出为：>/dev/null 2>&1，来避免crontab运行中有内容输出。
+　　shell命令的结果可以通过‘> ’的形式来定义输出
+　　/dev/null 代表空设备文件
+　　> 代表重定向到哪里，例如：echo "123" > /home/123.txt
+　　1 表示stdout标准输出，系统默认值是1，所以">/dev/null"等同于"1>/dev/null"
+　　2 表示stderr标准错误
+　　& 表示等同于的意思，2>&1，表示2的输出重定向等同于1
+　　那么重定向输出语句的含义：
+　　1>/dev/null 首先表示标准输出重定向到空设备文件，也就是不输出任何信息到终端，不显示任何信息。
+　　2>&1 表示标准错误输出重定向等同于标准输出，因为之前标准输出已经重定向到了空设备文件，所以标准错误输出也重定向到空设备文件。

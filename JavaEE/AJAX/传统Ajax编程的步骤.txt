@@ -1,0 +1,60 @@
+ 传统Ajax编程的步骤(不用框架实现代码)
+分类： 技术类 2013-01-16 14:16 144人阅读 评论(0) 收藏 举报
+转自：http://mantocom.blog.sohu.com/155564198.html
+
+
+ 由于传统web应用时每次总是全部页面加载的缺点(用传统的js可以部分的加载),使得2005年后ajax(异步传输技术)技术大行其道,在程序上除了减少与服务器交互的数据量,但对用户的体验方面是大大的舒服了.虽然在程序设计时,对与程序员的代码工作量增加了,但对于客户的使用方面却得到了很大的提升.下面说一下,用js而非什么其他的ajax框架的步骤与实现代码: 主要是1-5这五个步骤是重点.
+0.写客户端的提交页面:一般用表单(按钮)或链接来写开始页面.   
+1. 创建XMLHttpRequest对象:这一步写起来虽然麻烦,但都是千篇一律,所以直接复制粘贴就是,里面代码中注意浏览器的兼容问题的考虑.
+    var XHR=null;
+    var XHRcreate=function()
+    {
+      if (window.XMLHttpRequest) {
+        //针对FireFox，Mozillar，Opera，Safari，IE7，IE8
+        XHR = new XMLHttpRequest();
+        //针对某些特定版本的mozillar浏览器的BUG进行修正
+        if (XHR.overrideMimeType) {
+            XHR.overrideMimeType("text/xml");
+        }
+    } else if (window.ActiveXObject) {
+         //针对IE6，IE5.5，IE5
+        var activexName = ["MSXML2.XMLHTTP","Microsoft.XMLHTTP"];
+        for (var i = 0; i < activexName.length; i++) {
+            try{
+                //如果创建失败，回抛出异常，然后可以继续循环，继续尝试创建
+                XHR = new ActiveXObject(activexName[i]);
+                break;
+            } catch(e){
+            }
+        }
+    }
+    }
+    XHRcreate();
+2.注册回调函数: 注意回调函数后面不要接()就是,否则返回的是callback()的返回值.
+ XHR.onreadystatechange = callback;
+3.设置连接信息:这里分两种情况:一是get方式发送;二是以post方式发送,就要麻烦一些,要设置请求头
+(1)get方式:
+  XHR.open("GET","login_verify.jsp?name="+ userName,true);
+(2)post方式:
+  XHR.open("POST","AJAXXMLServer",true);
+  XHR.setRequestHeader("Content-Type","application/x-www-form-urlencoded");  
+4.发送数据:
+(1)get方式:
+    XHR.send(null);
+(2)post方式:
+   XHR.send("name=" + userName);
+5.接收响应数据:(在回调函数里面):这是最复杂的地方,响应的方式有两种:一种是text方式,一种是xml方式,因为xml方式处理比较麻烦,而且实际中也比较少.这里就只说text方式:
+function callback() {
+    //判断对象的状态是交互完成
+    if (XHR.readyState == 4) {
+        //判断http的交互是否成功
+        if (XHR.status == 200) {
+            var responseText = XHR.responseText;
+            //通过dom的方式找到div标签所对应的元素节点(为了简便,这里客户端的程序未写了)
+            var divNode = document.getElementById("result");
+            divNode.innerHTML = responseText;
+        } else {
+            alert("出错了！！！");
+        }
+    }
+ 6.写服务器端的响应:用jsp或servlet都可以,一般是用out.println("返回给客户的的内容");的语句来返回给客户内容.

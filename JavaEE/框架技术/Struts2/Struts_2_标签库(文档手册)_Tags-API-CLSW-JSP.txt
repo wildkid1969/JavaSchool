@@ -1,0 +1,216 @@
+Struts 2 标签库(文档手册) Tags-API-CLSW-JSP
+
+<%@ taglib prefix="s" uri="/struts-tags" %> 就能使用struts2.0的标签库 
+
+下面就介绍每个标签的具体应用实例说明：按字母排列
+
+A： 
+
+1. 
+2. <s:a href=""></s:a>-----超链接，类似于html里的<a></a> 
+3. <s:action name=""></s:action>-----执行一个view里面的一个action 
+4. <s:actionerror/>-----如果action的errors有值那么显示出来 
+5. <s:actionmessage/>-----如果action的message有值那么显示出来 
+6. <s:append></s:append>-----添加一个值到list，类似于list.add(); 
+7. <s:autocompleter></s:autocompleter>-----自动完成<s:combobox>标签的内容，这个是ajax 
+
+B： 
+
+1. <s:bean name=""></s:bean>-----类似于struts1.x中的，JavaBean的值 
+
+C： 
+
+1. <s:checkbox></s:checkbox>-----复选框 
+2. <s:checkboxlist list=""></s:checkboxlist>-----多选框 
+3. <s:combobox list=""></s:combobox>-----下拉框 
+4. <s:component></s:component>-----图像符号 
+
+
+
+D： 
+
+1. <s:date/>-----获取日期格式 
+2. <s:datetimepicker></s:datetimepicker>-----日期输入框 
+3. <s:debug></s:debug>-----显示错误信息 
+4. <s:div></s:div>-----表示一个块，类似于html的<div></div> 
+5. <s:doubleselect list="" doubleName="" doubleList=""></s:doubleselect>-----双下拉框 
+
+
+
+E： 
+
+1. <s:if test=""></s:if> 
+2. <s:elseif test=""></s:elseif> 
+3. <s:else></s:else>-----这3个标签一起使用，表示条件判断 
+
+
+
+F： 
+
+1. <s:fielderror></s:fielderror>-----显示文件错误信息 
+2. <s:file></s:file>-----文件上传 
+3. <s:form action=""></s:form>-----获取相应form的值 
+
+
+
+G： 
+
+1. <s:generator separator="" val=""></s:generator>----和<s:iterator>标签一起使用 
+
+
+
+H： 
+
+1. <s:head/>-----在<head></head>里使用，表示头文件结束 
+2. <s:hidden></s:hidden>-----隐藏值 
+
+
+
+I： 
+
+1. <s:i18n name=""></s:i18n>-----加载资源包到值堆栈 
+2. <s:include value=""></s:include>-----包含一个输出，servlet或jsp页面 
+3. <s:inputtransferselect list=""></s:inputtransferselect>-----获取form的一个输入 
+4. <s:iterator></s:iterator>-----用于遍历集合 
+
+
+
+L： 
+
+1. <s:label></s:label>-----只读的标签 
+
+
+
+M： 
+
+1. <s:merge></s:merge>-----合并遍历集合出来的值 
+
+
+
+O： 
+
+1. <s:optgroup></s:optgroup>-----获取标签组 
+2. <s:optiontransferselect doubleList="" list="" doubleName=""></s:optiontransferselect>-----左右选择框 
+
+
+
+P： 
+
+1. <s:param></s:param>-----为其他标签提供参数 
+2. <s:password></s:password>-----密码输入框 
+3. <s:property/>-----得到'value'的属性 
+4. <s:push value=""></s:push>-----value的值push到栈中,从而使property标签的能够获取value的属性 
+
+
+
+R： 
+
+1. 
+2. <s:radio list=""></s:radio>-----单选按钮 
+3. <s:reset></s:reset>-----重置按钮 
+
+
+
+S： 
+
+1. <s:select list=""></s:select>-----单选框 
+2. <s:set name=""></s:set>-----赋予变量一个特定范围内的值 
+3. <s:sort comparator=""></s:sort>-----通过属性给list分类 
+4. <s:submit></s:submit>-----提交按钮 
+5. <s:subset></s:subset>-----为遍历集合输出子集 
+
+
+
+T： 
+
+1. <s:tabbedPanel id=""></s:tabbedPanel>-----表格框 
+2. <s:table></s:table>-----表格 
+3. <s:text name=""></s:text>-----I18n文本信息 
+4. <s:textarea></s:textarea>-----文本域输入框 
+5. <s:textfield></s:textfield>-----文本输入框 
+6. <s:token></s:token>-----拦截器 
+7. <s:tree></s:tree>-----树 
+8. <s:treenode label=""></s:treenode>-----树的结构 
+
+
+
+U： 
+
+1. <s:updownselect list=""></s:updownselect>-----多选择框 
+2. <s:url></s:url>-----创建url
+
+
+
+
+
+
+
+
+___________________________________________________
+
+
+struts2框架的标签库分为三类：
+
+用户标签：生成HTML元素 
+非用户标签：数据访问、逻辑控制等。 
+AJAX标签：支持AJAX技术。 
+用户界面标签又分两类：
+
+表单标签：生成HTML页面的from元素 
+非表单标签：生成页面上的Tab、Tree等 
+非界面标签又分为数据访问标签和流程控制标签。
+
+ 
+
+控制标签：
+
+if/elseif/else标签：控制流程分支。 
+iteratot标签：对集合属性迭代（属性类型：List、Map、数组）。 
+append标签：将多个集合对象拼接在一起，组成一个新的集合。将多个集合使用一个<iterator/>标签完成迭代。 
+generatot标签：将指定的字符串按照规定的分隔符分解成多个子字符串。 
+merge标签：将多个集合拼接在一起。 
+subset标签：获取某个集合的子集合。 
+sort标签：多指定的集合元素进行排序。 
+数据标签：
+
+action:直接调用一个Action,根据executeResult参数，可以将Action的处理结果包含到页面中。 
+bean:创建一个JavaBean实例。。 
+date:格式化输出一个日期属性。 
+debug:生成一个调试链接，当单击该链接时，可以看到当前栈值中的内容。 
+i18n:指定国际化资源文件的baseName。 
+include:包含其他的页面资源。 
+param:设置参数。 
+property:输出某个值。可以输出值栈、StackContext 、ActionContext中的值。 
+push:将某个值放入值栈。 
+set:设置一个新的变量。 
+text:输出国际化信息。 
+url:生成一个URL地址。 
+表单标签：
+
+checkbox标签：复选框。 
+checkboxlist标签：根据一个集合属性创建一系列的复选框。 
+combobox标签：生成一个单选文本框和一个下拉列表框的组合。 
+doubleselect标签：生成一个相互关联的列表框，该标签由两个下拉选择框组成。 
+datetimepicker标签：生成一个日期、时间下拉列表框。 
+head标签：生成HTML页面的HEAD部分。 
+file标签：在页面上生成一个上传文件元素。 
+hidder标签：生成一个不看见的用户输入元素。 
+select标签：生成下拉列表框。 
+optiontransferselect标签：创建两个选项以及转移下拉列表项，该标签生成两个下拉列表框，同时生成相应的按钮，这些按钮可以控制选项在两个下拉列表之间移动、排序。 
+radio标签：单选框。 
+optgroup标签：生成一个下拉列表框的选择组，下拉列表框中可以包含多个选择组。 
+token标签：防用户多次提交表单。 
+textarea标签：文本域。 
+updownselct标签：支持选项内容的上下移动。 
+password表单：密码表单域。 
+textfield标签：单行文本输入框。 
+非表单标签：
+
+actionerror标签：输出Action中getActionErrors()方法返回的异常信息。 
+actionmessage标签：输出Action中getActionErrors()方法返回的信息。 
+component标签：生成一个自定义的组件。 
+div标签：AJAX标签，生成一个div片段。 
+fielderror标签：输出异常提示信息。 
+tabbedPanel:AJAX标签,生成HTML中的Tab页。 
+tree标签：生成一个树形结构。 
+treenode标签：生成树形结构的节点。

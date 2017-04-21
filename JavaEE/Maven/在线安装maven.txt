@@ -1,0 +1,15 @@
+使用Eclipse在线安装的方式：Help-->Install  New Software
+地址输入：http://m2eclipse.sonatype.org/sites/m2e/，列表中打勾勾上后点击Next
+安装maven插件时遇到了如下的错误：
+Cannot complete the install because one or more required items could not be found.
+ 
+解决办法：
+启动eclipse，点击window——>preferences——>install/update——>available software sites，点击Add
+添加如下信息：
+GEF  http://download.eclipse.org/tools/gef/updates/releases/
+
+然后再重新安装maven插件
+使用Eclipse在线安装的方式：Help-->Install  New Software
+
+地址输入：http://m2eclipse.sonatype.org/sites/m2e/，列表中打勾勾上后点击Next
+，一路Next，有License选择Accept，然后等待安装，并重启Eclipse。

@@ -1,0 +1,3 @@
+windows 下 (tomcat端口占用)
+netstat -ano|findstr 8080 
+tskill 进程号 

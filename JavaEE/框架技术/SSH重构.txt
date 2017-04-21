@@ -1,0 +1,163 @@
+1.Spring课程内容重点
+ 1）理论
+      了解IOC和AOP概念
+      了解IOC（DI）和AOP（动态代理）原理
+  *2）熟练掌握Spring和Struts2，Hibernate整合应用
+  *3）掌握Spring事务管理应用
+  上面2,3建议采用注解的应用方式。
+==========首先完成下面两个案例===========
+1）利用Struts2+Hibernate结构完成资费管理模块
+（案例hibernate02_2）
+2）利用Struts2+Spring+Hibernate结构完成资费管理模块（案例spring04_3）
+==========项目重构============
+项目SSH版本结构采用ssh-2.jpg结构图。
+1.项目一期功能
+   1）资费管理模块(COST)
+       对资费信息进行增删改查的维护。资费是为用户提供服务后，对用户收费的一个标准。
+   2）账务账号模块(ACCOUNT)
+        对账务账号进行增删改查的维护。用户使用电信服务，必须先开通一个账务账号。
+   3）业务账号模块(SERVICE)
+        对业务账号进行增删改查的维护。用户开通一个账务账号后，可以使用电信不同的服务器服务，每一种服务提供了一个业务账号。
+   4）角色管理(ROLE,ROLE_PRIVILEGE,
+privileges.xml)
+      对角色信息进行增删改查的维护，不同的角色可以有不同的操作权限。
+首先在privileges.xml中录入权限操作请求的URL.
+然后对角色信息进行维护，主要对ROLE和ROLE_PRIVILEGE表进行操作。
+
+   5）管理员管理模块(ADMIN,ADMIN_ROLE)
+        对管理员信息进行增删改查的维护，不同的管理员可以有不同的角色。
+        对管理员 信息维护，主要是对ADMIN和ADMIN_ROLE表进行操作.
+  
+2.项目二期功能
+    1）对前面5个模块做SSH重构。
+       a.主要是采用Spring+Hibernate重构原有的DAO
+       b.将Action,Service,DAO交给Spring容器管理。
+          由Spring容器采用IOC机制控制。
+       c.事务管理采用Spring AOP声明式事务管理实现
+       d.修改struts.xml的<action>元素的class属性，将该属性值写成容器中的action组件的id值。
+    2）扩展功能1：权限控制模块
+         当管理员登录后，执行具体操作时，需要对其进行权限检查，看看是否有该操作权限，如果没有跳转到nopower.html提示页面。
+       （如果想改变管理员拥有的操作权限，可以通过角色管理和管理员管理模块变更）
+    3）扩展功能2：生成账单模块
+         根据用户使用的服务记录和资费标准，调用一个PL/SQL程序生成账单信息。利用一个任务调度组件，每月月底定时触发该PL/SQL程序，统一生成账单信息
+    4）扩展功能3：账单模块
+         根据账务账号，身份号等条件查询账单信息。
+    5）扩展功能4：报表模块
+          统计某个用户在每个月使用服务器的总时间。
+    
+    
+==========SSH重构方法=============
+1.工程改造：原工程Struts2+JDBC
+                      目标工程：Struts2+Spring+Hibernate
+  1）追加jar包
+       追加Spring框架的开发包（ioc,aop）
+       追加Hibernate框架的开发包
+       追加struts2-spring-plugin.jar
+       追加dbcp连接池开发包
+  2）追加配置
+        src下添加Spring配置文件.
+            --applicationContext-component.xml
+            --applicationContext-transaction.xml
+        web.xml中追加ContextLoaderListener配置
+           --加载路径classpath:applicationContext-*.xml
+        web.xml中追加OpenSessionInViewFilter配置
+---------------------------------------
+2.功能改造（账务账号查询功能）
+   1)熟悉原有设计流程
+  accountSearch.action
+-->AccountSearchAction.execute
+-->AccountDAOImpl.findByParameters()
+-->/account/account_list.jsp
+   2)改造AccountDAO.findByParameters()
+    --检查是否有操作表的POJO类和hbm.xml，没有追加
+     追加Account.hbm.xml映射描述文件和POJO类
+      (注意修改POJO和hbm.xml保持一致)
+    --重新创建一个AccountDAO组件，采用Spring+Hibernate方式实现。
+    --将AccountDAO组件扫描到Spring容器
+      在applicationContext-component.xml开启组件扫描。
+      在AccountDAO类定义前添加@Repository注解.
+      将SessionFactory给AccountDAO注入。
+    --单体测试，测试Spring中的AccountDAO
+  
+ 3)改造AccountSearchAction
+     --将Action扫描到Spring容器
+     --采用@Resource注入方式使用DAO
+     --修改<action>配置的class属性值
+ 4)改造完毕，测试
+
+3.追加业务账号查询
+   1)设计请求处理流程
+searchService.action-->SearchServiceAction
+-->HibernateServiceDAO-->service/service_list.jsp
+   2)编写HibernateServiceDAO
+     --添加操作表的POJO和hbm.xml。检查POJO和hbm.xml是否一致，注意hbm.xml中pojo的包路径。
+     --在applicationContext-component.xml中的sessionFactory定义中加载hbm.xml
+     --编写HibernateServiceDAO接口和实现   
+     --将HibernateServiceDAO扫描到Spring容器
+   3)TODO 编写SearchServiceAction
+     --将Action扫描到Spring容器
+     --采用@Resource注入方式使用DAO
+     --修改<action>配置的class属性值
+   4)TODO 测试
+
+4.追加权限控制功能
+   采用Struts2拦截器检查是否登录，是否拥有权限。
+未登录定位到登陆页面，登录进行权限检查，没有权限定位提示页面。
+   1）修改privileges.xml权限配置文件。
+        将系统操作请求定义到privileges.xml中.
+    2）权限控制具体方案：
+     用户登录成功，向用户session写入用户对象信息和该用户具有的权限列表信息。
+    用户执行每个请求操作时，取出该请求的URL地址，和session中该用户的权限列表对比，如果包含在权限列表中，说明具有操作权限，如果没有包含，说明不具有操作权限。
+
+5.定时执行生成账单任务
+   采用Quartz任务调度组件定时调用Oracle端的PL/SQL程序完成。
+    1）根据Service_Detail表生成Bill和Bill_Item表的记录。
+    2）将变更的业务备份信息同步到Service表
+
+
+login.do-->LoginAction-->AdminInfoDAO
+-->成功index.html(失败login.jsp)
+
+============权限管理的设计==============
+1.功能设计：
+   系统提供了管理员、角色、权限这3部分。
+   一个管理员可以具有多个角色。
+  一个角色可以具有多个权限。
+  一个权限可以具有多个操作请求URL。
+  系统通过管理员管理模块，角色管理模块可以对管理员、角色等信息进行维护。
+   权限控制的实现：用户登录成功后，会将用户信息和他具有的权限操作信息写入session.在用户进入系统进行各个操作时，首先会调用Struts2拦截器组件，检查用户是否登录，如果登录，检查当前操作URL是否在权限操作列表中。如果存在此URL，允许执行后续业务处理，不存在定位到没有权限提示页面.
+2.数据库设计
+   Admin_Info（管理员表）
+   Admin_Role（管理员和角色关系表）
+   Role（角色表）
+   Role_Privilege（角色和权限关系表）
+   Privilege表或privileges.xml （权限表）
+
+========任务调度设计===========
+1.存储过程UPDATE_SERVICE_COST
+ 将变更业务资费操作的记录更新到Service表
+2.触发器gen_fee
+  通过DMS数据采集系统，向Service_Detail表插入数据时，执行该触发器处理。
+  该触发器在采集Service_Detail数据插入时，计算该表中COST费用字段值。根据使用UNIX服务器时间，针对套餐计费和计时计费用户分别进行计算。
+3.存储过程GBILL_ALL
+   根据Service_Detail表的记录，生成Bill和Bill_Item账单信息。
+    主要逻辑：根据Service_Detail信息，首先生成Bill_Item，然后根据Bill_Item生成Bill记录，放到临时表中。之后从临时表取出数据，向Bill插入记录，有了Bill_ID主键值了，再向Bill_Item插入记录。
+
+4.Java功能端的实现
+  每月月底自动执行GBILL_ALL（先执行）和UPDATE_SERVICE_COST（后执行）存储过程。
+   
+  基于Quartz调度组件每月底24:00执行上述两个存储过程。
+
+----------技术调研过程------------
+1. Java 定时任务
+CSDN
+ITEYE
+Blog
+2.Quartz 
+  了解Quartz作用
+3.Quartz 使用入门
+   了解Quartz主要构成.
+   了解触发器表达式.
+4.Spring Quartz
+    Spring+Quartz使用示例
+  

@@ -1,0 +1,738 @@
+1.Java语言是1995年发布的，发布该语言的公司是：
+
+A.Oracle
+
+B.Borland
+
+C.Microsoft
+
+D.Sun
+
+正确答案:D
+2.编译和运行以下代码的结果为：
+    public class Hello{
+        public static void main(String s){
+            System.out.println("Hello");
+        }
+}
+
+A.编译错误
+
+B.运行输出 "Hello"
+
+C.编译无错，但运行时指示没有定义构造方法
+
+D.编译无错，但运行时指示没有正确定义main方法
+
+正确答案:D
+3.关于下列代码说法正确的是：
+ public static void main(String[] args) {
+   int first = 100;
+   System.out.println(first);
+   System.out.println(second);
+   first = 123.456;
+ }
+
+A.编译正确
+
+B.代码System.out.println(first);行，编译出错
+
+C.代码System.out.println(second);行，编译出错
+
+D.代码first = 123.456;行，编译出错
+
+正确答案:CD
+4.下列代码出错的行是:
+  1) public void modify() {
+  2) int i, j, k;
+  3) i = 100;
+  4) while ( i > 0 ) {
+  5) j = i * 2;
+  6) System.out.println (" The value of j is " + j );
+  7) k = k + 1;
+  8) i--;
+  9) }
+ 10) }
+
+A.4
+
+B.6
+
+C.7
+
+D.8
+
+正确答案:C
+5.下列程序编译或运行的结果是：
+ public static void main(String[] args) {
+  int num = 100;
+  for(int i=0;i<=100;i++) {
+      int num = 10;
+  }
+  System.out.println(num);
+ }
+
+A.10
+
+B.100
+
+C.201
+
+D.编译出错
+
+正确答案:D
+6.下列声明和赋值语句错误的是:
+
+A.double w=3.1415;
+
+B.float z=6.74567;
+
+C.boolean truth=true;
+
+D.int i=128;
+
+正确答案:B
+7.int类型整型变量在内存中的位数为:
+
+A.8
+
+B.16
+
+C.32
+
+D.64
+
+正确答案:C
+8.浮点数的字面量的类型是：
+
+A.int
+
+B.float
+
+C.double
+
+D.long
+
+正确答案:C
+9.char类型的整数范围是:
+
+A.0 ... 32767
+
+B.0 ... 65535
+
+C.–256 ... 255
+
+D.–32768 ... 32767
+
+正确答案:B
+10.char,int，long，float，double的范围由低到高的顺序是:
+
+A.int-char-long-float-double
+
+B.long-float-int-double-char
+
+C.int-long-float-double-char
+
+D.char-int-long-float-double
+
+正确答案:D
+11.在Java中语句：37/10的运算结果为:
+
+A.3
+
+B.3.70
+
+C.3.7
+
+D.3.0
+
+正确答案:A
+12.编译和运行以下代码的结果为：
+   public static void main(String args[]){
+     byte b=(byte)4096;
+     if(b==4096)
+        System.out.println("Equal");
+     else
+        System.out.println("Not Equal");
+   }
+
+A.在第3行出现转换丢失精度的编译错误
+
+B.输出 "Not Equal"
+
+C.输出 "Equal"
+
+D.在第4行出现编译错误
+
+正确答案:B
+13. 在Java语句中，运算符&&实现：
+
+A.逻辑或
+
+B.逻辑与
+
+C.逻辑非
+
+D.逻辑相等
+
+正确答案:B
+14.编译运行以下程序后，关于输出结果的说明正确的是:
+       public  static  void  main(String  args[  ]){
+             int  x=4;
+             System.out.println(“value  is  “+ ((x>4) ? 99.9 :9));
+       }
+
+A.输出结果为：value  is  99.99
+
+B.输出结果为：value  is  9
+
+C.输出结果为：value  is  9.0
+
+D.编译错误
+
+正确答案:C
+15.下列代码的输出结果是：
+  int a=10;
+  System.out.println(a>>2);
+
+A.2
+
+B.4
+
+C.40
+
+D.42
+
+正确答案:A
+16.～0010101语句的执行结果为:（~21）
+
+A.1101010
+
+B.0010101
+
+C.11111111
+
+D.10001000
+
+正确答案:A
+17.下面代码的输出结果是
+public class Main {
+    public static void main(String[] args) {
+        int n1 = 1;
+        int n2 = 2;
+        n1 = n1 + n2;
+        n2 = n1 - n2;
+        n1 = n1 - n2;
+       System.out.println(n1 + "," + n2);
+    }
+}
+
+A.1,2
+
+B.2,1
+
+C.1,3
+
+D.3,2
+
+正确答案:B
+18.Java语言中字符串“学Java”所占的内存空间是:
+
+A.6个字节
+
+B.7个字节
+
+C.10个字节
+
+D.11个字节
+
+正确答案:C
+19.下列代码段的输出结果是：
+ public static void main(String[] args) {
+  int x = 5;
+  boolean b1 = true;
+  boolean b2 = false;
+  if ((x == 4) && !b2)
+    System.out.print("l ");
+  System.out.print("2 ");
+  if ((b2 = true) && b1) //b2=true 为赋值语句 并 返回true
+    System.out.print("3");
+ }
+
+A.2
+
+B.3
+
+C.1 2
+
+D.2 3
+
+正确答案:D
+20.请看看列代码：
+ public void testIfA() {
+  if (testIfB("True")) {
+    System.out.println("True");
+  } else {
+    System.out.println("Not true");
+  }
+ }
+ public Boolean testIfB(String str) {
+   return Boolean.valueOf(str);
+ }
+ 调用testIfA方法，程序的结果是：
+
+A.输出Not true
+
+B.输出True
+
+C. if (testIfB("True")) {  行，编译错误
+
+D. return Boolean.valueOf(str); 行，编译错误
+
+正确答案:B
+21.下列语句序列执行后，k 的值是。
+int  i=10, j=18, k=30;
+switch( j - i )
+{      
+case  8 :  k++;     
+case  9 :  k+=2;
+case  10:  k+=3;    
+default :  k/=j;
+}
+
+A.31
+
+B.32
+
+C.2
+
+D.33
+
+正确答案:C
+22. 以下由 for 语句构成的循环执行的次数是:
+   for ( int  i = 0; true ; i++) ;
+
+A.执行3次
+
+B.无限次
+
+C.执行1次
+
+D.一次也不执行
+
+正确答案:B
+23.观察以下程序段 :
+int i=1,j=10;
+do{
+     if(i++>--j) continue;
+} while(i<5);
+执行完后， i 、 j 的值分别为：
+
+A.i=6  j=5
+
+B.i=5  j=5
+
+C.i=6  j=4
+
+D.i=5  j=6
+
+正确答案:D
+24.下列代码段编译和运行的结果是：
+  public static void main(String[] args) {
+  for (int i = 0; i <= 10; i++) {
+     if (i > 6)
+        break;
+  }
+  System.out.println(i);
+ }
+
+A.输出6
+
+B.输出7
+
+C.输出10
+
+D.编译错误
+
+正确答案:D
+25.下面程序的输出结果是：
+public static void main(String[] args) {
+    int d = 325;
+    int sum = 0;
+    while (d > 0) {
+   int n = d % 10;// 5  2 3   0>0 false
+         sum += n;// 5  7 10
+          d /= 10;// 32 3 0
+    }
+    System.out.println(sum);
+}
+
+A.10
+
+B.12
+
+C.5
+
+D.32
+
+正确答案:A
+26.关于while和do－while循环，下列说法正确的是
+
+A.两种循环除了格式不同外，功能完全相同
+
+B.与do－while语句不同的是，while语句的循环至少执行一次
+
+C.do-while语句首先计算终止条件，当条件满足时，才去执行循环体中的语句
+
+D.与while语句不同的是，do-while语句的循环至少执行一次
+
+正确答案:D
+27.执行完以下代码int [ ]  x = new  int[25]；后，下列各项正确的是：
+
+A.x[24]为0
+
+B.x[24]未定义
+
+C.x[25]为0
+
+D.x[0]为空
+
+正确答案:A
+28.下列代码编译和运行的结果是：
+ public static void main(String[] args) {
+   int[] x = { 1, 2, 3, 4, 5 };
+   int y[] = x;
+   System.out.println(y[2]);
+ }
+
+A.输出2
+
+B.输出3
+
+C.输出4
+
+D.编译错误
+
+正确答案:B
+29.下面代码的输出结果是
+public class Main {
+    public static void main(String[] args) {
+       int n = 100;
+       int m = 200;
+       System.out.println(f(n,m));
+       System.out.println(n);
+    }
+    public static int f(int m, int n) {
+        n = m+n;
+        return n;
+    }
+}
+
+A.300  
+300
+
+B.100
+100
+
+C.300
+100
+
+D.100
+300
+
+正确答案:C
+30.下列代码的输出结果是：
+ public static void main(String[] args) {
+   int[] arr = { 49, 81,  77, 1, 98,50, 0, 80, 77, 18 ,11,15};
+   Arrays.sort(arr);
+   int index = Arrays.binarySearch(arr, 80);
+   System.out.print(index+“  ”);  // 7
+   index = Arrays.binarySearch(arr, 90);//-12 应放在下标为11的位置
+   System.out.print(index);
+ }
+ 
+  -（插入点）下标-1 
+
+A.9  -12
+
+B.8  -11
+
+C.8  -1
+
+D.9  -1
+
+正确答案:A
+31.以下是插入排序的部分代码，请把<填加代码>处补充完整
+ public static int[] insertSort(int[] ary) {
+  for (int i = 1; i < ary.length; i++) {
+
+  }
+  return ary;
+ }
+
+A..int temp = ary[i+1];
+   int j;
+   for (j = i - 1; j >= 0 ; j--) {
+    if(temp<ary[j]){
+      ary[j + 1] = ary[j];
+    }else{
+     break;
+    }
+   }
+   ary[j + 1] = temp;
+
+B. int temp = ary[i];
+   int j;
+   for (j = i - 1; j >= 0 ; j--) {
+    if(temp<ary[j]){
+      ary[j + 1] = ary[j];
+    }else{
+     break;
+    }
+   }
+   ary[j + 1] = temp;
+
+C. int temp = ary[i];
+   int j;
+   for (j = i ; j >= 0 ; j--) {
+    if(temp<ary[j]){
+      ary[j + 1] = ary[j];
+    }else{
+     break;
+    }
+   }
+   ary[j + 1] = temp;
+
+D.int temp = ary[i-1];
+   int j;
+   for (j = i - 1; j >= 0 ; j--) {
+    if(temp<ary[j]){
+      ary[j + 1] = ary[j];
+    }else{
+     break;
+    }
+   }
+   ary[j + 1] = temp;
+
+正确答案:B
+32.实现对数组arry的冒泡升序排序，应填入的代码是
+public static void bubbleSort(int[] arry) {
+    int len = arry.length;
+    for (int i = 1; i < len; i++) {
+        boolean asc = true;
+        <填入代码>
+ if (asc)  return;
+    }
+}
+private static void swap(int[] arry, int i, int j) {
+    int temp = arry[i];
+    arry[i] = arry[j];
+    arry[j] = temp;
+}
+
+A.for (int j = len-1; j > i; j--) {
+        if (arry[j] < arry[j - 1]) {
+        swap(arry, j, j - 1);
+        asc = false;
+      }
+   }
+
+B.for (int j = len - 1; j >= i; j--) {
+         if (arry[j] < arry[j - 1]) {
+         swap(arry, j, j - 1);
+         asc = false;
+      }
+   }  
+
+C.for (int j = len - 1; j >= i; j--) {
+        if (arry[j] > arry[j - 1]) {
+        swap(arry, j, j - 1);
+        asc = false;
+      }
+    }  
+
+D.for (int j = len - 1; j >= i; j--) {
+         if (arry[j] < arry[j - 1]) {
+         swap(arry, j, j - 1);
+         asc = true;
+      }
+    }
+
+正确答案:B
+33.下面的代码使用二分法在有序的int类型数组arry查找元素key，如果找到,输出元素在数组中的下标，否则输出-1，<填入代码>处应该填入的代码是：
+ public static void main(String[] args) {
+   int key = 16;
+   int[] arry = { 1, 3, 5, 7, 8, 10, 12, 15, 16 };
+   int low = 0;
+   int high = arry.length - 1;
+   while (low <= high) {
+     <填入代码>
+     else {
+        System.out.println(mid);
+        return;
+     }
+ }
+ System.out.println(-1);
+
+A.int mid = (low + high) >>> 1;
+   if (arry[mid] > key)
+       low = mid + 1;
+   else if (arry[mid] < key)
+       high = mid - 1;
+
+B.int mid = (low + high) >>> 1;
+   if (arry[mid] < key)
+      low = mid;
+    else if (arry[mid] > key)
+       high = mid - 1;
+
+C. int mid = (low + high) >>> 1;
+   if (arry[mid] < key)
+      low = mid + 1;
+   else if (arry[mid] > key)
+      high = mid;
+
+D.int mid = (low + high) >>> 1;//逻辑右移 
+    if (arry[mid] < key)
+        low = mid + 1;
+    else if (arry[mid] > key)
+        high = mid - 1;
+
+正确答案:D
+34.使用递归算法求10的阶乘，下列选项正确的是：
+
+A. public static int method(int n) {
+  if (n < 1) {
+     return 0;
+  }
+  if (n == 1)
+      return 1;
+  else
+      return n * method(n - 1);
+ }
+
+B.public static int method(int n) {
+  if (n < 1) {
+     return 0;
+  }
+  if (n == 1)
+      return 1;
+  else
+      return n * (n - 1);
+ }
+
+C.public static int method(int n) {
+  if (n < 1) {
+     return 0;
+  }
+  if (n> 1)
+      return 1;
+  else
+      return n * method(n - 1);
+ }
+
+D.public static int method(int n) {
+  if (n < 1) {
+     return 0;
+  }
+  if (n > 1)
+      return 1;
+  else
+      return n * (n - 1);
+ }
+
+正确答案:A
+35.Java语言可以跨平台的原因是：
+
+A.Java面向对象
+
+B.Java虚拟机
+
+C.Java垃圾回收机制
+
+D.Java编译器
+
+正确答案:B
+36.下列的注释方式能够支持javadoc命令：
+
+A. /**...**/
+
+B./*...*/
+
+C.//
+
+D./**...*/
+
+正确答案:D
+37.请看下列表达式不正确的是：
+(Java语言规定标识符是以字母、下划线"_"、美元符号"$"和数字组成，但不能以数字开头的字符序列)
+
+A.String name2 = "Jane Doe";
+
+B.int $age=24;
+
+C.Double _height = 123.5;
+
+D.double ~temp = 37.5;
+
+正确答案:D
+38.下列选项中能正确编译的是：
+
+A. public static void main(String[] args) {
+   int one=12;
+   System.out.println(one);
+ }
+
+B.public static void main(String[] args) {
+   int one;
+   one=12;
+   System.out.println(one);
+ }
+
+C. public static void main(String[] args) {
+   int one;
+   System.out.println(one);
+ }
+
+D.public static void main(String[] args) {
+   int one;
+   int m=10;
+   if(m>0){
+    one=12;
+   }
+   System.out.println(one);
+ }
+
+正确答案:AB
+39.下列程序编译或运行的结果是：
+public static void main(String[] args) {
+  for(int i=0;i<=100;i++) {
+      int num = 100;
+  }
+  for(int j=0;j<=100;j++) {
+      int num = 200;
+  }
+  int num = 300;
+  System.out.println(num);
+ }
+
+A.输出：100
+
+B.输出：200
+
+C.输出：300
+
+D.编译出错
+
+正确答案:C
+40.下列不属于基本数据类型的是：
+
+A.整数类型
+
+B.类
+
+C.符点数类型
+
+D.布尔类型
+
+正确答案:B

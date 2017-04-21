@@ -1,0 +1,40 @@
+Applet程序开发主要步骤如下：
+  1)选用EDIT或Windows Notepad等工具作为编辑器建立Java Applet源程序。
+  2)把Applet的源程序转换为字节码文件。
+  3)编制使用class 的HTML文件。在HTML文件内放入必要的<APPLET>语句。
+  下面举一个最简单的HelloWorld 例子来说明Applet程序的开发过程：
+  (1) 编辑Applet 的java源文件
+  创建文件夹C:\ghq，在该文件夹下建立 HelloWorld.java 
+  文件的源代码如下：
+  
+import java.awt.*;
+import java.applet.*;
+public class HelloWorld extends Applet{
+        public void paint(Graphics g){
+           g.drawString("HelloWorld!",5,35);   
+      }
+  }
+  保存上述程序在C:\ghq\HelloWorld.java文件里。
+   (2)编译Applet
+  编译HelloWorld.java源文件可使用如下JDK命令：
+  C:\ghq\>javac HelloWorld.java<Enter> 
+  注意：如果编写的源程序违反了Java编程语言的语法规则，Java编译器将在屏幕上显示语法错误提示信息。源文件中必须不含任何语法错误，Java编译器才能成功地把源程序转换为appletviewer和浏览器能够执行的字节码程序。
+  成功地编译Java applet之后生成响应的字节码文件HelloWorld.class的文件。用资源管理器或DIR命令列出目录列表，将会发现目录C:\ghq中多了一个名为HelloWorld.class的文件。
+  (3)创建HTML文件
+  在运行创建的HelloWorld.class 之前，还需创建一个HTML文件，appletviewer或浏览器将通过该文件访问创建的Applet。为运行HelloWorld.class, 需要创建包含如下HTML语句的名为HelloWorld.html的文件。
+  <HTML>
+  <TITLE>HelloWorld! Applet</TITLE>
+  <APPLET
+  CODE="JavaWorld.class" //这里应该是HelloWorld.class
+  WIDTH=200
+  HEIGHT=100>
+  </APPLET>
+  </HTML> 
+  本例中，<APPLET>语句指明该Applet字节码类文件名和以像素为单位的窗口的尺寸。虽然这里HTML文件使用的文件名为HelloWorld.HTML，它对应于HelloWorld.java的名字，但这种对应关系不是必须的，可以用其他的任何名字(比如说Ghq.HTML)命名该HTML文件。但是使文件名保持一种对应关系可给文件的管理带来方便。
+   (4)执行 HelloWorld.html
+  如果用appletviewer运行HelloWorld.html,需输入如下的命令行：
+  C:\ghq\>appletviewer JavaWorld.html<ENTER> 
+  可以看出，该命令启动了appletviewer并指明了HTML文件，该HTML文件中包含对应于HelloWorld 的<APPLET>语句。
+  如果用浏览器运行HelloWorld Applet,需在浏览器的地址栏中输入HTML文件URL地址。
+  至此，一个Applet程序的开发运行整个过程结束了(包括java源文件、编译的class文件、html文件以及用appletviewer或用浏览器运行)。
+参考资料： http://baike.baidu.com/view/150834.htm?fr=ala0_1_1

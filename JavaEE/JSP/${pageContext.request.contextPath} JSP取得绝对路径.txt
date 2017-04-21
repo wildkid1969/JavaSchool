@@ -1,0 +1,30 @@
+${pageContext.request.contextPath} JSP取得绝对路径
+
+博客分类： 开发手记
+JSPStrutsWeb浏览器 
+一．问题 
+    JSP中究竟采用绝对路径还是采用相对路径随着所采用技术的越来越复杂，这个问题也变得越来越难以解决。 
+１）采用相对路径遇到的问题 
+l         相对路径固然比较灵活，但如果想复制页面内的代码却变得比较困难，因为不同的页面具有不同的相对路径，复制后必须修改每一个连接的路径。 
+l         如果页面被多于一个的页面所包含，那么被包含页面中的相对路径将是不正确的。 
+l         如果采用Struts的Action返回页面，那么由于页面路径与Action路径不同，使得浏览器无法正确解释页面中的路径，如页面为/pages/cust/cust.jsp，图片所有目录为/images/title.gif，这时在/pages/cust/cust.jsp中的所用的路径为”../../images/title.gif”，但是如果某一个Action的Forward指向这个JSP文件，而这个Action的路径为/cust/manage.do，那么页面内容中”../../images/title.gif”就不再指向正确的路径了。 
+解决以上问题似乎只有使用绝对路径了。 
+２）采用绝对路径遇到的问题 
+l         随着不同的Web应用发布方式，绝对路径的值也不同。如Web应用发布为MyApp，则路径”/MyApp/images/title.gif”是正确的，但发布为另一应用时如MyApp2，这个路径就不对了，也许这个情况比较少，但以default方式发布Web应用时以上绝对路径也不同：”/images/title.gif”。 
+  
+
+二．解决方案 
+１）采用绝对路径，但为了解决不同部署方式的差别，在所有非struts标签的路径前加${pageContext.request.contextPath}，如原路径为： 
+”/images/title.gif”，改为 
+“${pageContext.request.contextPath}/images/title.gif”。 
+代码” ${pageContext.request.contextPath}”的作用是取出部署的应用程序名，这样不管如何部署，所用路径都是正确的。 
+缺点： 
+操作不便，其他工具无法正确解释${pageContext.request.contextPath} 
+２） 采用相对路径，在每个JSP文件中加入base标签，如： 
+<base href="http://${header['host']}${pageContext.request.contextPath}/pages/cust/relation.jsp" /> 
+这样所有的路径都可以使用相对路径。 
+缺点： 
+对于被包含的文件依然无效。 
+    真正使用时需要灵活应用１）和２），写出更加健壮的代码。 
+
+在使用的时候可以使用${pageContext.request.contextPath}，也同时可以使用<%=request.getContextPath()%>达到同样的效果，同时，也可以将${pageContext.request.contextPath}，放入一个JSP文件中，将用C：set放入一个变量中，然后在用的时候用EL表达式取出来。 

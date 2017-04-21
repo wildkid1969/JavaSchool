@@ -1,0 +1,74 @@
+package day12;
+//关于JAVA继承类的静态变量、成员变量、父子类构造方法调用顺序的研究 
+class X {
+	Y b = new Y();// 7、这里是父类成员变量初始化
+	static Y sb = new Y();// 1行、父类静态变量,输出static Y(静态代码块先初始化)，2行：Y
+	static {
+		System.out.println("static X父类静态代码块");// 3行、执行静态代码块
+		new Y();// 4行、这里只是输出Y,没有static Y(静态代码块只执行一次)
+	}
+	X() {
+		System.out.println("X()");// 8、父类成员变量初始化之后,执行父类构造器输出X
+	}
+}
+
+class Y {
+	static {
+		System.out.println("static Y");
+	}
+
+	Y() {// 执行构造函数
+		// 这里有个super()==Object()
+		System.out.println("Y()");
+	}
+}
+
+public class Z extends X { // 从这里开始继承会调用父类的static和static成员变量：2：
+	final static int mead = 45;
+	final byte b = 16;
+	static Y sb = new Y();// 5行、子类的静态变量，输出Y
+	static {
+		System.out.println("static Z");// 6行、子类的静态代码块
+	}
+	Y y = new Y();// 9、这里是子类成员变量初始化
+	Z() {
+		// 这里有super()==new X()
+		this.y = null;
+		System.out.println("Z()");// 10、子类成员变量初始化之后,执行子类构造器输出Z
+	}
+	public static void main(String[] args) {
+		new Z();
+	}
+	/**运行结果：
+	 * 1 static Y
+		2 Y()
+		3 static X父类静态代码块
+		4 Y()
+		5 Y()
+		6 static Z
+		7 Y()
+		8 X()
+		9 Y()
+		10 Z()
+	 */
+	
+	/*总结：
+	 * 1：继承类时会调用父类的Static的成员变量和Static代码块、顺序是按照2个Static代码的先后顺序执行
+	 * 2：继承情况下，首先是从顶层父类的静态变量和代码块开始执行，依次向下。
+	 * 同一个类中，执行的顺序是依照静态变量和静态代码在类中的编码顺序执行，
+	 * 3：变量和代码块无任何优先级之分。全部继承树中的类静态变量和代码块都初始化完毕后，
+	 * 开始从顶层父类执行非静态的类变量和类代码块初始化，执行顺序同静态，
+	 * 然后紧接着是执行构造函数，完毕后才向下，执行子类的类变量、代码块和构造函数。 
+	 * 4：非静态内部类中不能定义类静态代码块和非final的类静态变量；
+	 * 静态内部类，可以声明非final的静态变量和静态代码块。
+	 */
+
+	/*解释：
+	  *static的东西在编译的时候就向内存要到了存取空间，他们的初始化要早于非static，顺序是先父类再子类。
+   	  *初始化类，先执行super()父类的的构造函数（final和static之后），父类的构造函数先执行super()直到object super(),
+   	  *完了执行一般成员变量的初始化
+	  *一般成员变量初始化完毕，执行构造器里面的代码（super（）之后的代码）．
+	  *父类的初始化完成后（子类构造器里面ｓｕｐｅｒ执行完毕），才轮到子类的成员变量初始化
+	  *子类成员变量初始化完毕，开始执行子类构造器里面的代码（super()之后的代码）．
+	  */ 
+}

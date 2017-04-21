@@ -1,0 +1,23 @@
+*mysql 子查询删除记录
+分类： MySql 数据库 2010-04-21 09:07 1313人阅读 评论(1) 收藏 举报
+mysqldeletetablesqlc
+    mysql 可以通过子查询得到要删除的记录条件，然后通过子查询得结果匹配要删除的记录。但是 mysql 不能直接删除子查询表中的数据，必须通过一个临时表来解决。例如：
+
+    delete from t_transaction where exists
+    (select d.* from t_ti_category a,t_category b,t_trade_item c,t_transaction d
+         where b.FID=a.FCategory and a.FTradeItem=c.FID and c.FTrans=d.FID and b.FID=2549 and              t_transaction.FID=d.FID)
+
+    在该 sql 语句中由于子查询中包含 t_transaction 表，但我们同时要删除 t_transaction 表中的记录，所以允许该语句时报如下错误：
+
+    1093-You can't specify target table 't_transaction' for update in FROM clause.
+
+修改后的操作语句如下：
+    delete from t_transaction where exists
+    (select e.FID from
+        (select d.* from t_ti_category a,t_category b,t_trade_item c,t_transaction d
+            where b.FID=a.FCategory and a.FTradeItem=c.FID and c.FTrans=d.FID and b.FID=2549) e 
+    where t_transaction.FID=e.FID)
+
+比如：删除重复的没有添加单词书籍的单词：
+delete from t_word_test where wordid in (select e.wordid from (
+select wordid  from t_word_test  where not exists (select wordid from t_word_n_type where t_word_test.wordid=wordid) group by wordname having count(wordname)>1)e);

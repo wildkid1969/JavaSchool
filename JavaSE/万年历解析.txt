@@ -1,0 +1,2423 @@
+
+1、万年历工具：
+
+    
+
+(1) 问题
+
+使用Java的日期API完成万年历的制作。系统交互界面如图-14所示，点击“《”或是“》”界面会显示上一月和下一月的日历。
+
+    
+
+图-14
+
+(2) 方案
+
+新建PerpetualCalendar类表示日历；新建CalendarFrame类表示日历窗口类，这两个类是相互依赖的关系。如图-15所示：
+
+    
+
+图-15
+
+在PerpetualCalendar类中定义属性calendar，表示当前日历的信息：
+
+private Calendar calendar = Calendar.getInstance();
+
+在PerpetualCalendar类中定义incMonth方法，更新成下一个月的日历信息：
+
+    public void incMonth() {
+
+       //在当前月基础上加1
+
+       calendar.add(Calendar.MONTH, 1);
+
+    }
+
+在PerpetualCalendar类中添加decMonth方法， 更新成上一个月的日历信息
+
+    public void decMonth() {
+
+       //在当前月基础上加-1
+
+       calendar.add(Calendar.MONTH, -1);
+
+    }
+
+(3) 实现
+
+新建PerpetualCalendar类，在类中添加需要的属性，代码如下所示：
+
+public class PerpetualCalendar {
+
+    private CalendarFrame view;
+
+    private Calendar calendar = Calendar.getInstance();
+
+}
+
+ 
+
+给PerpetualCalendar添加构造方法，初始化日期界面,代码如下所示：
+
+    public PerpetualCalendar() {
+
+       view = new CalendarFrame(this);
+
+    }
+
+在PerpetualCalendar类中添加incMonth方法：
+
+    public void incMonth() {
+
+       calendar.add(Calendar.MONTH, 1);
+
+    }
+
+在PerpetualCalendar类中添加decMonth方法：
+
+    public void decMonth() {
+
+       calendar.add(Calendar.MONTH, -1);
+
+    }
+
+在PerpetualCalendar类中添加show方法，显示日历窗口：
+
+    public void show() {
+
+       view.setVisible(true);
+
+    }
+
+在PerpetualCalendar类中添加main方法：
+
+public static void main(String[] args) throws Exception {
+
+       for (LookAndFeelInfo info :
+
+ UIManager.getInstalledLookAndFeels()) {
+
+           if ("Nimbus".equals(info.getName())) {
+
+              UIManager.setLookAndFeel(info.getClassName());
+
+              break;
+
+           }
+
+       }
+
+       PerpetualCalendar calendar = new PerpetualCalendar();
+
+       calendar.show();
+
+}
+
+新建CalendarFrame类，该类继承自JFrame:
+
+public class CalendarFrame extends JFrame {}
+
+在CalendarFrame类中添加下列属性：
+
+    private PerpetualCalendar calendar;//日历类对象
+
+    private JLabel yearAndMonth;//显示年月的Label
+
+    private JLabel monthInc;//显示上一月（<<）的Lable
+
+    private JLabel monthDec;//显示下一月（>>）的Label
+
+    //表示星期几的Label数组
+
+    private JLabel[] weeks = { new JLabel("日"),
+
+new JLabel("一"),
+
+                                   new JLabel("二"),
+
+new JLabel("三"),
+
+new JLabel("四"),
+
+new JLabel("五"),
+
+                                   new JLabel("六"), };
+
+    //表示天的Label数组
+
+    private JLabel[] days = new JLabel[42];
+
+在CalendarFrame类中添加setYearAndMonth方法，为年和月的Label设置信息：
+
+    public void setYearAndMonth(String yearAndMonth) {
+
+       this.yearAndMonth.setText(yearAndMonth);
+
+    }
+
+   在CalendarFrame类中添加setYearAndMonth方法，设置星期和日的显示以及显示的样式：
+
+    public void setCalendar(int begin, int maxDay, int currentDay)
+
+ {
+
+       for (int i = 0; i < days.length; i++) {
+
+           days[i].setText("");
+
+           days[i].setForeground(Color.BLACK);
+
+       }
+
+       for (int i = 1; i <= maxDay; i++) {
+
+           String dateStr = i <= 9 ? " " + i : "" + i;
+
+           days[begin + i - 2].setText(dateStr);
+
+             //当前天如果和日历上某天相同
+
+           if (currentDay == i) {
+
+                //把当前天设置成红色背景显示
+
+              days[begin + i - 2].setForeground(Color.RED);
+
+           }
+
+       }
+
+    }
+
+在CalendarFrame类中添加构造方法：
+
+    public CalendarFrame(PerpetualCalendar calendar) {
+
+       this.calendar = calendar;
+
+       setTitle("PerpetualCalendar");
+
+       setSize(400, 350);
+
+ 
+
+       init();
+
+ 
+
+       Dimension d =
+
+ Toolkit.getDefaultToolkit().getScreenSize();
+
+       setLocation((d.width - getWidth()) / 2,
+
+(d.height - getHeight()) / 2);
+
+       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+       setResizable(false);
+
+    }
+
+在CalendarFrame类中添加init方法：
+
+    private void init() {
+
+       Container contentPane = getContentPane();
+
+       contentPane.setLayout(null);
+
+        //为显示星期的区域设置信息
+
+       for (int i = 0; i < weeks.length; i++) {
+
+           weeks[i].setBounds(40 + i * 50, 50, 50, 30);
+
+           contentPane.add(weeks[i]);
+
+       }
+
+        //为显示天的区域设置信息
+
+        for (int i = 0; i < days.length; i++) {
+
+           days[i] = new JLabel("");
+
+           days[i].setBounds(40 + (i % 7) * 50, 90 + (i / 7) * 30，
+
+                                                                50,30);                                                                   
+
+           contentPane.add(days[i]);
+
+       }
+
+ 
+
+       monthInc = new JLabel(">>");
+
+       monthInc.setBounds(250, 20, 20, 20);
+
+       contentPane.add(monthInc);
+
+       monthDec = new JLabel("<<");
+
+       monthDec.setBounds(130, 20, 20, 20);
+
+       contentPane.add(monthDec);
+
+       yearAndMonth = new JLabel("");
+
+       yearAndMonth.setBounds(165, 20, 80, 20);
+
+       contentPane.add(yearAndMonth);
+
+      
+
+    }
+
+ 
+
+  在CalendarFrame类的init方法添加 为上一月(<<)Label设置事件监听的代码：
+
+       monthDec.addMouseListener(new MouseAdapter() {
+
+           @Override
+
+           public void mouseEntered(MouseEvent e) {
+
+              monthDec.setForeground(Color.RED);
+
+           }
+
+ 
+
+           @Override
+
+           public void mouseExited(MouseEvent e) {
+
+              monthDec.setForeground(Color.BLACK);
+
+           }
+
+ 
+
+           @Override
+
+           public void mouseClicked(MouseEvent e) {
+
+              calendar.decMonth();
+
+           }
+
+       });
+
+在CalendarFrame类的init方法添加 为下一月(>>)Label设置事件监听的代码：
+
+       monthInc.addMouseListener(new MouseAdapter() {
+
+           @Override
+
+           public void mouseEntered(MouseEvent e) {
+
+              monthInc.setForeground(Color.RED);
+
+           }
+
+ 
+
+           @Override
+
+           public void mouseExited(MouseEvent e) {
+
+              monthInc.setForeground(Color.BLACK);
+
+           }
+
+ 
+
+           @Override
+
+           public void mouseClicked(MouseEvent e) {
+
+              calendar.incMonth();
+
+           }
+
+       });
+
+系统代码实现如下：
+
+import java.text.SimpleDateFormat;
+
+import java.util.Calendar;
+
+ 
+
+import javax.swing.UIManager;
+
+import javax.swing.UIManager.LookAndFeelInfo;
+
+ 
+
+public class PerpetualCalendar {
+
+    private CalendarFrame view;
+
+    private Calendar calendar = Calendar.getInstance();
+
+    private SimpleDateFormat sdf =
+
+new SimpleDateFormat("yyyy年MM月");
+
+ 
+
+    public void incMonth() {
+
+       calendar.add(Calendar.MONTH, 1);
+
+       //updateCalendar();
+
+    }
+
+ 
+
+    public void decMonth() {
+
+       calendar.add(Calendar.MONTH, -1);
+
+       //updateCalendar();
+
+    }
+
+ 
+
+    public PerpetualCalendar() {
+
+       view = new CalendarFrame(this);
+
+       //updateCalendar();
+
+    }
+
+ 
+
+    public void show() {
+
+       view.setVisible(true);
+
+    }
+
+ 
+
+    public static void main(String[] args) throws Exception {
+
+       for (LookAndFeelInfo info :
+
+ UIManager.getInstalledLookAndFeels()) {
+
+           if ("Nimbus".equals(info.getName())) {
+
+              UIManager.setLookAndFeel(info.getClassName());
+
+              break;
+
+           }
+
+       }
+
+       PerpetualCalendar calendar = new PerpetualCalendar();
+
+       calendar.show();
+
+    }
+
+}
+
+CalendarFrame类代码如下所示：
+
+import java.awt.Color;
+
+import java.awt.Container;
+
+import java.awt.Dimension;
+
+import java.awt.Toolkit;
+
+import java.awt.event.MouseAdapter;
+
+import java.awt.event.MouseEvent;
+
+ 
+
+import javax.swing.JFrame;
+
+import javax.swing.JLabel;
+
+ 
+
+ 
+
+public class CalendarFrame extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+
+    private PerpetualCalendar calendar;
+
+ 
+
+    private JLabel yearAndMonth;
+
+    private JLabel monthInc;
+
+    private JLabel monthDec;
+
+    private JLabel[] weeks = { new JLabel("日"),
+
+new JLabel("一"),
+
+                                   new JLabel("二"),
+
+new JLabel("三"),
+
+new JLabel("四"),
+
+new JLabel("五"),
+
+                                   new JLabel("六"), };
+
+    private JLabel[] days = new JLabel[42];
+
+    //为年和月的区域设置信息
+
+    public void setYearAndMonth(String yearAndMonth) {
+
+       this.yearAndMonth.setText(yearAndMonth);
+
+    }
+
+   //设置星期和日显示的时间和显示的样式
+
+    public void setCalendar(int begin, int maxDay, int currentDay)
+
+ {
+
+       for (int i = 0; i < days.length; i++) {
+
+           days[i].setText("");
+
+           days[i].setForeground(Color.BLACK);
+
+       }
+
+       for (int i = 1; i <= maxDay; i++) {
+
+           String dateStr = i <= 9 ? " " + i : "" + i;
+
+           days[begin + i - 2].setText(dateStr);
+
+ 
+
+           if (currentDay == i) {
+
+              days[begin + i - 2].setForeground(Color.RED);
+
+           }
+
+       }
+
+    }
+
+ 
+
+    public CalendarFrame(PerpetualCalendar calendar) {
+
+       this.calendar = calendar;
+
+       setTitle("PerpetualCalendar");
+
+       setSize(400, 350);
+
+ 
+
+       init();
+
+ 
+
+       Dimension d =
+
+ Toolkit.getDefaultToolkit().getScreenSize();
+
+       setLocation((d.width - getWidth()) / 2,
+
+(d.height - getHeight()) / 2);
+
+       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+       setResizable(false);
+
+    }
+
+ 
+
+    private void init() {
+
+       Container contentPane = getContentPane();
+
+       contentPane.setLayout(null);
+
+        //为显示星期的区域设置信息
+
+       for (int i = 0; i < weeks.length; i++) {
+
+           weeks[i].setBounds(40 + i * 50, 50, 50, 30);
+
+           contentPane.add(weeks[i]);
+
+       }
+
+        //为显示天的区域设置信息
+
+        for (int i = 0; i < days.length; i++) {
+
+           days[i] = new JLabel("");
+
+           days[i].setBounds(40 + (i % 7) * 50, 90 + (i / 7) * 30，
+
+                                                                50,30);                                                                   
+
+           contentPane.add(days[i]);
+
+       }
+
+ 
+
+       monthInc = new JLabel(">>");
+
+       monthInc.setBounds(250, 20, 20, 20);
+
+       contentPane.add(monthInc);
+
+       monthDec = new JLabel("<<");
+
+       monthDec.setBounds(130, 20, 20, 20);
+
+       contentPane.add(monthDec);
+
+       yearAndMonth = new JLabel("");
+
+       yearAndMonth.setBounds(165, 20, 80, 20);
+
+       contentPane.add(yearAndMonth);
+
+        //为下一月Label设置事件
+
+       monthInc.addMouseListener(new MouseAdapter() {
+
+           @Override
+
+           public void mouseEntered(MouseEvent e) {
+
+              monthInc.setForeground(Color.RED);
+
+           }
+
+ 
+
+           @Override
+
+           public void mouseExited(MouseEvent e) {
+
+              monthInc.setForeground(Color.BLACK);
+
+           }
+
+ 
+
+           @Override
+
+           public void mouseClicked(MouseEvent e) {
+
+              calendar.incMonth();
+
+           }
+
+       });
+
+       //为上一月Label设置事件
+
+       monthDec.addMouseListener(new MouseAdapter() {
+
+           @Override
+
+           public void mouseEntered(MouseEvent e) {
+
+              monthDec.setForeground(Color.RED);
+
+           }
+
+ 
+
+           @Override
+
+           public void mouseExited(MouseEvent e) {
+
+              monthDec.setForeground(Color.BLACK);
+
+           }
+
+ 
+
+           @Override
+
+           public void mouseClicked(MouseEvent e) {
+
+              calendar.decMonth();
+
+           }
+
+       });
+
+    }
+
+}
+
+ 
+
+(4) 扩展
+
+ 
+
+如何实现万年历工具的日历显示更新。
+
+在PerpetualCalendar类中添加updateCalendar方法，来对日历的显示进行更新。
+
+在PerpetualCalendar类中添加sdf属性，负责日期的格式化：
+
+    private SimpleDateFormat sdf =
+
+new SimpleDateFormat("yyyy年MM月");
+
+在PerpetualCalendar类中添加updateCalendar方法：
+
+private void updateCalendar() {
+
+       //返回月中天数的最大值
+
+       int maxDay =
+
+ calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+       int currentDay = -1;
+
+       //获取一个Calendar对象，该对象所表示的日历字段
+
+//已由当前日期和时间初始化
+
+       Calendar c = Calendar.getInstance();
+
+       //如果当前时间的年月和用户所要请求的时间的年月一样，
+
+//获取当前天是当前月中的第几天
+
+       if (c.get(Calendar.YEAR) == calendar.get(Calendar.YEAR)
+
+              && c.get(Calendar.MONTH) ==
+
+ calendar.get(Calendar.MONTH)) {
+
+           //获取当前是月中的第几天
+
+           currentDay = c.get(Calendar.DATE);
+
+       }
+
+       //设置年月和是月中的第几天
+
+       c.set(calendar.get(Calendar.YEAR),
+
+calendar.get(Calendar.MONTH), 1);
+
+       //获取是一周的第几天
+
+       int begin = c.get(Calendar.DAY_OF_WEEK);
+
+       //调用setCalendar方法，设置显示星期和日的Label
+
+       view.setCalendar(begin, maxDay, currentDay);
+
+       //调用setYearAndMonth方法，设置年月Label要显示的内容
+
+       //sdf.format(calendar.getTime())把calendar所表示的时间
+
+//进行格式化 格式为yyyy年MM月
+
+       view.setYearAndMonth(sdf.format(calendar.getTime()));
+
+    }
+
+ 
+
+ 
+
+在PerpetualCalendar类的incMonth中添加对updateCalendar方法的调用：
+
+    public void incMonth() {
+
+       calendar.add(Calendar.MONTH, 1);
+
+       updateCalendar();
+
+    }
+
+在PerpetualCalendar类的decMonth中添加对updateCalendar方法的调用：
+
+public void decMonth() {
+
+       calendar.add(Calendar.MONTH, -1);
+
+       updateCalendar();
+
+    }
+
+在PerpetualCalendar类的构造器中添加对updateCalendar方法的调用：
+
+public PerpetualCalendar() {
+
+       view = new CalendarFrame(this);
+
+       updateCalendar();
+
+}
+
+ 
+
+ 
+
+ 
+
+万年历工具完整代码如下所示：
+
+PerpetualCalendar类代码如下所示：
+
+import java.text.SimpleDateFormat;
+
+import java.util.Calendar;
+
+ 
+
+import javax.swing.UIManager;
+
+import javax.swing.UIManager.LookAndFeelInfo;
+
+ 
+
+public class PerpetualCalendar {
+
+    private CalendarFrame view;
+
+    private Calendar calendar = Calendar.getInstance();
+
+    private SimpleDateFormat sdf =
+
+new SimpleDateFormat("yyyy年MM月");
+
+ 
+
+    public void incMonth() {
+
+       calendar.add(Calendar.MONTH, 1);
+
+       updateCalendar();
+
+    }
+
+ 
+
+    public void decMonth() {
+
+       calendar.add(Calendar.MONTH, -1);
+
+       updateCalendar();
+
+    }
+
+ 
+
+    public PerpetualCalendar() {
+
+       view = new CalendarFrame(this);
+
+       updateCalendar();
+
+    }
+
+ 
+
+    private void updateCalendar() {
+
+       int maxDay =
+
+ calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+       int currentDay = -1;
+
+       Calendar c = Calendar.getInstance();
+
+       if (c.get(Calendar.YEAR) == calendar.get(Calendar.YEAR)
+
+              && c.get(Calendar.MONTH) ==
+
+ calendar.get(Calendar.MONTH)) {
+
+           currentDay = c.get(Calendar.DATE);
+
+       }
+
+       c.set(calendar.get(Cal ar.get(Calendar.MONTH), 1);
+
+       int begin = c.get(Calendar.DAY_OF_WEEK);
+
+       view.setCalendar(begin, maxDay, currentDay);
+
+       view.setYearAndMonth(sdf.format(calendar.getTime()));
+
+    }
+
+ 
+
+    public void show() {
+
+       view.setVisible(true);
+
+    }
+
+ 
+
+    public static void main(String[] args) throws Exception {
+
+       for (LookAndFeelInfo info :
+
+ UIManager.getInstalledLookAndFeels()) {
+
+           if ("Nimbus".equals(info.getName())) {
+
+              UIManager.setLookAndFeel(info.getClassName());
+
+              break;
+
+           }
+
+       }
+
+       PerpetualCalendar calendar = new PerpetualCalendar();
+
+       calendar.show();
+
+    }
+
+}
+
+CalendarFrame类代码如下所示：
+
+ 
+
+import java.awt.Color;
+
+import java.awt.Container;
+
+import java.awt.Dimension;
+
+import java.awt.Toolkit;
+
+import java.awt.event.MouseAdapter;
+
+import java.awt.event.MouseEvent;
+
+ 
+
+import javax.swing.JFrame;
+
+import javax.swing.JLabel;
+
+ 
+
+public class CalendarFrame extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+
+    private PerpetualCalendar calendar;
+
+ 
+
+    private JLabel yearAndMonth;
+
+    private JLabel monthInc;
+
+    private JLabel monthDec;
+
+    private JLabel[] weeks = { new JLabel("日"),
+
+new JLabel("一"),
+
+                                    new JLabel("二"),
+
+                                     new JLabel("三"),
+
+new JLabel("四"),
+
+new JLabel("五"),
+
+                                    new JLabel("六"), };
+
+    private JLabel[] days = new JLabel[42];
+
+ 
+
+    public void setYearAndMonth(String yearAndMonth) {
+
+       this.yearAndMonth.setText(yearAndMonth);
+
+    }
+
+ 
+
+    public void setCalendar(int begin, int maxDay, int currentDay)
+
+ {
+
+       for (int i = 0; i < days.length; i++) {
+
+           days[i].setText("");
+
+           days[i].setForeground(Color.BLACK);
+
+       }
+
+       for (int i = 1; i <= maxDay; i++) {
+
+           String dateStr = i <= 9 ? " " + i : "" + i;
+
+           days[begin + i - 2].setText(dateStr);
+
+ 
+
+           if (currentDay == i) {
+
+              days[begin + i - 2].setForeground(Color.RED);
+
+           }
+
+       }
+
+    }
+
+ 
+
+    public CalendarFrame(PerpetualCalendar calendar) {
+
+       this.calendar = calendar;
+
+       setTitle("PerpetualCalendar");
+
+       setSize(400, 350);
+
+ 
+
+       init();
+
+ 
+
+       Dimension d =
+
+ Toolkit.getDefaultToolkit().getScreenSize();
+
+       setLocation((d.width - getWidth()) / 2,
+
+(d.height - getHeight()) / 2);
+
+       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+       setResizable(false);
+
+    }
+
+ 
+
+    private void init() {
+
+       Container contentPane = getContentPane();
+
+       contentPane.setLayout(null);
+
+ 
+
+       for (int i = 0; i < weeks.length; i++) {
+
+           weeks[i].setBounds(40 + i * 50, 50, 50, 30);
+
+           contentPane.add(weeks[i]);
+
+       }
+
+ 
+
+       for (int i = 0; i < days.length; i++) {
+
+           days[i] = new JLabel("");
+
+           days[i].setBounds(40 + (i % 7) * 50, 90 + (i / 7) * 30,
+
+ 50, 30);
+
+           contentPane.add(days[i]);
+
+       }
+
+ 
+
+       monthInc = new JLabel(">>");
+
+       monthInc.setBounds(250, 20, 20, 20);
+
+       contentPane.add(monthInc);
+
+       monthDec = new JLabel("<<");
+
+       monthDec.setBounds(130, 20, 20, 20);
+
+       contentPane.add(monthDec);
+
+       yearAndMonth = new JLabel("");
+
+       yearAndMonth.setBounds(165, 20, 80, 20);
+
+       contentPane.add(yearAndMonth);
+
+ 
+
+       monthInc.addMouseListener(new MouseAdapter() {
+
+           @Override
+
+           public void mouseEntered(MouseEvent e) {
+
+              monthInc.setForeground(Color.RED);
+
+           }
+
+ 
+
+           @Override
+
+           public void mouseExited(MouseEvent e) {
+
+              monthInc.setForeground(Color.BLACK);
+
+           }
+
+ 
+
+           @Override
+
+           public void mouseClicked(MouseEvent e) {
+
+              calendar.incMonth();
+
+           }
+
+       });
+
+ 
+
+       monthDec.addMouseListener(new MouseAdapter() {
+
+           @Override
+
+           public void mouseEntered(MouseEvent e) {
+
+              monthDec.setForeground(Color.RED);
+
+           }
+
+ 
+
+           @Override
+
+           public void mouseExited(MouseEvent e) {
+
+              monthDec.setForeground(Color.BLACK);
+
+           }
+
+ 
+
+           @Override
+
+           public void mouseClicked(MouseEvent e) {
+
+              calendar.decMonth();
+
+             
+
+           }
+
+       });
+
+    }
+
+}
+
+
+
+2、扫雷游戏——完成Field类及Minesfield类的设计及除getAround方法外的编写：
+
+    
+
+(1) 问题
+
+在扫雷游戏中如何用Java代码表示扫雷游戏中的小方块（我们称之为一个Field）并且该Field有不同的显示状态；如何设置地雷的分布情况。
+
+下面是扫雷游戏的总体介绍。下图是扫雷游戏的初始界面，如图-16所示：
+
+    
+
+图-16
+
+点击其中一个小方块（就是一个Field），如果该Field不是地雷，但是它周围有地雷，该Field上显示的是周围地雷的数目,如图-17所示。如果点击的这个Field为地雷那么所有Field将全部打开如图-20所示：
+
+    
+
+图-17
+
+可以点击右键标识某个Field为地雷,如图-18所示：
+
+    
+
+图-18
+
+已打开Field，其四周可能为地雷的Field被标识之后，可以双击这个已打开的Field，如果被标识Field真的为地雷，那么已打开Field四周非地雷Field将全部打开，如图-19所示：
+
+    
+
+图-19
+
+如果标识Field不是地雷，双击已打开的Field，将全部打开，游戏失败，如图-20所示：
+
+     
+
+图-20
+
+可以点击开始恢复到初始状态，继续游戏。
+
+(2) 方案
+
+设计Field类，Field类就是扫雷游戏中一个小方块它有多种状态，如图-21所示：
+
+     
+
+  图-21
+
+使用x,y确定每个Field在整个雷域中的位置，如图-22所示：
+
+     
+
+图-22
+
+新建Field类，类中包括常量STYLE_COVERD，STYLE_OPENED，STYLE_MARKED,属性sytle,mineValue,x,y并且覆盖equals和toString方法。
+
+新建Minesfield类，类中定义SIZE，MINES_NUM常量：
+
+    public static final int SIZE = 16;//设置雷的区域是16行16列
+
+    public static final int MINES_NUM = 40;//设置雷的总数目为40
+
+在Minesfield类中定义fields属性，表示雷域中的所有Field:
+
+    private List<Field> fields;
+
+      在Minesfield类中定义getField方法，用来根据x，y获取一个Field：
+
+    public Field getField(int x, int y) {
+
+       int index = fields.indexOf(new Field(x, y));
+
+       if (index >= 0) {
+
+           return fields.get(index);
+
+       } else {
+
+           return null;
+
+       }
+
+    }
+
+在Minesfield类中定义getFieldSytle方法，用来根据x,y获取Field对应的样式：
+
+    public int getFieldStyle(int x, int y) {
+
+       return getField(x, y).getStyle();
+
+    }
+
+在Minesfield类中定义setFieldSytle方法，用来根据x,y获取Field，并设置该Field对应的样式
+
+    public void setFieldStyle(int x, int y, int style) {
+
+       getField(x, y).setStyle(style);
+
+    }
+
+在Minesfield类中定义getMineValue方法，获取某个Field周围地雷的数目：
+
+    public int getMineValue(int x, int y) {
+
+       return getField(x, y).getMineValue();
+
+    }
+
+在Minesfield类中定义isMine方法，判断某个Field是否为地雷
+
+    public boolean isMine(int x, int y) {
+
+       return getField(x, y).isMine();
+
+    }
+
+    在Minesfield类中定义isCovered方法，判断某个Field是否是覆盖的：
+
+    public boolean isCovered(int x, int y) {
+
+       return getField(x, y).getStyle() == Field.STYLE_COVERD;
+
+    }
+
+在Minesfield类中定义isOpended方法，判断某个Field是否是打开的：
+
+    public boolean isOpended(int x, int y) {
+
+       return getField(x, y).getStyle() == Field.STYLE_OPENED;
+
+    }
+
+在Minesfield类中定义isMarked方法，判断某个Field是否是被标记为地雷：
+
+    public boolean isMarked(int x, int y) {
+
+       return getField(x, y).getStyle() == Field.STYLE_MARKED;
+
+    }
+
+在Minesfield类中定义setCovered方法，设置（x，y）对应的Field是覆盖状态：
+
+public void setCovered(int x, int y) {
+
+       getField(x, y).setStyle(Field.STYLE_COVERD);
+
+    }
+
+在Minesfield类中定义setOpended方法，设置（x，y）对应的Field是打开状态：
+
+    public void setOpended(int x, int y) {
+
+       getField(x, y).setStyle(Field.STYLE_OPENED);
+
+    }
+
+在Minesfield类中定义setOpended方法，设置（x，y）对应的Field是被标记为地雷状态：
+
+    public void setMarked(int x, int y) {
+
+       getField(x, y).setStyle(Field.STYLE_MARKED);
+
+    }
+
+在Minesfield类中定义initMinefield方法,用来初始化雷域：
+
+public void initMinefield() {
+
+       fields = new ArrayList<Field>();
+
+       Random r = new Random();
+
+       //设置所有的Field的x，y的值
+
+       for (int x = 0; x < SIZE; x++) {
+
+           for (int y = 0; y < SIZE; y++) {
+
+              //使用List保存所有的Field
+
+              fields.add(new Field(x, y));
+
+           }
+
+       }
+
+       //随机生成40个地雷
+
+       for (int i = 0; i < MINES_NUM; i++) {
+
+           int x, y;
+
+           do {
+
+               x = r.nextInt(SIZE);
+
+              y = r.nextInt(SIZE);
+
+           } while (isMine(x, y));
+
+           getField(x, y).setMine();//设置当前Field为地雷
+
+       }
+
+    }
+
+（3） 实现
+
+新建Field类:
+
+public class Field {}
+
+在Field类中添加常量STYLE_COVERD，STYLE_OPENED，STYLE_OPENED：
+
+    public static final int STYLE_COVERD = 1;
+
+    public static final int STYLE_OPENED = 2;
+
+    public static final int STYLE_OPENED = 3;
+
+在Field类中添加属性x,y,style,mineValue并生成各个属性对应的getter和setter:
+
+private int x;
+
+    private int y;
+
+    private int style = STYLE_COVERD;
+
+    private int mineValue = 0;
+
+在Field类中添加构造方法：
+
+public Field(int x, int y) {
+
+       this.x = x;
+
+       this.y = y;
+
+    }
+
+在Field类中添加setMine和getMine方法：
+
+    public void setMine() {
+
+       this.mineValue = -100;
+
+    }
+
+    public boolean isMine() {
+
+       return mineValue == -100;
+
+    }
+
+在Field类中覆盖equals方法：
+
+    @Override
+
+    public boolean equals(Object obj) {
+
+       if (obj instanceof Field) {
+
+           Field field = (Field) obj;
+
+           return x == field.x && y == field.y;
+
+       } else {
+
+           return false;
+
+       }
+
+    }
+
+在Field类中覆盖toString方法：
+
+@Override
+
+    public String toString() {
+
+       if (STYLE_COVERD == style) {
+
+           return "O";
+
+       } else if (STYLE_MARKED == style) {
+
+           return "^";
+
+       } else if (STYLE_OPENED == style) {
+
+           if (isMine()) {
+
+              return "@";
+
+           } else {
+
+              return "" + mineValue;
+
+           }
+
+       }
+
+       return "";
+
+    }
+
+新建Minesfield类：
+
+public class Minesfield {}
+
+在Minesfield类中添加常量SIZE和MINES_NUM:
+
+public static final int SIZE = 16;
+
+    public static final int MINES_NUM = 40;
+
+在Minesfield类中添加fields属性:
+
+    private List<Field> fields;
+
+      在Minesfield类中添加getField方法：
+
+    public Field getField(int x, int y) {
+
+       int index = fields.indexOf(new Field(x, y));
+
+       if (index >= 0) {
+
+           return fields.get(index);
+
+       } else {
+
+           return null;
+
+       }
+
+    }
+
+在Minesfield类中添加getFieldSytle方法：
+
+    public int getFieldStyle(int x, int y) {
+
+       return getField(x, y).getStyle();
+
+    }
+
+在Minesfield类中添加setFieldSytle方法：
+
+    public void setFieldStyle(int x, int y, int style) {
+
+       getField(x, y).setStyle(style);
+
+    }
+
+在Minesfield类中添加getMineValue方法：
+
+    public int getMineValue(int x, int y) {
+
+       return getField(x, y).getMineValue();
+
+    }
+
+在Minesfield类中添加isMine方法：
+
+    public boolean isMine(int x, int y) {
+
+       return getField(x, y).isMine();
+
+    }
+
+    在Minesfield类中添加isCovered方法：
+
+    public boolean isCovered(int x, int y) {
+
+       return getField(x, y).getStyle() == Field.STYLE_COVERD;
+
+    }
+
+在Minesfield类中添加isOpended方法：
+
+    public boolean isOpended(int x, int y) {
+
+       return getField(x, y).getStyle() == Field.STYLE_OPENED;
+
+    }
+
+在Minesfield类中添加isMarked方法：
+
+    public boolean isMarked(int x, int y) {
+
+       return getField(x, y).getStyle() == Field.STYLE_MARKED;
+
+    }
+
+在Minesfield类中添加setCovered方法：
+
+public void setCovered(int x, int y) {
+
+       getField(x, y).setStyle(Field.STYLE_COVERD);
+
+    }
+
+在Minesfield类中添加setOpended方法：
+
+    public void setOpended(int x, int y) {
+
+       getField(x, y).setStyle(Field.STYLE_OPENED);
+
+    }
+
+在Minesfield类中添加setOpended方法：
+
+    public void setMarked(int x, int y) {
+
+       getField(x, y).setStyle(Field.STYLE_MARKED);
+
+    }
+
+在Minesfield类中添加initMinefield方法：
+
+public void initMinefield() {
+
+       fields = new ArrayList<Field>();
+
+       Random r = new Random();
+
+       //设置所有的Field的x，y的值
+
+       for (int x = 0; x < SIZE; x++) {
+
+           for (int y = 0; y < SIZE; y++) {
+
+              //使用List保存所有的Field
+
+              fields.add(new Field(x, y));
+
+           }
+
+       }
+
+       //随机生成40个地雷
+
+       for (int i = 0; i < MINES_NUM; i++) {
+
+           int x, y;
+
+           do {
+
+              x = r.nextInt(SIZE);
+
+              y = r.nextInt(SIZE);
+
+           } while (isMine(x, y));
+
+           getField(x, y).setMine();//设置当前Field为地雷
+
+       }
+
+    }
+
+在Minesfield类中添加构造方法：
+
+    public Minesfield() {
+
+       initMinefield();
+
+    }
+
+新建TestField类测试是否能新建雷域：
+
+public class TestField {
+
+    @Test
+
+    public void testInit() {
+
+       Minesfield mf = new Minesfield();
+
+       System.out.println(mf);
+
+       for (int x = 0; x < Minesfield.SIZE; x++) {
+
+           for (int y = 0; y < Minesfield.SIZE; y++) {
+
+              mf.setOpended(x, y);
+
+           }
+
+       }
+
+       System.out.println(mf);
+
+    }
+
+}
+
+控制台输出结果如图-23所示：
+
+    
+
+图-23
+
+Field类完整代码实现如下：
+
+public class Field {
+
+    public static final int STYLE_COVERD = 1;
+
+    public static final int STYLE_OPENED = 2;
+
+    public static final int STYLE_OPENED = 3;
+
+ 
+
+    private int x;
+
+    private int y;
+
+    private int style = STYLE_COVERD;
+
+    private int mineValue = 0;
+
+ 
+
+    public Field(int x, int y) {
+
+       this.x = x;
+
+       this.y = y;
+
+    }
+
+ 
+
+    public int getX() {
+
+       return x;
+
+    }
+
+ 
+
+    public int getY() {
+
+       return y;
+
+    }
+
+ 
+
+    public void setStyle(int style) {
+
+       this.style = style;
+
+    }
+
+ 
+
+    public int getStyle() {
+
+       return style;
+
+    }
+
+ 
+
+    public void setMineValue(int mineValue) {
+
+       this.mineValue = mineValue;
+
+    }
+
+ 
+
+    public int getMineValue() {
+
+       return mineValue;
+
+    }
+
+ 
+
+    public void setMine() {
+
+       this.mineValue = -100;
+
+    }
+
+ 
+
+    public boolean isMine() {
+
+       return mineValue == -100;
+
+    }
+
+ 
+
+    @Override
+
+    public boolean equals(Object obj) {
+
+       if (obj instanceof Field) {
+
+           Field field = (Field) obj;
+
+           return x == field.x && y == field.y;
+
+       } else {
+
+           return false;
+
+       }
+
+    }
+
+ 
+
+    @Override
+
+    public String toString() {
+
+       if (STYLE_COVERD == style) {
+
+           return "O";
+
+       } else if (STYLE_MARKED == style) {
+
+           return "^";
+
+       } else if (STYLE_OPENED == style) {
+
+           if (isMine()) {
+
+              return "@";
+
+           } else {
+
+              return "" + mineValue;
+
+           }
+
+       }
+
+       return "";
+
+    }
+
+ 
+
+}
+
+MinesField类完整代码实现如下：
+
+import java.util.ArrayList;
+
+import java.util.List;
+
+import java.util.Random;
+
+ 
+
+public class Minesfield {
+
+    public static final int SIZE = 16;
+
+    public static final int MINES_NUM = 40;
+
+    private List fields;
+
+ 
+
+    public void initMinefield() {
+
+       fields = new ArrayList<Field>();
+
+       Random r = new Random();
+
+       for (int x = 0; x < SIZE; x++) {
+
+           for (int y = 0; y < SIZE; y++) {
+
+              fields.add(new Field(x, y));
+
+           }
+
+       }
+
+       for (int i = 0; i < MINES_NUM; i++) {
+
+           int x, y;
+
+           do {
+
+              x = r.nextInt(SIZE);
+
+              y = r.nextInt(SIZE);
+
+           } while (isMine(x, y));
+
+           getField(x, y).setMine();
+
+ 
+
+          
+
+       }
+
+    }
+
+ 
+
+    public Field getField(int x, int y) {
+
+       int index = fields.indexOf(new Field(x, y));
+
+       if (index >= 0) {
+
+           return (Field) fields.get(index);
+
+       } else {
+
+           return null;
+
+       }
+
+    }
+
+ 
+
+ 
+
+    public int getFieldStyle(int x, int y) {
+
+       return getField(x, y).getStyle();
+
+    }
+
+ 
+
+    public void setFieldStyle(int x, int y, int style) {
+
+       getField(x, y).setStyle(style);
+
+    }
+
+ 
+
+    public int getMineValue(int x, int y) {
+
+       return getField(x, y).getMineValue();
+
+    }
+
+ 
+
+    public boolean isMine(int x, int y) {
+
+       return getField(x, y).isMine();
+
+    }
+
+ 
+
+    public boolean isCovered(int x, int y) {
+
+       return getField(x, y).getStyle() == Field.STYLE_COVERD;
+
+    }
+
+ 
+
+    public boolean isOpended(int x, int y) {
+
+       return getField(x, y).getStyle() == Field.STYLE_OPENED;
+
+    }
+
+ 
+
+    public boolean isMarked(int x, int y) {
+
+       return getField(x, y).getStyle() == Field.STYLE_MARKED;
+
+    }
+
+ 
+
+    public void setCovered(int x, int y) {
+
+       getField(x, y).setStyle(Field.STYLE_COVERD);
+
+    }
+
+ 
+
+    public void setOpended(int x, int y) {
+
+       getField(x, y).setStyle(Field.STYLE_OPENED);
+
+    }
+
+ 
+
+    public void setMarked(int x, int y) {
+
+       getField(x, y).setStyle(Field.STYLE_MARKED);
+
+    }
+
+ 
+
+    public Minesfield() {
+
+     initMinefield();
+
+   }
+
+    public String toString() {
+
+       StringBuilder sb = new StringBuilder();
+
+       for (int y = 0; y < SIZE; y++) {
+
+           for (int x = 0; x < SIZE; x++) {
+
+              sb.append(getField(x, y)).append(" ");
+
+           }
+
+           sb.append("\n");
+
+       }
+
+       return sb.toString();
+
+    }
+
+ 
+
+}
+
+(4) 扩展
+
+在扫雷游戏中，如果获取某个Field四周的所有Field。
+
+在Minesfield类中添加getAround(int x, int y)方法，获取(x,y)对应的Field四周所有的Field：
+
+public List getAround(int x, int y) {
+
+       List list = new ArrayList();
+
+       for (int m = -1; m <= 1; m++) {
+
+           for (int n = -1; n <= 1; n++) {
+
+              if (m == 0 && n == 0)
+
+                  continue;
+
+              int index = fields.indexOf(new Field(x + m, y + n));
+
+              if (index >= 0) {
+
+                  list.add(fields.get(index));
+
+              }
+
+           }
+
+       }
+
+       return list;
+
+    }
+
+在Minesfield类中重载getAround(Field field)方法，获取field四周的所有Field:
+
+public List getAround(Field field) {
+
+       return getAround(field.getX(), field.getY());
+
+    }
+
+在Minesfield类的initMinefield中添加如下代码：
+
+    //获取当前Field周围的区域
+
+    List<Field> arroundList = getAround(x, y);
+
+    for (Field field : arroundList) {
+
+         //如果当前地雷Field的周围的某个Field不是地雷
+
+       if (!field.isMine()) {
+
+           //设置当前四周Field的周围地雷数目加1
+
+           field.setMineValue(field.getMineValue() + 1);
+
+       }
+
+    }
+
+
+
+3、扫雷游戏——重构Minesfield，使用泛型：
+
+    
+
+(1) 问题
+
+扫雷游戏中，在Minesfield类中我们使用到了容器List，为了明确List中所存储的数据的类型是Field类型，现需要重构Minesfield，使用泛型。
+
+(2) 方案
+
+更改Minesfield类中使用到集合框架List和ArrayList的属性和方法，对List和ArrayList使用泛型。
+
+(3) 实现
+
+修改Minesfield类中的属性fields：
+
+private List<Field> fields;
+
+修改Minesfield类的getAround方法：
+
+    public List<Field> getAround(int x, int y) {
+
+       List<Field> list = new ArrayList<Field>();
+
+       for (int m = -1; m <= 1; m++) {
+
+           for (int n = -1; n <= 1; n++) {
+
+              if (m == 0 && n == 0)
+
+                  continue;
+
+              int index = fields.indexOf(new Field(x + m, y + n));
+
+              if (index >= 0) {
+
+                  list.add(fields.get(index));
+
+              }
+
+           }
+
+       }
+
+       return list;
+
+    }
+
+修改Minesfield类的initMinefield方法:
+
+public void initMinefield() {
+
+       fields = new ArrayList<Field>();
+
+       Random r = new Random();
+
+       for (int x = 0; x < SIZE; x++) {
+
+           for (int y = 0; y < SIZE; y++) {
+
+              fields.add(new Field(x, y));
+
+           }
+
+       }
+
+       for (int i = 0; i < MINES_NUM; i++) {
+
+           int x, y;
+
+           do {
+
+              x = r.nextInt(SIZE);
+
+              y = r.nextInt(SIZE);
+
+           } while (isMine(x, y));
+
+           getField(x, y).setMine();
+
+ 
+
+           List<Field> arroundList = getAround(x, y);
+
+           for (Field field : arroundList) {
+
+              if (!field.isMine()) {
+
+                  field.setMineValue(field.getMineValue() + 1);
+
+              }
+
+           }
+
+       }
+
+    }
+
+Minesfield类完整代码实现如下所示:
+
+import java.util.ArrayList;
+
+import java.util.List;
+
+import java.util.Random;
+
+ 
+
+public class Minesfield {
+
+    public static final int SIZE = 16;
+
+    public static final int MINES_NUM = 40;
+
+    private List<Field> fields;
+
+ 
+
+    public void initMinefield() {
+
+       fields = new ArrayList<Field>();
+
+       Random r = new Random();
+
+       for (int x = 0; x < SIZE; x++) {
+
+           for (int y = 0; y < SIZE; y++) {
+
+              fields.add(new Field(x, y));
+
+           }
+
+       }
+
+       for (int i = 0; i < MINES_NUM; i++) {
+
+           int x, y;
+
+           do {
+
+              x = r.nextInt(SIZE);
+
+              y = r.nextInt(SIZE);
+
+           } while (isMine(x, y));
+
+           getField(x, y).setMine();
+
+ 
+
+           List<Field> arroundList = getAround(x, y);
+
+           for (Field field : arroundList) {
+
+              if (!field.isMine()) {
+
+                  field.setMineValue(field.getMineValue() + 1);
+
+              }
+
+           }
+
+       }
+
+    }
+
+ 
+
+    public Field getField(int x, int y) {
+
+       int index = fields.indexOf(new Field(x, y));
+
+       if (index >= 0) {
+
+           return fields.get(index);
+
+       } else {
+
+           return null;
+
+       }
+
+    }
+
+ 
+
+    public List<Field> getAround(int x, int y) {
+
+       List<Field> list = new ArrayList<Field>();
+
+       for (int m = -1; m <= 1; m++) {
+
+           for (int n = -1; n <= 1; n++) {
+
+              if (m == 0 && n == 0)
+
+                  continue;
+
+              int index = fields.indexOf(new Field(x + m, y + n));
+
+              if (index >= 0) {
+
+                  list.add(fields.get(index));
+
+              }
+
+           }
+
+       }
+
+       return list;
+
+    }
+
+ 
+
+    public List<Field> getAround(Field field) {
+
+       return getAround(field.getX(), field.getY());
+
+    }
+
+ 
+
+    public int getFieldStyle(int x, int y) {
+
+       return getField(x, y).getStyle();
+
+    }
+
+ 
+
+    public void setFieldStyle(int x, int y, int style) {
+
+       getField(x, y).setStyle(style);
+
+    }
+
+ 
+
+    public int getMineValue(int x, int y) {
+
+       return getField(x, y).getMineValue();
+
+    }
+
+ 
+
+    public boolean isMine(int x, int y) {
+
+       return getField(x, y).isMine();
+
+    }
+
+ 
+
+    public boolean isCovered(int x, int y) {
+
+       return getField(x, y).getStyle() == Field.STYLE_COVERD;
+
+    }
+
+ 
+
+    public boolean isOpended(int x, int y) {
+
+       return getField(x, y).getStyle() == Field.STYLE_OPENED;
+
+    }
+
+ 
+
+    public boolean isMarked(int x, int y) {
+
+       return getField(x, y).getStyle() == Field.STYLE_MARKED;
+
+    }
+
+ 
+
+    public void setCovered(int x, int y) {
+
+       getField(x, y).setStyle(Field.STYLE_COVERD);
+
+    }
+
+ 
+
+    public void setOpended(int x, int y) {
+
+       getField(x, y).setStyle(Field.STYLE_OPENED);
+
+    }
+
+ 
+
+    public void setMarked(int x, int y) {
+
+       getField(x, y).setStyle(Field.STYLE_MARKED);
+
+    }
+
+ 
+
+    public Minesfield() {
+
+       initMinefield();
+
+    }
+
+ 
+
+    public String toString() {
+
+       StringBuilder sb = new StringBuilder();
+
+       for (int y = 0; y < SIZE; y++) {
+
+           for (int x = 0; x < SIZE; x++) {
+
+              sb.append(getField(x, y)).append(" ");
+
+           }
+
+           sb.append("\n");
+
+       }
+
+       return sb.toString();
+
+    }
+
+}
+
+(4) 扩展
+
+熟练掌握扫雷游戏——重构Minesfield，使用泛型的原理及其实现。
+
+
+
+
+    Copyright (C)
+    达内时代科技集团有限公司
+    2011-2013 tarena.com.cn
+    返回顶部
+

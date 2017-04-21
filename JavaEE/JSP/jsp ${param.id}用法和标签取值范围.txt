@@ -1,0 +1,26 @@
+jsp ${param.id}用法
+
+${id} 意思是取出某一范围中名称为id的变量。
+它的取值范围Page,Request,Session,Application。 
+
+${param.id} 与输入有关，相对于 request.getParameter("id")。意思是获得输入的参数id。 
+因为a.jsp提交到b.jsp过程中，id不属于Page,Request,Session,Application任何范围中的一个，所以取不到。 
+而id是a.jsp传给b.jsp的一个参数，所以${param.id}取到值。 
+Request的范围是指一个jsp页面发送请求到另一个jsp页面之间。 
+在a.jsp里<%request.setAttribute("key","Test")%> 
+当a.jsp转向b.jsp时，b.jsp可以得到a.jsp的变量key的值，而别的jsp页面是得不到值的。 
+这里面的关键是a.jsp要转向b.jsp，在a.jsp加上<jsp:forward page="b.jsp"/>表示要转向b.jsp.否则b.jsp得不到a.jsp设置的key的值。
+
+
+SpringMVC中model,modelMap.request,session取值顺序
+
+博客分类： java学习
+IDEA 
+Model model,HttpServletRequest request, ModelMap map声明变量 
+
+request.getSession().setAttribute("test", "haiwei2Session"); 
+request.setAttribute("test", "haiwei1request");	
+map.addAttribute("test", "haiweiModelMap"); 
+model.addAttribute("test", "haiweiModel"); 
+
+我通过${test}这个方式取值，优先取Model和ModelMap的，Model和ModelMap是同一个东西，谁最后赋值的就取谁的，然后是request，最后是从session中获取

@@ -1,0 +1,41 @@
+关于web.xml文件莫名其妙报错的问题 
+
+如果web.xml提示以下错误：
+The content of element type "web-app" must match "(icon?,display-name?,description?,distributable?,context-param*,filter*,filter-mapping*,listener*,servlet*,servlet-mapping*,session-config?,mime-mapping*,welcome-file-list?,error-page*,taglib*,resource-env-ref*,resource-ref*,security-constraint*,login-config?,security-role*,env-entry*,ejb-ref*,ejb-local-ref*)"
+可尝试以下解决办法：
+1.去掉文件第二行<!DOCTYPE web-app.....  ..  ..  ..>这句描述（不推荐）
+2.按正确顺序放置各标签(下附正确顺序)，此法有时可能不能解决问题
+3.把类似<filter>--<filter-mapping>和<servlet>--<servlet-mapping>这样的配对标签分开写，即所有的<filter>(<servlet>)写在一起，所有的<filter-mapping>(<servlet-mapping>)写在一起。
+ 
+附：web.xml标签放置顺序
+1. icon?
+2. display-name?
+3. description?
+4. distributable?
+5. context-param*
+6. filter*
+7. filter-mapping*
+8. listener*
+9. servlet*
+10.servlet-mapping*
+11.session-config?
+12.mime-mapping*
+13.welcome-file-list?
+14.error-page*
+15.taglib*
+16.resource-env-ref*
+17.resource-ref*
+18.security-constraint*
+19.login-config?
+20.security-role*
+21.env-entry*
+22.ejb-ref*
+23.ejb-local-ref
+"?"表示该标签出现次数最多为1，"*"表示可以多次出现。
+
+http://61.160.131.19:8080/frontend/package/product_list.htm?uid=15099&packagesId=823&productId=1325
+
+http://60.216.9.251:60004/backend/admin/login/in.htm 山东省网
+
+切换到当前数据库：use test 
+再输入：\. d:/test.sql 或 souce d:/test.sql 

@@ -1,0 +1,48 @@
+ Linux系统中的tomcat定时重启脚本 
+
+1.Linux下tomcat重启脚本
+[root@]# vi test.sh
+#!/bin/sh
+export JAVA_HOME=/usr/java/j2sdk1.4.2_06/
+pid=`ps -auxwwgrep tomcatgrep -v grepawk '{print $2}'`
+echo $pid
+if [ -n "$pid" ];
+then
+{
+echo "==========tomcat is start============"
+'/usr/local/tomcat/bin/shutdown.sh'
+sleep 5
+'/usr/local/tomcat/bin/shutdown.sh'
+sleep 15
+pid=`ps -auxwwgrep tomcatgrep -v grepawk '{print $2}'`
+if [ -n "$pid" ];
+then
+{
+echo "======to kill the tomcat pid $pid========"
+kill $pid
+sleep 3
+}
+fi
+echo "==========start tomcat============"
+'/usr/local/tomcat/bin/startup.sh'
+}
+else
+{
+echo "==========tomcat is stop=====start======="
+'/usr/local/tomcat/bin/startup.sh'
+}
+fi
+
+2.定时脚本，每天凌晨6:01执行tomcat重启脚本
+[root@]# crontab -e
+1 06 * * * /home/mcc/test.sh
+
+3.启动定时服务
+[root@]# service crond stop
+[root@]# service crond start
+
+4.查看该任务是否在定时列表里面：
+[root@]# crontab -l
+1 06 * * * /home/mcc/test.sh
+
+参考http://www.linuxidc.com/Linux/2008-02/11023.htm

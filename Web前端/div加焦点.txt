@@ -1,0 +1,13 @@
+blur事件: 当元素失去焦点时发生 blur 事件。 
+
+focus事件:focus() 方法用于赋予文本域焦点(也值让某些元素得到焦点事件)。 
+
+tabIndex属性:tabIndex 属性可设置或返回按钮的 tab 键控制次序。 
+
+我们都知道blur只是针对form表单控件的，而对于 span , div , li 之类的，则没办法触发它们的动作，现在我们只需要设置一个tabindex属性则可以触发它们的焦点事件了。 
+
+真实项目代码: 
+复制代码 代码如下:
+
+Esc.PopupMenu.prototype._createPopup=function(){ 
+var popupDiv = $('<div tabindex=1></div>'); //创建div 

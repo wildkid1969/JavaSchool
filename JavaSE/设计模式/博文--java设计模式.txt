@@ -1,0 +1,241 @@
+
+经典---JAVA设计模式
+分类： J2ME Android JAVA SE 2011-05-13 14:07 
+iteratorcommandinitializationinterfaceclassquery
+
+世上一直有一个神话：设计可以并且应该独立于实现的细节，设计通常被看作是一个抽 
+象的概念而实现是一个代码的具体实例。如果我们坚信"设计是一个富有创造性和目的性 
+的活动：为某一个目标而精心制定的结构的概念，"，一个结构如果不能够说明它的环境 
+，或者不能与环境协作，那么这个结构就不适合这一目标。环境中包括目标平台--语言 
+、工具、库、中间件（middleware），等。还有它的功能性和非功能性的单元。 
+　　我们会认为在不知道地形布局的时候设计房屋，或者在不清楚使用的道材料的时候 
+建造摩天大厦是不合理的事情。我们将线程、分布这类概念看作为小的编码的细节的看 
+法无疑是在设计中导致浪费精力（时间和金钱）的导火索，最终我们发现的是理论与实 
+践的差距在实践中要比在理论中还大。虽然在一些情况下一个高层次设计的某部分可以 
+在许多技术下保持不变，但是更多的情况是我们需要亲自来补足这个圆圈，允许（甚至 
+鼓励）细节和实际的信息来影响并告知系统的结构。 
+　　模式(Patterns)的作用就是获取这些结构上的信息。它们可以描述--预见性的或回 
+顾性的--设计和设计的原理，讲述从问题到解决，说明环境，获取工作的动力以及应此 
+产生的结果。这里，我将集中讲述两个模式--Command-Query Separation和Command Me 
+thod--为一个类接口中的方法分配任务，考察他们如何互相作用并影响并发的、分布的 
+和有序的环境以及本地执行。 
+　　接口设计。顾名思义，接口提供了不同系统之间或者系统不同组件之间的界定。在 
+软件中，接口提供了一个屏障，从而从实现中分离了目标，从具体中分离了概念，从作 
+者中分离了用户。在Java中，有许多接口的概念：public部分为潜在的用户提供了类和 
+方法的接口，protected部分为它的子类（subclass）以及周围的包提供了一个接口；一 
+个包有一个公用的部分；反射（Reflection）是另外一种提供、使用对象方法接口的机 
+制。 
+　　约束及供给。站在用户对作者的角度，一个接口建立并命名了一个目的模型的使用 
+方法。类接口中的方法提供了一种特殊的使用方法。是这些约束--编译时的类型系统， 
+运行是的异常机制及返回值--使得类作者的目的得以体现和加强。在这方面最简单的例 
+子是对封装的意义的理解：私有化可以保证类用户只可以通过类的公用方法接口来操作 
+信息和行为。 
+　　然而，对于封装来说，远不止数据私有那么简单。在设计中，封装往往会涉及到自 
+我包含（self-containment）。一个需要你知道如何调用一个方法（e.g."在一个线程的 
+环境中，在一个方法调用后调用另一个方法，你必须明确地同步对象"）的类的封装就不 
+如将所有这些全部包含并隐藏的类（e.g."这个类是thread-safe的"）好。前一个设计存 
+在着设计的漏洞，它的许多限定条件是模糊的而不是经过加强的。这就把责任推给了用 
+户而不是让类提供者做这些工作来完成类的设计，并且，这是不可避免的漏洞百出。 
+　　在这种情况下，供给（affordances）描述了使用的可行性和不可行性。 
+　　术语供给（affordances）指事物的被感知的真实的属性，首先，这些属性可以决定 
+事物的使用的可能方法。一个椅子可以用来支撑其他东西，所以，可以坐人。一个椅子 
+照样可以搬运（carried）。玻璃可以透光，也可以被打碎…… 
+　　供给提供了对事物操作的线索，板状物可以压、柄状物可以旋转，沟状物可以插入 
+东西。球状物可以扔或者反弹。当使用了供给的优势后，用户可以只通过看便确定该做 
+什么：没有图、没有标签也没有说明。复杂的事物可能会需要一些解释，但是简单的事 
+物不应该这样。当简单的东西也需要用图片、标签来说明的时候，设计就是失败的。 
+　　类设计者的一个职责便是在接口中减小约束与供给之间的隔阂（gap），匹配目标以 
+及一定程度上的自由度，尽可能减小错误使用的可能。 
+　　对环境敏感的设计。在空间或者时间上分离方法的执行--例如，线程，远程方法调 
+用，消息队列--能够对设计的正确性和效率产生意义深远的影响。这种分离带来的结果 
+是不可忽视的：并发引入了不确定性和环境选择的开销；分布引入了错误的和不断增加 
+的回程的调用开销。这些是设计的问题，而不是修改bug那样简单。 
+　　无论是在何种情况下，结果都是将会阻碍所有权风格的程序设计（Property-Style 
+Programming）--当一个接口主要由set和get方法组成的时候，每个方法都相应的直接 
+指向私有区域。这样的类的封装很差（意思是毫无遮掩）。接口中的域访问器（Field 
+accessors）通常是不会提供信息的：他们在对象的使用中不能通讯、简单化和抽象化， 
+这通常会导致冗长并易出现错误的代码。所有权风格的程序设计在短时间内不是一个大 
+的活动。分布和并行通过引入了正确性和严重的性能开销放大了这些格式上实践的问题 
+。 
+　　透明度和bug灾难。抽象允许我们在必要的时候可以忽略细节，所以我们的设计思想 
+可以平衡环境的因素而不是受制于它们。决定什么样的细节可以忽略便成为一个挑战。 
+问题的严重性在重要的细节别忽略的情况下上升了。 
+设计往往会尽量使环境因素尽可能的透明。透明能够成为一个诱人的主意：也许它可以 
+让线程和远程对象通讯完全透明，这样用户在进行对象通讯的时候什么也不会觉察到。 
+Proxy模式支持一定程度上的透明度。这加强了RMI和COBRA的基础。本地的代理的对象和 
+使用远程的对象在使用中具有相同的接口，并且编组上的细节允许调用着使用熟悉的方 
+法来调用模型。然而，这种分布透明并不完全：失误和潜在的影响，不能被完全隐藏并 
+且需要考虑。毕竟透明不是毛巾。 
+Command-Query Separation 
+保证一个方法是不命令（Command）就是查询（Query） 
+　　问题。方法，当它们返回一个值来回应一个问题的时候，具有查询的性质，当它们 
+采取强制行动来的改变对象的状态的时候，具有命令的属性。所以一个方法可以是纯的 
+Command模式或者是纯的Query模式，或者是这两者的混合体。 
+例如，在java.util.Iterator中，hasNext可以被看作一种查询，remove是一种命令，n 
+ext和awkward合并了命令和查询： 
+public interface Iterator 
+{ 
+boolean hasNext(); 
+Object next(); 
+void remove(); 
+} 
+如果不将一个Iterator对象的当前值向前到下一个的话，就不能够查询一个Iterator对 
+象。这导致了一个初始化（initialization）、增加(continuation)、访问(access)和 
+前进(advance)分离而清晰定义的循环结构的错位： 
+for(initialization; continuation condition; advance) 
+{ 
+... access for use ... 
+} 
+将Command和Query功能合并入一个方法的的结果是降低了清晰性。这可能阻碍基于断言 
+的程序设计并且需要一个变量来保存查询结果： 
+for(Iterator iterator = collection.iterator(); 
+iterator.hasNext();) 
+{ 
+Object current = iterator.next(); 
+... use current... 
+... again use current... 
+} 
+解决方案。保证方法的行为严格的是命令或者是查询，这样可以返回值的方法是纯的函 
+数而没有复效应（side effects），有负效应的方法不可能有返回值。"另一个表述这点 
+的方法是问一个问题而不影响到答案。" 
+Combined Method 
+组合方法经常一起被使用在线程和分布环境中来保证正确性并改善效率。 
+　　问题。一些主要提供密集的方法的接口，起初，看来是最小化和附着性强的--都是 
+吸引人的特点。然而，在使用的过程中，一些接口显现得过于原始。它们过于简单化， 
+从而迫使类用户用更多的工作来实现普通的的任并操纵方法之间的依赖性（暂时耦合） 
+。这是非常麻烦并且容易出错的，导致了代码重复--代码中应当避免的--并且为bug提供 
+了很好的滋生条件。 
+　　一些需要同时执行成功的方法，在执行的时候在多线程、异常、和分布的地方遇到 
+了麻烦。如果两个动作需要同时执行，它们必须遵守协作或反转（commit-or-rollback 
+）语义学--它们必须都完全成功的执行或者一个动作的失败会反转另一个动作的执行-- 
+它们由两个独立的方法进行描述。 
+　　线程的引入使不确定程度大大增加。一系列方法调用一个易变的(mutable)对象并不 
+会确保结果是料想中的，如果这个对象在线程之间共享，即使我们假设单独的方法是线 
+程安全的。看下面的对Event Source的接口，它允许安置句柄和对事件的查询： 
+interface EventSource 
+{ 
+Handler getHandler(Event event); 
+void installHandler(Event event, Handler newHandler); 
+... 
+} 
+线程之间的交叉调用可能会引起意想不到的结果。假设source域引用一个线程共享的对 
+象，很可能在1、2之间对象被另一个线程安装了一个句柄： 
+class EventSourceExample 
+{ 
+... 
+public void example(Event event, Handler newHandler) 
+{ 
+oldHandler = eventSource.getHandler(event); // 1 
+eventSource.installHandler(event, newHandler); // 2 
+} 
+private EventSource eventSource; 
+private Handler oldHandler; 
+} 
+同样的，这次也是类使用者而不是类设计者来关注这些，制定约束： 
+class EventSourceExample 
+{ 
+... 
+public void example(Event event, Handler newHandler) 
+{ 
+synchronized(eventSource) 
+{ 
+oldHandler = eventSource.getHandler(event); 
+eventSource.installHandler(event, newHandler); 
+} 
+} 
+private EventSource eventSource; 
+private Handler oldHandler; 
+} 
+　　如果目标对象是远程的，回程增加的开销和对方法调用失败并发的交织在一起成为 
+环境的一部分。在上一个例子中，我们可以假设执行每一个方法体的时间和通讯的延迟 
+相比是很短的。在这个例子中，开销被重复了两次，并可能在其他的实例中重复多次。 
+
+　　此外还有一个问题是对外部（extern）的synchronized同步块的使用需求。Synchr 
+onized块很明显在分布的环境中使用但是也可以在本地的线程环境中应用的很好：在调 
+用者和目标之间的代理对象的使用。简而言之，对synchronized块的使用因为代理对象 
+而不是目标对象的同步而失败。保守的说法是，这对系统的真确性可以有一个基本的影 
+响。因为代理使用是在接口后透明的，调用者不能对行为做太多的保证。 
+　　解决方案。Combined Method必须在分布，线程环境中同时执行。联合应当反映出普 
+通的使用方法。这样，一个Combined Method才可能比原有的方法要清晰，因为它反映了 
+直接的应用。恢复策略和一些笨拙的方法被封装到Combined Method中，并简化了类用户 
+角度的接口。这改善的封装降低了接口中不需要的累赘。Combined Method的全部效果是 
+支持一种更像事务处理风格的设计。 
+　　在一个联合的Command-Query中提供一个单独的Query方法通常是合理的。然而，这 
+需要按照需要而制定，而不是强制的执行。提供分离的Command方法是不太常见的，因为 
+Combined Method可以完成这一工作：调用者简单的忽略结果。如果返回一个结果招致一 
+个开销的话，才可能会体统一个单独的Command方法。 
+回到前一个例子中，如果installHandler method返回上一个句柄设计变得更加简单和独 
+立： 
+class EventSourceExample 
+{ 
+... 
+public void example(Event event, Handler newHandler) 
+{ 
+oldHandler = eventSource.installHandler(event, newHandler); 
+} 
+private EventSource eventSource; 
+private Handler oldHandler; 
+} 
+　　调用者提供了一个更加安全接口，并且不再需要解决线程的问题。这降低了风险和 
+代码的大小，将类设计的职责全部给了类设计者而不是推给用户。代理对象的出现没有 
+影响到正确性。 
+　　一个Combined Method可以是许多Query的集合，许多Command的集合，或者两者兼有 
+。这样，它可能补充或者抵触Command-Query分离的方法。当冲突发生的时候，优先选择 
+Combined Method会产生一个不同的正确性和适用性。 
+在另一个例子中，考虑获得资源的情况。假设，在下面的接口中，获得的方法在资源可 
+用前一直起到阻碍作用： 
+interface Resource 
+{ 
+boolean isAcquired(); 
+void acquire(); 
+void release(); 
+... 
+} 
+类似于下面的代码会在一个线程系统中推荐使用： 
+class ResourceExample 
+{ 
+... 
+public void example() 
+{ 
+boolean acquired = true; 
+synchronized(resource) 
+{ 
+if(!resource.isAcquired()) 
+resource.acquire(); 
+else 
+acquired = false; 
+} 
+if(!acquired) 
+... 
+} 
+private Resource resource; 
+} 
+然而，即使放弃可读性和易用性，这样的设计不是一个Command-Query分离设计的应用。 
+如果引入了代理，它就会失败： 
+class ActualResource implements Resource {...} 
+class ResourceProxy implements Resource {...} 
+一个Combined Method解决了这个问题，它使并发和间接性更加透明。 
+interface Resource 
+{ 
+... 
+boolean tryAcquire(); 
+... 
+} 
+下面的代码清晰、简单并且正确： 
+class ResourceExample 
+{ 
+... 
+public void example() 
+{ 
+if(!resource.tryAcquire()) 
+... 
+} 
+private Resource resource; 
+} 
+　　Combined Method带来的一个结果是使一些测试和基于断言的程序设计变得十分笨拙 
+。然而，和原来的设计相比较，原有的方法在解决线程和分布问题上不是一个合适的途 
+径。在这一情况下，单元测试提供较好的分级和分离。Combined Method能够使一个方法 
+接口模糊并使类用户的代码更加冗长，笨拙。在一些条件下Execute Around Method提供 
+了一个可以保证自动和灵活的另一个Combined Method。 
+结论 
+　　环境决定实践的方法。

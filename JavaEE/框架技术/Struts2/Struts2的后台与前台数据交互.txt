@@ -1,0 +1,18 @@
+ Struts2的后台与前台数据交互处理方式的简单总结
+
+1. 传值到Struts2的action方法：
+
+ <input name="userName" type="text" size="15">
+ userName属性需要在访问的action中提供相应的属性，并有SET/GET方法。
+ 可以不在访问的action中提供相应的属性，用request.getParameter(”userName”);
+
+2. 页面从Struts2的action取值方法：
+
+ 4种拿到值得的办法：
+ 1)  <s:property value="username"/>
+ 2) {username}   
+ 3) <s:property value="#request.username"/> 
+ 4) <s:property value="%{username}"/>
+ 
+ 另外，在页面中使用set标签，用于将某个值放入指定的范围内，例如application,session等
+ <s:set name="user" value="userName" scope=”request”/>

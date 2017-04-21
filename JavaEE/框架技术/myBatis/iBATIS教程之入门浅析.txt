@@ -1,0 +1,124 @@
+iBATIS教程之入门浅析
+2009-07-17 09:44 佚名 互联网转载 字号：T | T
+一键收藏，随时查看，分享好友！
+iBATIS教程向你介绍iBATIS的概念以及配置和常用的操作，那么通过这些的学习，希望你对iBATIS有一定的了解。
+AD：2013云计算架构师峰会课程资料下载
+一、iBATIS教程之iBATIS介绍:
+
+iBATIS是什么呢？相对于Hibernate和Apache OJB等“一站式”ORM解决方案而言，iBATIS是一种“半自动化”的ORM实现。
+
+这个框架将让你能够更好的在JAVA应用中设计和实现实体层。这个框架有两个主要的组成部分，一个是SQL Maps，另一个是Data Access Objects。另外还包括一些可能很有用的工具。
+
+SQL Maps：
+
+Sql Maps是这个框架中最激动人心的部分，它是整个iBATIS Database Layer的核心价值所在。通过使用Sql Maps你可以显著的节约数据库操作的代码量。SQL Maps使用一个简单的XML文件来实现从javaBean到SQL statements的映射。跟其他的框架或者对象映射工具相比，SQL Maps最大的优势是简单。它需要学习的东西很少，在连接表或复杂查询时也不需要复杂的scheme(怎么翻complex scheme?)，使用SQL Maps， 你可以自由的使用SQL语句。
+
+Data Access Objects (DAO)
+
+当我们开发灵活的JAVA应用时，有一个好主意就是通过一个通用API层把实体操作的细节封装起来。Data Access Objects允许你通过一个简单接口的来操作数据，从而隐藏了实现的细节。使用DAO，你可以动态配置你的应用程序来访问不同的实体存储机制。如果你有 一个复杂的应用需要用到几个不同的数据库，DAO可以让你建立一个一致的API，让系统的其他部分来调用。
+
+Utilities
+
+iBATIS Database Layer包含一系列的有用的工具，比如SimpleDataSource，JDBC DataSource 2.0(也包括3.0)的一个轻量级实现。ScriptRunner也提供了从单元测试到自动发布的数据库准备工作。
+
+工作流程：
+
+SQL Maps提供一个简单的框架，通过XML描述来映射JAVABeans，MAP implementations甚至原始类型的包装(String,Integer等)到JDBC PreparedStatement。想法很简单，基本的步骤如下：
+
+1) 提供一个对象作为参数(either a JavaBean, Map or primitive wrapper)，The parameter object will be used setting input values in an update statement, or query values in a where clause (etc.).(感觉不译为好，你说呢？)
+
+2) 执行这个映射的statement，这一步是魔术发生的地方。SQL Maps框架将建立一个PreparedStatement实例(instance)，使用前面提供的对象的参数，执行statement，然后从ResultSet中建立一个返回对象。
+
+3) 如果是Update，则返回有多少行修改了，如果是查询，则返回一个对象或者对象的集合。跟参数一样，返回对象也可以是一个JAVABEAN，MAP或者一个primitive type wrapper。
+
+二、iBATIS教程之配置文件的使用:
+
+SQL Map的配置文件。这个文件是SQL Map实现的根配置，这不是本总结所要具体描述的。
+
+配置文件是XML文件，我们用它来配置属性，JDBC DataSources 和 SQL Maps。它给我们一个便利的地方可以集中配置不同的DataSource。这个框架支持iBATIS SimpleDataSource, Jakarta DBCP (Commons)，以及其他任何可以通过JNDI context来访问的DataSource。我们在以后将详细讨论这个问题。现在我们用Jakarta DBCP，结构很简单，上面这个例子，它的配置文件如下。
+
+<properties>元素：
+
+这SQL Map中的<properties>元素支持SQL Map XML配置文件。配置文件里的元素符合Data Map规则。
+
+<properties>所应用的文件里的元素必须和<datasource>里的元素相对应。下面是SqlMapConfigExample.properties文件的内容。里面的元素和<datasource>里的元素相对应。
+
+<settings>元素
+
+maxRequests:在同一时间内能执行SQL语句的次数
+
+maxSession:在同一时间内能起作用的Session数
+
+maxTransaction:在同一时间内能执行的事务。
+
+statementCacheSize:缓冲区的大小
+
+三、iBATIS教程之操作方法介绍：
+
+注意：本总结适合有使用开发iBATIS基础的人员参考。由于本人的能力有限，不足之处请大家指出。
+
+1. statement支持元素及支持的属性：
+
+1.1 ID
+
+ID属性是必须的，它表示这个语句的名称，它在整个<SqlMap>元素内唯一的。在代码通过ID来引用相关语句。
+
+1.2 parameterMap
+
+parameterMap属性定义了一个有序的值列表，分别有序的对应了标准参数化的SQL语句中的?占位符。
+
+1.3 parameterClass
+
+在没有指明parameterMap属性的情况下，你可以指定parameterClass属性方法来替代parameterMap属性。parameterClass属性的值可以使用类型的别名或者类型(类)全称
+
+1.4 resultMap
+
+resultMap可以让你控制你如何让数据从查询结果(ResultMap)中提取出来存入java对象中。并且可以定义如何将字段映射到java bean的属性里。如下图：
+
+1.5 resultClass
+
+在resultMap属性没有指定的情况下，可以采用resultClass方式，resultClass的属性值可采用类型别名或者类型(Class)全称的方式。指定的类将根据数据库的元数据自动的映射到查询结果的字段值中。
+
+2. ParameterMap元素属性
+
+2.1 ID
+
+ID属性是必须的，它提供了<parameterMap>对元素Data Map里的唯一表示符
+
+2.2 Class
+
+Class属性是可选的，Class属性必须是JavaBean或Map实列，Class属
+
+性虽是可选的，但推荐大家指定，Class属性 可以用来验证传入的参数的合法性及优化查询
+
+3. 查询语句
+
+3.1 屏蔽特殊符 <![CDATA[ ]]>
+
+3.2 语句导入 <include>，可以是语句优化
+
+使用<include>方法，上面的语句可以写成：
+
+4．自增长方法：<selectKey resultClass=”int”>，不管<selectKey resultClass=”int”>处于该语句的什么部位，都先执行此自增长方法。注意：Mysql和Oracle的方法不一样。
+
+5. <insert>方法：
+
+Insert方法使用parameterMap属性，字段名要和<parameterMap>方法里的元素一一对应
+
+6. <resultClass>属性：
+
+使用resultClass方法，类Person里必须id,firstName,lastName,birthDate,werghtKilograms,heightMeters这些属性。
+
+7. 使用xmlResultName:XML映射文件
+
+8. 使用<parameterMap>方法：用来设置元素的属性，其中nullValue表示缺省值
+
+9. 如果传入的参数只有一个，用#value#来替代传入的参数名。如果还传来的是字段名，则iBATIS不支持
+
+10. 判断传入的参数是否存在:isNotNull,判断传入的参数值是否大于设定的值：isGreaterThan
+
+11. 判断传入的参数是否为空：isEmpty和isNotEmply
+
+12. 如果进行模糊查询，使用like方法
+
+那么iBATIS教程的入门部分就向你介绍到这里，希望上述的介绍使你对iBATIS有了一定的认识。
