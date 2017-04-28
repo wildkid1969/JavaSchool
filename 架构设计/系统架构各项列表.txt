@@ -1,0 +1,21 @@
+前台：jquery，velocity
+
+框架：springMVC，spring mybatis （以前用struts2，后因OpenSSL等各种漏洞，用得少了）
+
+DB：mysql（分库、分表，及主从备份、双机热备、纵向扩展、横向扩展），mongoDB，hbase，h2(嵌入式DB)
+
+缓存：Redis，memcached
+
+通信：WebService(cxf的soap、restful协议)
+
+消息队列：activeMQ
+
+异步并行框架：TBSchedule
+
+worker：quartz
+
+工作流：activity
+
+搜索引擎：lucene，基于lucene封装的solr
+
+集群技术：hadoop
