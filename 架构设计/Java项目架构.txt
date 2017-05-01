@@ -1,0 +1,26 @@
+企业级开发项目(Java编写)
+
+1.技术架构：
+
+浏览器/移动终端（客户端） -->  缓存服务器（Redis、memcache、mogoDB）  -->  服务器 Nginx---Tomcat---项目包（服务端）
+
+
+
+
+2.Java EE项目常用框架：
+
+Spring、Spring MVC、myBatis、Hibernate、Struts2、Shiro（权限安全框架）
+
+
+
+3.项目工具：
+
+Maven、ant、svn、
+
+
+
+4.工具软件：
+
+Eclipse、Inteli J、MyEclipse、PowerDesigner、
+Navicat（for MySQL/for Oracle）、PLSQL-Developer、Toad
+
