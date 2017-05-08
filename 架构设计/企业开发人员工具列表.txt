@@ -1,0 +1,33 @@
+1.IDE：Eclipse、Intelli J Idea
+
+2.数据库：Navicat、Toad
+
+3.容器：Tomcat、Jetty、Jboss
+
+4.版本控制：git、svn
+
+5.代码审核：Gerrit
+
+6.maven私服：nexus
+
+7.服务器远程连接工具：SecureCRT、Xshell（Xmanager）
+
+8.接口自动化工具：Rap
+
+9.测试管理平台：禅道、JIRA
+
+10.跳板机：JumpServer
+
+11.邮箱：Outlook、Foxmail
+
+12.笔记：印象笔记
+
+13.文件/文件夹对比工具：Beyond Compare
+
+14.远程控制工具：TeamViewer
+
+15.接口请求工具：Postman
+
+16.数据库设计工具：PowerDesigner
+
+17.聊天工具：QQ、微信、钉钉、企业微信、RTX
