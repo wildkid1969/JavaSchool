@@ -1,3 +1,6 @@
+*查询某个表的所有字段：
+select COLUMN_NAME from information_schema.COLUMNS where table_name = 'course_homework_detail' and table_schema = 'train';
+
 *下载数据库：
 [root@localhost /]# cd /usr/local/mysql/bin/
 [root@localhost bin]# ./mysqldump -uroot -psai edufound_gd>edufound_gd_20140207.sql;
