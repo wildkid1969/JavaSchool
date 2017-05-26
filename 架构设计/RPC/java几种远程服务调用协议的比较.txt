@@ -1,0 +1,17 @@
+java几种远程服务调用协议的比较
+
+原文地址：http://www.cnblogs.com/jifeng/archive/2011/07/20/2111183.html
+一、综述
+本文比较了RMI，Hessian，Burlap，Httpinvoker，web service等5种通讯协议的在不同的数据结构和不同数据量时的传输性能。
+RMI是java语言本身提供的远程通讯协议，稳定高效，是EJB的基础。但它只能用于JAVA程序之间的通讯。
+Hessian和Burlap是caucho公司提供的开源协议，基于HTTP传输，服务端不用开防火墙端口。协议的规范公开，可以用于任意语言。
+Httpinvoker是SpringFramework提供的远程通讯协议，只能用于JAVA程序间的通讯，且服务端和客户端必须使用SpringFramework。
+Web service是连接异构系统或异构语言的首选协议，它使用SOAP形式通讯，可以用于任何语言，目前的许多开发工具对其的支持也很好。
+ 
+测试结果显示，几种协议的通讯效率依次为：
+RMI > Httpinvoker >= Hessian >> Burlap >> web service
+RMI不愧是JAVA的首选远程调用协议，非常高效稳定，特别是在大数据量的情况下，与其他通讯协议的差距尤为明显。
+HttpInvoker使用java的序列化技术传输对象，与RMI在本质上是一致的。从效率上看，两者也相差无几，HttpInvoker与RMI的传输时间基本持平。
+Hessian在传输少量对象时，比RMI还要快速高效，但传输数据结构复杂的对象或大量数据对象时，较RMI要慢20%左右。
+Burlap仅在传输1条数据时速度尚可，通常情况下，它的毫时是RMI的3倍。
+Web Service的效率低下是众所周知的，平均来看，Web Service的通讯毫时是RMI的10倍。
