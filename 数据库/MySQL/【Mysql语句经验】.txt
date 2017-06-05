@@ -1,3 +1,6 @@
+*更新某个字段，随机范围10到100：
+UPDATE user_evaluate SET total_score=FLOOR(10 + (RAND() * 90));
+
 *查询某个表的所有字段：
 select COLUMN_NAME from information_schema.COLUMNS where table_name = 'course_homework_detail' and table_schema = 'train';
 
@@ -30,6 +33,15 @@ HAVING cnt>1
 
 设置主键：
 ALTER TABLE `table_name` MODIFY COLUMN `id` MEDIUMINT( 8 ) NOT NULL AUTO_INCREMENT,ADD PRIMARY KEY(id);
+或者
+ALTER TABLE `table_name` ADD PRIMARY KEY ( `column` );
+
+设置索引
+ALTER TABLE `table_name` ADD INDEX index_name ( `column` );
+ALTER TABLE `table_name` ADD INDEX index_name ( `column1`, `column2`, `column3` );
+
+设置唯一性约束
+alter table user_evaluate add unique KEY uk_courseid_userid (course_id, user_id);
 
 
 *把数据里的换行转换成<br/>
