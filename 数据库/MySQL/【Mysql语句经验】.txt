@@ -1,3 +1,7 @@
+*快速复制本表数据：
+insert INTO user_evaluate (course_id,ins_id,ins_name,user_id,total_score,create_time,update_time)
+SELECT course_id,ins_id,ins_name,user_id,total_score,create_time,update_time FROM user_evaluate LIMIT 4
+
 *更新某个字段，随机范围10到100：
 UPDATE user_evaluate SET total_score=FLOOR(10 + (RAND() * 90));
 
@@ -67,7 +71,6 @@ ORDER BY days
 *查询上一条记录的SQL语句：
 
 select * from table_a where id = (select id from table_a where id < {$id} [and other_conditions] order by id desc limit 1) [and other_conditions];
-
 
 查询下一条记录的SQL语句：
 
