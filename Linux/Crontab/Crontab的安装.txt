@@ -5,22 +5,31 @@ Crontab的安装 (2012-05-18 16:20:18)转载▼
     crontab命令常见于Unix和类Unix的操作系统之中，用于设置周期性被执行的指令。该命令从标准输入设备读取指令，并将其存放于“crontab”文件中，以供之后读取和执行。该词来源于希腊语chronos(χρ?νο?)，原意是时间。
 　　通常，crontab储存的指令被守护进程激活， crond常常在后台运行，每一分钟检查是否有预定的作业需要执行。这类作业一般称为cron jobs。
   没有那就安装吧：
+
+
 使用yum安装crontab:
 [root@CentOS ~]# yum install vixie-cron
 [root@CentOS ~]# yum install crontabs
+
 说明：
 vixie-cron软件包是cron的主程序；
 crontabs软件包是用来安装、卸装、或列举用来驱动 cron 守护进程的表格的程序。
-//+++++++++++++++++++++++++++++++++++
+
+
 cron 是linux的内置服务，但它不自动起来，可以用以下的方法启动、关闭这个服务：
 /sbin/service crond start //启动服务
 /sbin/service crond stop //关闭服务
 /sbin/service crond restart //重启服务
 /sbin/service crond reload //重新载入配置
+
 查看crontab服务状态：service crond status
 手动启动crontab服务：service crond start
+
+
 查看crontab服务是否已设置为开机启动，执行命令：ntsysv
 没有就加入开机自动启动:免得每次手动启动麻烦：chkconfig --level 35 crond on
+
+
 语法介绍：
 使用权限：root用户和crontab文件的所有者
 语　　法：crontab [-e [UserName]|-l [UserName]|-r [UserName]|-v [UserName]|File ]
