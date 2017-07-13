@@ -1,21 +1,38 @@
-前台：jquery，velocity
+前台：JQuery，Velocity，AngularJS，React.js，Vue.js，Node.js
 
-框架：springMVC，spring mybatis （以前用struts2，后因OpenSSL等各种漏洞，用得少了）
+框架：SpringMVC，Spring MyBatis （以前用struts2，后因OpenSSL等各种漏洞，用得少了）
 
-DB：mysql（分库、分表，及主从备份、双机热备、纵向扩展、横向扩展），mongoDB，hbase，h2(嵌入式DB)
+DB：MySQL（分库、分表，及主从备份、双机热备、纵向扩展、横向扩展），Oracle，MongoDB（基于分布式文件存储的数据库），hbase，h2(嵌入式DB)
 
-缓存：Redis，memcached
+缓存：Redis，Memcached
 
-通信：WebService(cxf的soap、restful协议)
+通信（RPC）：Spring Cloud，Dubbo，WebService(cxf的soap、restful协议)，RMI，Hessian，Burlap，Httpinvoker
 
-消息队列：activeMQ
+消息（Message）：Apache ActiveMQ（是JMS1.1标准的实现，支持OpenWire、STOMP、REST、XMPP、AMQP等消息服务协议，支持广泛的传输协议:例如Http(s)、in-vm、TCP、UDP、SSL、NIO、多播、JGroups和JXTA），Joram（JMS），Jboss HornetQ（JMS），OpenAMQ（AMQP），OpenMQ（也称OpenJMS，JMS），MuleMQ（JMS），SonicMQ（JMS），RabbitMQ（AMQP），ZeroMQ（TCP、UDP）,阿里的MQ
 
 异步并行框架：TBSchedule
 
-worker：quartz
+worker：Quartz
 
-工作流：activity
+工作流：Activity
 
-搜索引擎：lucene，基于lucene封装的solr
+搜索引擎：Lucene，基于lucene封装的solr
 
-集群技术：hadoop
+集群技术：Hadoop
+
+服务监控：CAT（Central Application Tracking，大众点评推出的基于纯Java开发的分布式实时监控系统）
+
+分布式配置管理：disconf（百度的），Diamond（淘宝的），QConf （360的）
+
+
+
+
+
+
+备注：
+MQ 是生产者消费者模式。
+RPC 是请求响应模式。
+MQ 是面向数据的。
+RPC 是面向动作的。
+
+protocol buffer 只是一个序列化方式，并不是 RPC。
