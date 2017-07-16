@@ -6,7 +6,7 @@ DB：MySQL（分库、分表，及主从备份、双机热备、纵向扩展、横向扩展），Oracle，Mongo
 
 缓存：Redis，Memcached
 
-通信（RPC）：Spring Cloud，Dubbo，WebService(cxf的soap、restful协议)，RMI，Hessian，Burlap，Httpinvoker
+通信（RPC）：Spring Cloud，Dubbo，Hasor-RSF，WebService(cxf的soap、restful协议)，RMI，Hessian，Burlap，Httpinvoker
 
 消息（Message）：Apache ActiveMQ（是JMS1.1标准的实现，支持OpenWire、STOMP、REST、XMPP、AMQP等消息服务协议，支持广泛的传输协议:例如Http(s)、in-vm、TCP、UDP、SSL、NIO、多播、JGroups和JXTA），Joram（JMS），Jboss HornetQ（JMS），OpenAMQ（AMQP），OpenMQ（也称OpenJMS，JMS），MuleMQ（JMS），SonicMQ（JMS），RabbitMQ（AMQP），ZeroMQ（TCP、UDP）,阿里的MQ
 
