@@ -1,0 +1,12 @@
+ Amazon的pem文件转换为公钥.pub
+
+
+2016-08-08 21:24 
+
+将密钥上传到一台自己的Linux主机，下面举例文件名为 key.pem
+chmod 600 key.pem
+改写密钥格式为 OpenSSH，如果询问passphrase可以留空（直接回车）
+ssh-keygen -p -f key.pem
+生成公密钥 .pub 文件。使用公密钥时，SecureCRT会询问私密钥或者.pem文件
+ssh-keygen -e -f key.pem >> key.pem.pub
+现在可以在 SecureCRT 中使用刚生成的公密钥了。
