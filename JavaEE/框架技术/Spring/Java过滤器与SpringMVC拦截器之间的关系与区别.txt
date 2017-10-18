@@ -1,0 +1,27 @@
+Servlet过滤器与SpringMVC拦截器之间的关系与区别：
+
+①拦截器是基于Java的反射机制的，而过滤器是基于函数回调。
+②拦截器不依赖与servlet容器，过滤器依赖与servlet容器，即只能在servlet容器中执行。
+③拦截器只能对action请求起作用，而过滤器则可以对几乎所有的请求起作用。
+④拦截器可以访问action上下文、值栈里的对象，而过滤器不能访问。
+⑤在action的生命周期中，拦截器可以多次被调用，而过滤器只能在容器初始化时被调用一次。
+⑥拦截器可以获取IOC容器中的各个bean，而过滤器就不行，这点很重要，在拦截器里注入一个service，可以调用业务逻辑。
+
+
+Filter基于回调函数，我们需要实现的filter接口中doFilter方法就是回调函数，而interceptor则基于java本身的反射机制,这是两者最本质的区别。
+Filter是依赖于servlet容器的，即只能在servlet容器中执行，很显然没有servlet容器就无法来回调doFilter方法。而interceptor与servlet容器无关。
+Filter的过滤范围比Interceptor大,Filter除了过滤请求外通过通配符可以保护页面，图片，文件等等，而Interceptor只能过滤请求。
+Filter的过滤例外一般是在加载的时候在init方法声明,而Interceptor可以通过在xml声明是guest请求还是user请求来辨别是否过滤
+
+
+简单的总结理解：
+1：Filter 对在web.xml中该filter配置的路径进行单向拦截， request匹配Filter的路径时做一次拦截！  这个底层实现没想过， 嘿嘿！
+2：interceptor的拦截处理其实就是代理机制！ 
+Struts2官方文档那个图画的相当明了了。既然是代理，那么是双向拦截，拦截器在action的方法之前执行一次， 之后执行一次！
+根据那个图，你可以再对应的去看下StrutsPrepareAndExecuteFilter的源代码，前面一段代码产生Action的环境，判断mapping之类的， 可以跟进ExecuteOperations execute这个成员变量，下面如果前面一系列判断都满足的话， 会调用execute.executeAction， 这个里面的实现就是产生action的代理， 然后通过配置信息， 去获得这个action身上配置了哪些拦截器，然后执行拦截器的代码，拦截器中用ActionInvocation去通知下一个拦截器执行， 等到所有的拦截器都拦完了以后，执行action， 随后拦截器又会反向执行一遍（官方确实是这个意思， LZ可以自己写两个拦截器测试下看是不是这么会是）
+所以对于Interceptor是不对request进行处理的， 它只是对action起作用。Struts的那个核心过滤器拦截了action的请求之后产生action的代理后进行处理的！
+
+我只能理解这么多， 呵呵！ LZ如果有好的见解记得分享下！
+
+
+
