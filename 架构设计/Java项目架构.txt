@@ -13,7 +13,7 @@ Spring、Spring MVC、myBatis、Hibernate、Struts2
 
 Shiro（权限安全框架）
 
-Dubbo（一个分布式服务框架，致力于提供高性能和透明化的RPC远程服务调用方案）
+Dubbo（一个分布式服务框架，致力于提供高性能和透明化的RPC远程服务调用方案）、Spring Cloud
 
 Zookeeper（一个分布式协调服务）
 
@@ -21,7 +21,7 @@ Zookeeper（一个分布式协调服务）
 
 3.项目管理工具：
 
-Maven、Ant
+Maven、Ant、Gradle
 
 4.版本控制：
 

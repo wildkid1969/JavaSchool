@@ -49,7 +49,7 @@ find . -name "*.jsp" -exec sed -i 's#js/baidutongji.js#js/baidutongji.js?2015110
 10.mysql添加某路径下写文件权限
 setfacl -m mysql:rw- /home/
 
-9.查找文件：find / -name ***
+9.查找文件或者目录：find / -name ***  例如：find / -name *tomcat*
 
 8.修改时间：修改完后,记得执行clock -w，把系统时间写入CMOS
 date -s 13:54:00

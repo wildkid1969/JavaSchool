@@ -47,6 +47,9 @@ ALTER TABLE `table_name` ADD INDEX index_name ( `column1`, `column2`, `column3` 
 设置唯一性约束
 alter table user_evaluate add unique KEY uk_courseid_userid (course_id, user_id);
 
+设置默认值：
+ALTER TABLE institution ALTER ignored_time SET DEFAULT "1970-01-01 00:00:00";
+
 
 *把数据里的换行转换成<br/>
 UPDATE sp_offline_chapter SET description = REPLACE(description,'\n','<br/>');

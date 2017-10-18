@@ -2,7 +2,7 @@
 
 后端框架：SpringMVC，Spring MyBatis （以前用struts2，后因OpenSSL等各种漏洞，用得少了）
 
-日志框架：Log4J(具体的日志实现方案)、Log4J2(不兼容log4j1)、Commons Logging(日志门面)、SLF4J(日志门面)、Logback(具体的日志实现方案,必须配合SLF4J使用,性能更好，内存开销更小)、JUL(Java Util Logging)
+日志框架：Log4j(具体的日志实现方案)、Log4j2(不兼容log4j1)、Commons Logging(日志门面)、SLF4J(日志门面)、Logback(具体的日志实现方案,必须配合SLF4J使用,性能更好，内存开销更小)、JUL(Java Util Logging)
 
 数据库：MySQL（分库、分表，及主从备份、双机热备、纵向扩展、横向扩展），Oracle，h2(嵌入式DB)
 
