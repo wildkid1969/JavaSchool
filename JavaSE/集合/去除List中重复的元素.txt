@@ -6,15 +6,16 @@
 
 方法一：循环元素删除 （使用的方式FOR循环操作。不建议使用大数据量的转换。。n*n的循环量）
 
-    // 删除ArrayList中重复元素 public static void removeDuplicate(List list) { 
-for ( int i = 0 ; i < list.size() - 1 ; i ++ ) { 
- for ( int j = list.size() - 1 ; j > i; j -- ) { 
-   if (list.get(j).equals(list.get(i))) { 
-	list.remove(j); 
-	} 
-    } 
-  } 
-  System.out.println(list); 
+// 删除ArrayList中重复元素 
+public static void removeDuplicate(List list) { 
+    for ( int i = 0 ; i < list.size() - 1 ; i ++ ) { 
+       for ( int j = list.size() - 1 ; j > i; j -- ) { 
+         if (list.get(j).equals(list.get(i))) { 
+	    list.remove(j); 
+	 } 
+       } 
+   } 
+   System.out.println(list); 
 }
 
 方法二：通过HashSet剔除 （本人喜欢使用的方式：使用的是hash数组不能产生重复数据的特性，来转换LIST）
@@ -42,5 +43,18 @@ for ( int i = 0 ; i < list.size() - 1 ; i ++ ) {
 			list2.add(list1.get(j));
 
 		}
+
+
+方法四：通过HashSet去除重复（和方法二类似）
+
+   Set set = new HashSet();
+   List newList = new ArrayList();
+   for (Iterator iter = list.iterator(); iter.hasNext();) {
+    Object element = iter.next();
+    if (set.add(element))
+     newList.add(element);
+   }
+   list.clear();
+   list.addAll(newList);
 
 
