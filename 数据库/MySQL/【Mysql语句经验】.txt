@@ -40,9 +40,20 @@ ALTER TABLE `table_name` MODIFY COLUMN `id` MEDIUMINT( 8 ) NOT NULL AUTO_INCREME
 或者
 ALTER TABLE `table_name` ADD PRIMARY KEY ( `column` );
 
+
+
 设置索引
 ALTER TABLE `table_name` ADD INDEX index_name ( `column` );
 ALTER TABLE `table_name` ADD INDEX index_name ( `column1`, `column2`, `column3` );
+
+删除索引
+DROP INDEX index_name ON talbe_name;
+
+查看索引
+show index from tblname;
+show keys from tblname;
+
+
 
 设置唯一性约束
 alter table user_evaluate add unique KEY uk_courseid_userid (course_id, user_id);
