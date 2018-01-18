@@ -1,0 +1,77 @@
+【Java SE】：
+集合、线程、IO流、反射、设计模式、Java编程规范及基本语法、Java有哪些算法？
+Java有哪些加密算法？
+java的正则表达式有哪些？怎么写手机号、邮箱的正则？
+
+
+【Java EE】：
+Servlet工作原理及实例；
+转发与重定向的区别；
+HTTP请求有哪些（get\post\delete\put等）、原理是什么、有哪些区别、HTTP状态响应码有哪些；
+web.xml的标签详解及加载顺序；
+JSP的基本使用及内置对象有哪些；
+四种操作xml的框架（sax、dom、jdom、dom4j）；
+maven的工作原理、基本命令、如何做多环境、如何配置私有库、如何引入本地jar包
+Tomcat的工作原理、如果部署项目、如何优化配置文件
+ajax的原理及使用；
+session是什么？怎么用
+cookie是什么？怎么用，和session有什么区别，怎么实现自动登录；
+怎么实现登录时的验证码功能？
+网络编程是什么？写一个简单的聊天室程序
+
+【Java web框架（Spring之类）】：
+spring的启动过程原理，工作原理；
+springMVC的请求处理原理；
+spring的优缺点；
+Servlet过滤器（Filter）与SpringMVC拦截器（Interceptor）之间的关系与区别，各写一个demo；
+Spring的IOC和切面编程分别是什么，怎么用？
+Spring如何配置数据源、如何配置多数据源；
+Spring配置定时器；
+spring如何上传文件；
+spring有哪些注解？如何返回json格式数据？注入对象有哪些方式？
+spring的jar包都有哪些。各自有什么用？
+spring如何配置事务？有什么传播特性？如何做事务回滚？
+spring的版本有哪些？有什么区别？
+
+Hibernate框架；
+
+MyBatis框架：
+写一个分页的例子；
+写一个插入返回ID的例子；
+写一个高级结果集映射的例子；
+
+
+【Linux】：
+基本命令；
+如何启动Tomcat；
+如何启动mysql；
+如何启动nginx；nginx和Tomcat是怎么工作的？
+如何查找运行的Tomcat进程（方法一：ps -ef|grep tomcat）
+如何查找Tomcat安装目录（方法一：find / -name *tomcat*）
+如何添加定时任务；
+如何查看ip、磁盘空间、当前目录的空间、删除文件、删除文件夹（Linux无法恢复，谨慎删除）
+
+【第三方框架和包】：
+Maven的基本命令；
+解析JSON有哪些包（alibaba、fastjson、Jackson、gson。。。。）
+发邮件的框架；
+解析xml的框架；
+
+
+
+【数据库】（MySQL、Oracle）：
+mysql的索引怎么用；
+mysql怎么查看一条sql的性能（explain、desc），各参数的意义
+mysql事务是什么？锁是什么？什么是死锁？
+
+【前端】（html css和js）
+html+css各标签能读懂、知道是什么效果，会写简单的；
+jquery、js基本语法及稍复杂的功能编写；
+js第三方框架：ztree、jstree、boostrap等
+XSS攻击是什么，后端怎么防止？
+
+
+【缓存/nosql】:
+redis; 基本命令、工作原理
+memcached;基本命令、工作原理
+mongoDB;基本命令、工作原理
