@@ -1,0 +1,252 @@
+1   HTTP Server  
+HTTP Server是目前最流行的HTTP服务器软件之一。其优势主要在于快速、可靠、可通过简单的API扩展，Perl/Python解释器可被编译到服务器中，完全免费而且完全源代码开放。如果需要创建一个每天有数百万人访问的Web服务器，Apache HTTP Server会是最佳的选择。   
+  
+2   Abdera  
+Apache Abdera是Atom联合协议（Atom Syndication）和Atom发布（Atom Publication）协议的开源实现，Abdera项目的目标是建立一个功能完备，高效执行的Atom联合协议和Atom发布协议规格，它是一个由apache软件基金会大力推动发展的项目， 该项目目前尚处于孵化阶段，尚未得到ASF的完全认可。   
+  
+3   Accumulo  
+4   ACE  
+5   ActiveMQ  
+ActiveMQ 是Apache出品，最流行的，能力强劲的开源消息总线。其优势在于速度快，支持多种跨语言的客户端和协议，同时充分支持JMS1.1和J2ee1.4的企业集成模式和许多先进的功能。   
+  
+6   Ant  
+Apache Ant的全名是"Another Neat Tool"，是一个将软件编译、测试、部署等步骤联系在一起加以自动化的一个工具，用于开发 Java 程序。用 Apache Ant 进行 Java 程序项目开发或其它开源 Java 程序项目，已经成了 Java 界的一个共识。Ant有以下的优点：1.跨平台性。Ant是纯Java语言编写的，所以具有很好的跨平台性。 2.操作简单。Ant是由一个内置任务和可选任务组成的。Ant运行时需要一个XML文件(构建文件)。由于Ant构建文件是XML格式的文件，所以很容 易维护和书写，而且结构很清晰。3.Ant可以集成到开发环境中。由于Ant的跨平台性和操作简单的特点，它很容易集成到一些开发环境中去。   
+简单介绍Ant ——java构建工具，使用一个配置文件就可以完成java的项目的，编译、打包、测试、运行、部署、生成文档等诸多工作。  
+  
+7   APR  
+APR任务的目的是建立和维护一个软件库以提供一个具体平台下的一致接口。APR提供了一组API，映射到底层操作系统。如果底层OS不支持某个特别的函数，APR自己会提供一个替代品。如此一来，APR可以确保程序的跨平台可移植性。  
+  
+8   Archiva  
+Archiva 是一款远程资源库管理软件。它能够与Maven，Continuum和ANT等构建工具完美结合。Archiva提供的功能包括：远程 Repository代理，基于角色的安全访问管理，Artifact分发、维护、查询，生成使用报告，提供基于Web的管理界面等。   
+  
+9   Aries  
+  
+Avalon   
+Avalon ——是一个包括核心框架、工具、组件和容器的面向组件编程（AOP）的完整开发平台。使用关键设计模式，如反向控制模式（IoC）和分离考虑模（SoC）。 Avalon提供各种基本组件和缺省的应用程序模块，帮助你快速的建立你自己的应用程序解决方案。  
+  
+10  Avro  
+11  Axis  
+  
+Beehive：  
+Beehive 是一项开源软件计划，为基于J2EE和SOA的应用提供一个易用的跨容器编程模型和应用框架。Beehive计划包括：支持JSR 175元数据注释，用于构建和使用J2EE组件的Java 控件框架，简化的Web 服务编程框架，以及用于创建基于Web的用户界面和应用的、基于 Struts的Java 页面流技术.   
+  
+12  Buildr  
+13  BVal  
+14  Camel  
+Camel 是一个开源的企业应用集成框架。它采用URI来描述各种组件，这样你可以很方便地与各种传输或者消息模块进行交互，比如HTTP、 ActiveMQ、JMS、JBI、SCA、MINA或CXF Bus API。这些模块是采用可插拔的方式进行工作的。Apache Camel拥有小巧、依赖少等特点，能够很容易将其集成在各种Java应用中。   
+  
+15  Cassandra  
+16  Cayenne  
+Cayenne 是一个强大而易于掌握的Java ORM 框架。它是开源且完全免费的。Cayenne 提供了 Java 对象到关系型数据库的持久化映射管理，单方法调用查询和更新（包括细粒度的更新所有被修改的对象），无缝隙的把多种数据库集成到单一虚拟数据源中。 Cayenne 已被成功部署在高负载的生产环境中   
+  
+17  Chemistry  
+18  Click  
+19  Cocoon  
+根据Apache官方定义，Cocoon是一项XML发布框架。它允许你定义XML文档和文档的转换，并最终生成你所选择的表示形式，例如HTML, PDF, SVG, VRML等等。在某种意义上，可将Cocoon视为一个基于XML的内容管理系统，因其提供了一种机制来描述Web信息项目（内容）的结构和语义、这些项 目的关系、它们如何随着时间的推移而发生改变（逻辑）以及在请求时如何向用户呈现（它们的样式以及格式）。另外，Cocoon使你能够在XML文件中加入 处理逻辑，从而使XML管道具备动态的特性。   
+  
+20  Commons  
+Apache Commons项目专注于开发可重用的Java组件，由3部分组成：Commons Proper-可重用Java组件库，Commons Sandbox-Java组件开发工作空间，Commons Dormant-sandbox中不活跃的项目存储库。Apache Commons使每个组件尽可能少的依赖其他的库，而不是需要将依赖的库依次部署，另外，Commons组件的接口尽可能的保持不变，这样可以在实现这些 组件的时候针对接口进行开发，确保兼容性。   
+  
+21  Continuum  
+Apache Continuum是适合企业用的连续集成服务，它有诸多特点：原子构建，发布管理，基于角色的安全性，集成了流行的构件工具和资源控制管理系统。无论你 是有一个集中构建团队还是想控制开发项目的发布，Continuum可帮助提高质量和维护一个一致的构建环境。   
+  
+22  CouchDB  
+CouchDB 是一个"面向文档"的数据库，底层结构是为"存储"(storeage) ，以及多个"视图索引"(view indexs)。 "储存"用来储存文件, "视图索引"用于查询处理。CouchDB 能够适应非常广泛的应用场景，在某些偶尔连接网络的应用中，我们可以用CouchDB暂存数据，随后进行同步。也可以在Cloud环境中，作为大型的分布式的数据存储。CouchDB提供了基于 HTTP的API的访问方式，这样，保证了所有的常见的语言都可以使用CouchDB。   
+  
+23  Creadur  
+24  CXF  
+Apache CXF提供了一套创建SOA服务的基础设施框架，用户由此可以按照自己喜欢的编程模式，利用Apache CXF提供的简单易用工具（包括Maven插件），创建适合SOA环境的任何WEB服务，包括SOAP/HTTP服务及REST/HTTP服务。 Apache CXF可扩展的插拔式架构不但支持XML消息格式和HTTP通信协议，而且还支持基于其他通信协议如IIOP和非XML消息格式如CORBA CDL或JSON。  
+  
+25  DB  
+26  Deltacloud  
+27  Directory  
+Apache Directory项目提供完全用Java写的目录方案。包括一个经过了开方小组认证的目录服务器，和基于eclipse的目录工具。  
+  
+28  Empire-db  
+29  ESME  
+  
+Excalibur：  
+Excalibur是Apache软件基础的一个开源软件项目，其主要产品是一个由Java写成的，名字叫做Fortress（要塞） 的轻量级的可嵌入式反向控制容器。  
+Excalibur ——集多个开源项目(Avalon Framework、LogKit和Cornerstone)于一身的轻量级可嵌入式反向控制容器。  
+  
+30  Felix  
+Apache Felix是一个OSGi 4版本规范的Apache实现，它包含OSGi框架和标准服务，同样提供和支持其它有兴趣的OSGi相关的技术。最终的目标是提供一个完全兼容的OSGi 框架和标准服务的实现，并支持围绕这个技术的一个社区。Felix当前实现了OSGi版本4规范的大部分，但是为了完全兼容附加的工作是必须的。尽管这样，Felix提供的OSGi框架功能是非常稳定的。  
+  
+31  Forrest  
+Forrest是一个把来自各种不同的输入数据源转换成用一种或多种输出格式(比如HTML,PDF等)来统一显示的发布系统。它基于Apache Cocoon并分离了内容与内容结构,不仅可以生成静态的文档也可以当作一个动态的服务器。   
+  
+32  Geronimo  
+Apache Geronimo 是 Apache 软件基金会的开放源码J2EE服务器，它集成了众多先进技术和设计理念。Geronimo 最初的设计类似于 JBoss，JBoss 是一个经典的专注于 JMX 的服务器，专注于 JMX 的服务器往往因太过静态和高度耦合而告终。因此，与 JBoss 不同的是，Geronimo 项目使用现有的高质量开放源代码企业组件，例如 Tomcat、Jetty 和 OpenEJB。  
+  
+33  Gora  
+34  Gump  
+Gump 是Apache组织自己也使用的一个持续集成工具，它以Python写成，完全支持Apache Ant、Apache Maven等等软体组建工具。Gump特殊的地方在于，它根据以上软体设计计划最新版本来编译，组建软体。这让Gump可以在源码进入版本控制系统后几个 小时内，就侦测到软体可能发生的不相容点。  
+Gump ——是Apache组织自己也使用的一个持续集成工具，全面支持Ant和Maven，当有新的改动提交到版本控制系统，它可以检查出潜在 的冲突，并及时通知项目组的所有成员并自动生成改动的详细报告。  
+  
+35  Hadoop  
+Hadoop 是Apache软件基金会所研发的并行运算编程工具和分布式文件系统，与MapReduce以及Google档案系统的概念十分类似。 Hadoop原本是Apache Lucene下的子项目，它最初是从Nutch项目中分离出来的专门负责分布式存储以及分布式运算的项目。简单地说来，Hadoop是一个可以更容易开发 和运行处理大规模数据的软件平台。  
+  
+36  Hama  
+  
+Harmony：  
+Apache Harmony是Apache软件基金会的Java SE项目。这个项目的目标是营造一个大型的、健康的社区，该社区定位于：一个兼容的、独立的Java SE 5 JDK的实现，并根据Apache License v2发布； 一个由社区开发的模块化的运行时（包括Java虚拟机和类库）体系结构。该项目期望支持尽可能多的不同平台。一个特定的平台是否被支持，主要取决于参与者 能在这个平台上定期运行测试、报告编译安装的情况，以及为该平台清除BUG，等等。   
+  
+37  HBase  
+38  Hive  
+39  HttpComponents  
+HttpComponents 就是之前的HttpClient项目，改名字是因为它已经从一个单纯的http客户端组件转变成了客户端服务器通吃的组件。 HttpComponents项目包含HTTP协议的几个方面的底层库。在服务器或客户端通讯有高级需求的用户可能发现，对于建构定制的HTTP协议服 务，这是一个十分有用的工具集。  
+  
+Ibatis：  
+Ibatis 是apache的一个开源项目。使用ibatis 提供的ORM机制，对业务逻辑实现人员而言，面对的是纯粹的Java对象，ibatis与通过Hibernate实现ORM 而言基本一致，而对于具体的数据操作，Hibernate 会自动生成SQL语句，而ibatis 则要求开发者编写具体的SQL语句。相对Hibernate等“全自动”ORM机制而言，ibatis 以SQL开发的工作量和数据库移植性上的让步，为系统设计提供了更大的自由空间。   
+  
+Incubator：  
+Apache Incubator是希望将某个外部工程变为完全独立的Apache 软件基金会工程的跳板。目前，来自外部组织的代码以及外部已有工程通过Incubator加入Apache组织。Apache Incubator有两个主要的目标： 1. 确保所有的工程符合Apache基金会规则；2.在apache指导的前提下，开发新的社区；   
+  
+40  Jackrabbit  
+随着内容管理应用程序的日益普及，对用于内容仓库的普通、标准化API的需求已凸现出来。Content Repository for Java Technology API (JSR-170) 的目标就是提供这样一个接口。JSR-170 的一个主要优点是，它不绑定到任何特定的底层架构。例如，JSR-170 实现的后端数据存储可以是文件系统、WebDAV 仓库、支持 XML 的系统，甚至还可以是 SQL 数据库。此外，JSR-170 的导出和导入功能允许一个集成器在内容后端与 JCR 实现之间无缝地切换。Apache Jackrabbit 是由 Apache Foundation 提供的 JSR-170 的开放源码实现。   
+  
+41  James  
+Apache James（Java Apache Mail Enterprise Server）是Apache组织的子项目之一，采用纯Java开发，实现了SMTP、POP3与NNTP等多种邮件相关协议。James也是一个邮件应 用平台，可以通过Mailet扩充其功能，如Mail2SMS、Mail2Fax等。James提供了比较完善的配置方案，尤其是关于邮件内容存储和用户 信息存储部分，可以选择在文件、数据库或其他介质中保存。James性能稳定、可配置性强，还是开源项目，所有源代码不存在版权问题，因此在项目中的应用 日益广泛   
+James ——是一套用java开发的邮件、新闻组、消息服务器，提供了比较完善的配置方案，尤其是关于邮件内容存储和用户信息存储。 支持 SMTP, POP3 , NNTP , IMAP 。  
+  
+42  Jena  
+43  JMeter  
+44  jUDDI  
+45  Karaf  
+  
+Labs：  
+Apache Labs是Apache软件基金会的创新实验室。在这里会员可以试验新想法，该项目的目标是在不加重Apache社区负担的前提下提供必须的资源以推动和维持技术革新力量的发展。   
+  
+46  Lenya  
+Apache Lenya 是Java的开源内容管理系统（Content Management System,CMS）。它的实现基于标准的技术比如XML与 XSLT, Lenya提供了任何一个需要CMS的组织所需要的功能，并且不像商业软件那样令用户感到难以采用或者因为预算的原因限制了某些功能。它毫无疑问值得用户 去关注，而且应该引起许多小型或中型的机构的注意。如果使用了现有的XML文档技术，或者找寻更好的方法来管理Web站点或其它文档库，那么Lenya应 该是一个很好的选择。   
+  
+47  Libcloud  
+48  Logging  
+Apache Logging Services项目创建并维护着与免费对大众发布的日志应用有关的开源软件。此项目的产品包括三个日志框架：应用于Java的log4j,应用于C++ 的log4cxx和应用Microsoft.NET框架的一个日志视图和分析工具：Chainsaw。此项目也推动着log4php孵化器。   
+Logging ——可靠，快速的日志工具。  
+  
+49  Lucene  
+Lucene 是一个高性能的基于 Java 的全文索引/检索引擎,它不是一个完整的全文索引应用，而是一个用 JAVA 写的全文索引引擎工具包，可以方便的嵌入到各种应用中实现针对应用的全文索引/检索功能。Lucene提供了一个简单但强大的应用程式接口，能够做全文索 引和搜寻，在Java开发环境里Lucene是一个成熟的免费开放源代码工具;就其本身而论，Lucene是最近几年内最受欢迎的免费Java资讯检索程 式库。   
+Lucene ——Java开发的高性能，全方位的文本搜索引擎。替文件的每一个字作索引，索引让搜寻的效率比传统的逐字比较大大提高， Lucen提供一组解读，过滤，分析文件，编排和使用索引的API，它的强大之处除了高效和简单外， 是最重要的是使使用者可以随时应自已需要自订其功能。  
+  
+50  Lucy  
+51  Mahout  
+52  Maven  
+Maven 是一个基于 Java 的项目管理工具。Maven 已经为你准备好了一个开发项目所必需的流程考虑。它从项目的结构、编译、集成、测试和针对于这个项目的信息一体化发布的角度形成了一个项目开发环境  
+Maven ——是一个潜在的基于java的apache ant的构建工具的替代者。提供了更强大的功能和易用性。  
+  
+53  MINA  
+MINA (Multipurpose Infrastructure for Network Applications) 是一个网络应用程序框架，用来帮助用户简单地开发高性能和高可靠性的网络应用程序。它通过Java NIO,在不同的传输协议比如TCP/IP和UDP/IP上提供了抽象的,基于事件驱动的异步API。  
+  
+54  MRUnit  
+55  MyFaces  
+MyFaces 是 JSF (Java Server Faces) Web框架 (JSR 127)的一个实现。对JSF的框架实现还有Sun公司推出的JSF参考实现（JSFRI）。JSF作为一种新的基于MVC模型的web应用框架技术，在 概念和特征方面，尤其是组件方面，超过了著名的Struts框架。而MyFaces是Apache软件基金的一个项目，它实现了JSF框架。与JSFRI 相比，MyFaces进行了一些非常有意义的扩展，例如支持文件的上传和下载等。   
+  
+56  Nutch  
+57  ODE  
+Apache ODE（Orchestration DirectorEngine，编制指导引擎）是基于Java 的开源Web服务编配引擎，它可以使开发人员根据以BPEL XML语法写成的过程描述来编配Web服务。ODE于2007 年7 月18 日从Apache 的孵化器中诞生成为一个顶级项目。它的主要功能就是执行使用BPEL 描述的业务流程，实现业务流程自动化，它支持长期运行和短期运行的过程。与另一著名的开源BPEL引擎ActiveBPEL相比， ODE的许可证是Apache 2.0，而ActiveBPEL则是GPL前者对于商业用途较后者更为友好。   
+  
+58  OODT  
+59  OFBiz  
+OFBiz 是一个非常著名的开源项目，提供了创建基于最新J2EE/XML规范和技术标准，构建大中型企业级、跨平台、跨数据库、跨应用服务器的多层、分 布式电子商务类WEB应用系统的框架。 OFBiz最主要的特点是OFBiz提供了一整套的开发基于Java的Web应用程序的组件和工具。包括实体引擎, 服务引擎, 消息引擎, 工作流引擎, 规则引擎等。   
+  
+60  OpenEJB  
+Apache OpenEJB是一个嵌入式EJB3.0的轻量级实现，它可作为标准的应用服务器使用，也可以嵌入到Tomcat, JUnit, TestNG, Eclipse, IntelliJ, Maven, Ant以及其它任何IDE或应用程序中。OpenEJB 被用于Apple的WebObjects与Apache的Geronimo应用服务器中。   
+  
+61  OpenJPA  
+OpenJPA 是 Apache 组织提供的开源项目，它实现了 EJB 3.0 中的 JPA 标准，为开发者提供功能强大、使用简单的持久化数据管理框架。OpenJPA 封装了和关系型数据库交互的操作，让开发者把注意力集中在编写业务逻辑上。OpenJPA 可以作为独立的持久层框架发挥作用，也可以轻松的与其它 Java EE 应用框架或者符合 EJB 3.0 标准的容器集成。除了对 JPA 标准的支持之外，OpenJPA 还提供了非常多的特性和工具支持让企业应用开发变得更加简单，减少开发者的工作量，包括允许数据远程传输/离线处理、数据库/对象视图统一工具、使用缓存 （Cache）提升企业应用效率等。   
+  
+62  OpenNLP  
+63  OpenWebBeans  
+64  PDFBox  
+65  Perl  
+Mod_perl 将强大的Perl编程语言和Apache HTTP服务器结合在一起，你可以用Perl管理Apache，请求或响应网页或者做更多事。Mod_perl为你提供了一个嵌入在Web服务器中的持久 的Perl解释器。它使得你可以避免开启一个外部解释器的过重负担，也可以减少Perl开启时间，给予你超快的动态内容。即使你想进行Perl交流，这里 有成百上千为Mod_perl而写的模块，这些模块都来自于持久数据库连接，用来使系统模块化，用来完成Xml内容传递系统。   
+  
+66  Pig  
+67  Pivot  
+68  POI  
+Apache POI是Apache软件基金会的开放源码函数库，POI提供API给Java程式对Microsoft Office格式档案读和写的功能，通过POI可以让你使用Java来读写MS Excel ,Word、PowerPoint文件。   
+  
+69  Portals  
+Portal 是基于WEB的应用程序，它将不同资源进行整合并展现给用户，提供包括内容聚合、单点登陆、个性化制定和安全管理等服务的基础Web平台。 Protal 技术的出现，带给人们解决用户定制这个问题的曙光。Portal技术强调以用户为中心，重视流程及整体工作效能，提供统一登陆界面，实现信息的集中访问。 Portal 创建一个提供支持信息访问、传递，以及跨组织工作的集成化商务环境。  
+Portals ——提供了功能全面的、具有商业价值的企业门户。门户概念：门户对企业内的各种资源如信息管理系统进行整合并通过单一接口 对外提供服务，雇员、合伙人及顾客可以通过任何装置在任何地点通过门户入口享受到企业提供的服务， 分析家们预计,门户将成为下一代的桌面环境。  
+  
+70  Qpid  
+Apache Qpid (Open Source AMQP Messaging) 是一个跨平台的企业通讯解决方案，实现了高级消息队列协议。提供了 Java、C++ 两种服务端版本以及 Java、C++、.NET、Python和Ruby语言的客户端。  
+  
+71  Rave  
+72  River  
+73  Roller  
+Roller 是一个全功能的多用户博客平台。采用Java语言开发，设计得比较精巧，源代码是很好的学习资料。它支持Weblogging应有的特性如： 评论功能，所见即所得HTML编辑，TrackBack，提供页面模 板，RSS syndication,blogroll管理和提供一个XML-RPC 接口。   
+  
+74  Santuario  
+75  ServiceMix  
+ServiceMix 是一个建立在JBI (JSR 208)语法规则和APIs上的开源ESB(Enterprise Service Bus:企业服务总线)。它包括一个完整的JBI容器，其主要是由标准化信息服务和路由器，JBI管理MBeans，JBI配置单元和Ant任务（安装组 件和管理容器）组成。新版本中集成了BPEL，增加了一个基于router的高性能目录，XPath转换引擎，Drools新规则,对RSS的支持与 JCA的完全结合等等。   
+  
+76  Shindig  
+77  Shiro  
+78  Sling  
+Sling 是第一个使用JSR-170内容存储规范（Java Content Repository）的Web框架。Sling支持OSGi，因此获得了所有OSGi的优势。在Sling中，并非是管理服务器“背后”的文件和文件 夹，所有的管理和开发都是通过REST类型调用来完成的。从其文档中可看出，Sling服务器可以被配置为仅使用curl命令来上传和操作该服务器。支持 上传服务器端的可执行脚本。通过基于Web的管理终端，开发者能够控制组成Sling服务器的OSGi程序块，其它部分则被加载到其嵌入式Apache Felix OSGi服务平台上。   
+  
+79  SpamAssassin 是目前最好的、最流行的开源反垃圾邮件软件之一。它是一个邮件过滤器，使用了多种反垃圾邮件技术，如：文本分析、贝叶斯过滤、DNS黑名单和分布式协同过滤数据库等。SpamAssassin最新版本SpamAssassin 3.2.5。   
+  
+80  STDCXX  
+Apache 的C++ 标准库项目（代号stdcxx）是一个集算法，容器，迭代器等等功能的C++类库。STDCXX的目标是提供一个免费的ISO/IEC 14882国际标准的C++ ，在所有主要的硬件实现，操作系统和编译器提供开放源码的，使源代码具备可移植性和一致性的标准类库。Stdcxx另外一个目标是在每个平台上实现最大程 度的执行效率。   
+  
+81  Sqoop  
+82  Struts  
+Struts 是Apache基金会Jakarta项目组的一个开源项目，它采用MVC模式，能够很好地帮助Java开发者利用J2EE开发Web应用，减 少开发Web应用的时间，提高产品的重用度。Struts主要是采用Servlet和JSP技术来实现，它把Servlet、JSP、自定义标签和信息资 源（message resources）整合到一个统一的框架中，开发人员利用其进行开发时不用再自己编码实现全套MVC模式。   
+Struts ——一个实现MVC model2的web应用程序开发框架。通过一个配置文件可以很好的对各种组件进行装配，结构清晰，应用的最广泛的额web开发框架。  
+  
+83  Subversion  
+84  Synapse  
+Apache Synapse是一个易于使用、轻量级的XML与Web Services管理和集成中间件，可用于搭建SOA和ESB的基础平台。Apache Synapse支持多种标准包括：XML、XSLT、XQuery、XPath、SOAP、POX/REST、HTTP/S、JMS、、FTP、 SFTP、WS-RM、WS-Addressing、SMTP等，Synapse还提供非常多的开箱即用实用功能而不需要编程,但是也可以利用一些常用的 语言如Java、JavaScript、Ruby和Groovy对它们进行扩展。   
+  
+85  Tapestry  
+Tapestry 是一种基于Java的Web应用程序框架。Tapestry采用了组件的概念。程序员可应用现有的组建或自定义应用程序相关的组建来构建 应用程序。与现有的其他Web应用程序框架相比，应用Tapestry会让程序员从烦琐的，不必要的底层代码中解放出来。   
+Tapestry——类似 Struts，也是一个基于servlet的应用程序框架，支持MVC，出现的较晚，不如Struts普及，主要利用javabean和xml技术进行开发，  
+  
+86  Tcl  
+87  Thrift  
+88  Tika  
+89  Tiles  
+Apache Tiles是一个JavaEE应用的页面布局框架。Tiles框架提供了一种模板机制，可以为某一类页面定义一个通用的模板，该模板定义了页面的整体布局。布局由可以复用的多个块组成，每个页面可以有选择性的重新定义块而达到组件的复用。  
+  
+90  Tomcat  
+Tomcat 是一款开源的Serlvet容器，它是Apache基金会一个核心项目，由Apache、Sun和其它一些公司共同开发而成。由于有了Sun 的参与和支持，最新的Servlet和Jsp规范总能在Tomcat中得到体现。Tomcat不仅仅是一个Servlet容器，它也具有传统的Web服务 器的功能：处理Html页面。但是它处理静态Html的能力就不如Apache。我们可以将Tomcat和Apache集成到一块，让Apache处理静 态Html，而Tomcat处理Jsp和Servlet。这种集成只需要修改一下Apache和Tomcat的配置文件即可，十分方便。   
+Tomcat ——Serlvet容器，同时具有传统的Web服务器的功能，如：处理Html页面。能够处理动静态网页。  
+  
+91  Traffic Server  
+92  Turbine  
+Turbine 是一个基于Servlet的框架且允许有经验的Java开发人员去快速创建Web的应用程序。Turbine允许你个性化Web站点，允许 登录用户受限制地访问你的应用程序部分。Turbine是一个成熟的、构建良好的框架，可以用来作为很多其它项目的基础。Turbine对于面向服务架构 的应用程序开发是一个极好的选择。Turbine提供的一些功能包括一个安全管理系统、一个调度服务、XML格式的校验服务器和一个XML-RPC的 WEB服务。对于你的应用程序创建特定服务是一个简单的任务。基于表示层技术的Turbine核心没有任何依赖。Turbine支持JSP以及 Velocity。   
+  
+93  Tuscany  
+Apache Tuscany 提供全方位的开源SOA基础架构以利于开发， 组装， 发布，管理构件式应用服务(Composite Applications)及数据处理。 该项目实现服务构件体系(SCA: Service Component Architecture)和服务数据对象(SDO: Service Data Objects)等OASIS OpenCSA标准. Tuscany提供开放式可扩展的运行环境以支持现在和将来的各种技术，这将解除应用程序对底层技术的依赖和偶合，使得跨技术网络平台的组装成为可能并大 大简化。   
+  
+94  UIMA  
+95  Velocity  
+Velocity 是一个基于Java的模板引擎（template engine）。它允许任何人仅仅简单的使用模板语言（template language）来引用由Java代码定义的对象。 当Velocity应用于Web开发时，界面设计人员可以和Java程序开发人员同步开发一个遵循MVC架构的Web站点，也就是说，页面设计人员可以只 关注页面的显示效果，而由Java程序开发人员关注业务逻辑编码。Velocity将Java代码从Web页面中分离出来，这样为Web站点的长期维护提 供了便利，同时也为我们在JSP和PHP之外又提供了一种可选的方案。 Velocity的能力远不止Web站点开发这个领域，例如，它可以从模板（template）产生SQL和PostScript、XML，它也可以被当 作一个独立工具来产生源代码和报告，或者作为其他系统的集成组件使用。   
+  
+96  Web Services  
+从 表面上看，Web service 就是一个应用程序，它向外界暴露出一个能够通过Web进行调用的API。这就是说，你能够用编程的方法通过Web来调用这个应用程序，我们把调用这个 Web service 的应用程序叫做客户。Web services其实是建立可互操作的分布式应用程序的新平台，Web service平台定义了一套标准，规定了应用程序如何在Web上实现互操作性。你可以用任何你喜欢的语言，在任何你喜欢的平台上写Web service ，只要我们可以通过Web service标准对这些服务进行查询和访问。   
+  
+97  Whirr  
+98  Wicket  
+Apache Wicket 是几年前引入的创新型 Java Web 应用程序框架。它通过彻底地分离开发人员与设计人员的角色，帮助简化 Web 应用程序开发。它将允许您从视图层中删除逻辑代码，消除使用 JavaServer Page (JSP) 的需求，提供以简单传统 Java 对象（Plain Old Java Object，POJO）为中心的开发模式，以及消除使用 XML 和其他配置文件格式的大量需求。这种简单的纯 Model-View-Controller (MVC) 开发方法与缺少 XML 配置文件的简单开发流程结合在一起，使 Wicket 成为一个功能强大的令人愉快的开发框架。它解决了多个开发挑战，允许您将注意力更多地集中在功能上，而不必过多地关注应用程序配置。   
+  
+99  Xalan  
+Xalan- Java是一套xslt处理器，用来将XML文件转换为HTML,TEXT和XML等其他类型文件格式，支持XSLT1.0和XPATH 1.0版。开发人员可以通过命令行方式或在JAVA APPLET和SERVLET中使用，并可以作为自己开发的应用程序的类库使用。Xalan-Java实现的是transformation API for XML(TRaX)接口，此接口为Jaxp1.2标准中的一部分。   
+  
+100 Xerces  
+Xerces 是由Apache组织所推动的一项XML文档解析开源项目,它目前有多种语言版本包括JAVA、C++、PERL、COM等。Xerces- C++ 的前身是 IBM 的 XML4C 项目。XML4C 和 XML4J 是两个并列的项目，IBM 将这两个项目的源代码让与 Apache 软件基金会(Apache Software Foundation)，他们将其分别改名为 Xerces-C++ 和 Xerces-J。   
+  
+XML  
+XML（Extensible Markup Language）即可扩展标记语言，与HTML一样，是SGML(Standard Generalized Markup Language,标准通用标记语言)。Xml是Internet环境中跨平台的，依赖于内容的技术，是当前处理结构化文档信息的有力工具。扩展标记语言 XML是一种简单的数据存储语言，使用一系列简单的标记描述数据，使用方便简易。   
+  
+101 XMLBeans  
+XMLBeans 是一个XML-Java绑定工具，利用它可以很方便地解析XML文档。XMLBeans 最强大的功能是可通过提供配置文件定制代码生成。在灵活性、可重用性、简化代码和维护方面，XMLBeans的功能带来了许多益处。因为任何企业应用程序 相当大的成本都在于维护方面，所以从长远来看，XMLBeans的配置功能能够节省企业成本和时间。   
+  
+102 XML Graphics  
+Apache XML Graphics Project 是 Apache Software Foundation 发展 XML 与图形进行转换的计划项目子，其目的是创建和维护与XML格式到图形输出转换相关的软件组件。  
+  
+103 ZooKeeper
