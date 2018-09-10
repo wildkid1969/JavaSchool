@@ -28,9 +28,9 @@ worker：Quartz
 
 日志系统：ELK、FaceBook的Scribe，Apache的Chukwa，LinkedIn的Kafka和 Cloudera的Flume
 
-容器管理系统/平台：Kubernetes(k8s)、Apache Mesos、Docker Swarm、Hypernetes(容器云服务)、Harbor(开源企业级容器Registry服务器)、Open DC/OS(出现之前，Docker 的统一管理工具只有Kubernetes)
+容器管理系统/平台：Kubernetes(k8s)、Apache Mesos、Docker Swarm、Hypernetes(容器云服务)、Harbor(开源企业级容器Registry服务器)、Open DC/OS(出现之前，Docker 的统一管理工具只有Kubernetes)、Docker Data Center、Rancher
 
-应用容器引擎：Docker、HyperContainer、runV(虚拟化容器运行时引擎实现)、Docker的runC(虚拟化容器运行时引擎实现)
+应用容器引擎：Docker、HyperContainer、runV(虚拟化容器运行时引擎实现)、Docker的runC(虚拟化容器运行时引擎实现)、Rkt(rocket)、Solaris Containers、Microsoft容器
 
 
 
