@@ -30,7 +30,7 @@ HAVING cnt>1
 
 查看列：desc 表名;
 修改表名：alter table t_book rename to bbb;
-添加列：alter table 表名 add column 列名 varchar(30) AFTER type;（如果要加在type字段后面）
+添加列：alter table 表名 add column 列名 varchar(30) NOT NULL DEFAULT 0 COMMENT '注释' AFTER type;（如果要加在type字段后面）
 删除列：alter table 表名 drop column 列名;
 修改列名： alter table bbb change nnnnn hh int;
 修改列属性：alter table t_book modify name varchar(22);
