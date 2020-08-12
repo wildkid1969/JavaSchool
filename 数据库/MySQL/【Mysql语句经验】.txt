@@ -1,3 +1,6 @@
+*随机时间
+update ins_service_package set create_time=concat('2019-09-03 ', floor(10+rand()*10),':',floor(10+rand()*49),':',floor(10+rand()*49));
+
 *快速复制本表数据：
 insert INTO user_evaluate (course_id,ins_id,ins_name,user_id,total_score,create_time,update_time)
 SELECT course_id,ins_id,ins_name,user_id,total_score,create_time,update_time FROM user_evaluate LIMIT 4
