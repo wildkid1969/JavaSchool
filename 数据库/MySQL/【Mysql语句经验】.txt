@@ -48,6 +48,8 @@ ALTER TABLE `table_name` ADD PRIMARY KEY ( `column` );
 设置索引
 ALTER TABLE `table_name` ADD INDEX index_name ( `column` );
 ALTER TABLE `table_name` ADD INDEX index_name ( `column1`, `column2`, `column3` );
+MySQL修改表一次添加多个索引
+ALTER TABLE `table_name` ADD INDEX idx1 ( `func`), ADD INDEX idx2 ( `func`,`gene`), ADD INDEX idx3( `genedetail`);
 
 删除索引
 DROP INDEX index_name ON talbe_name;
